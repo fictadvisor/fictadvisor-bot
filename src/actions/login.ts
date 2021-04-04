@@ -1,4 +1,3 @@
-import { CANCEL_LOGIN_QUERY } from "./cancelLogin";
 import { Context } from "telegraf";
 import api from "../api";
 
@@ -21,7 +20,7 @@ export default () => {
                 reply_markup: {
                     inline_keyboard: [
                         [{ text: 'Авторизуватись', url }],
-                        [{ text: 'Відмінити', callback_data: CANCEL_LOGIN_QUERY }],
+                        [{ text: 'Відмінити', callback_data: 'cancel_login' }],
                     ],
                 },
             });
