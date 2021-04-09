@@ -35,7 +35,10 @@ export default () => {
                         message.chat.id, 
                         message.message_id,
                         inline_message_id,
-                        `<b>Відгук ${id} вже було видалено.</b>`
+                        `<b>Відгук ${id} вже було видалено.</b>`,
+                        {
+                            parse_mode: 'HTML',
+                        }
                     );
 
                     return;
