@@ -15,7 +15,11 @@ export default () => {
         
             const url = `${process.env.BASE_URL}/oauth?access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
 
-            await ctx.reply(`<b>Авторизація на сайті fictadvisor.com</b>\n\nМы не передаємо і не будемо ніколи передавати твої дані.\nВони лише використовуються в межах авторизації та ідентифікації нашої системи.\n\n<b>Якщо кнопка не працює, тицьни <a href="${url}">сюди</a>.</b>`, {
+            await ctx.reply(
+                `<b>Авторизація на сайті fictadvisor.com</b>\n\n` + 
+                `Мы не передаємо і не будемо ніколи передавати твої дані.\n` + 
+                `Вони використовуються лише в межах авторизації та ідентифікації нашої системи.\n\n` + 
+                `<b>Якщо кнопка не працює, тицьни <a href="${url}">сюди</a>.</b>`, {
                 parse_mode: 'HTML',
                 reply_markup: {
                     inline_keyboard: [
