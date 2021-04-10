@@ -5,6 +5,7 @@ type OAuthTelegramPayload = {
     first_name: string;
     username?: string;
     last_name?: string;
+    image?: string;
 };
 
 export default (client: AxiosInstance) => {
