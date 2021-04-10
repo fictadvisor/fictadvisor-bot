@@ -8,13 +8,13 @@ export default () => {
         const { message, inline_message_id, from } = ctx.callbackQuery;
 
         try {
-            await api.reviews.delete(id);
+            await api.reviews.update(id, { state: 'declined' });
 
             await ctx.telegram.editMessageText(
                 message.chat.id, 
                 message.message_id,
                 inline_message_id,
-                `<b>Відгук ${id} відхилено та видалено.</b>\n\n` +
+                `<b>Відгук ${id} відхилено.</b>\n\n` +
                 `<b>Ким:</b> <a href="tg://user?id=${from.id}">${from.username ? `@${from.username}` : from.first_name}</a>\n` +
                 `<b>Коли:</b> ${new Date().toISOString()}`,
                 {

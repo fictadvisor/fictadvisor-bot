@@ -1,7 +1,7 @@
 import { AxiosInstance } from "axios";
 
 type UpdateReviewPayload = {
-    state?: 'pending' | 'approved';
+    state?: 'pending' | 'approved' | 'declined' | 'outdated';
     content?: string;
     rating?: number;
 };
