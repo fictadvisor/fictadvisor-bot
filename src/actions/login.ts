@@ -1,12 +1,12 @@
 import { Context } from 'telegraf';
 import api from '../api';
 import { writeFile as _writeFile } from 'fs';
-import { createHash } from 'crypto';
+import { createHmac } from 'crypto';
 import axios from 'axios';
 
 const getImageKey = (id: number) => {
-    return createHash('sha-256')
-        .update(id.toString + (process.env.SECRET ?? '42'))
+    return createHmac('sha256', process.env.SECRET ?? '42')
+        .update(id.toString())
         .digest('hex');
 };
 
