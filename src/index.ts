@@ -1,8 +1,22 @@
 import './configure';
 import bot from './bot';
-import server from './server';
+import { existsSync, mkdirSync } from 'fs';
 
-server.listen(process.env.PORT, () => console.log(`Server was launched on ${process.env.PORT} port`));
+//import server from './server';
+
+//server.listen(process.env.PORT, () => console.log(`Server was launched on ${process.env.PORT} port`));
+
+const staticPaths = ['/images'];
+
+for (let path of staticPaths) {
+    const fullPath = `${process.env.STATIC_DIR}${path}`;
+
+    if (existsSync(fullPath)) {
+        continue;
+    }
+
+    mkdirSync(fullPath, { recursive: true });
+}
 
 bot.launch()
     .then(() => console.log('Bot was launched.'))

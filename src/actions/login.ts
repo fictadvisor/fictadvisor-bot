@@ -1,5 +1,16 @@
-import { Context } from "telegraf";
-import api from "../api";
+import { Context } from 'telegraf';
+import api from '../api';
+import { writeFile as _writeFile } from 'fs';
+import { createHash } from 'crypto';
+import axios from 'axios';
+
+const getImageKey = (id: number) => {
+    return createHash('sha-256')
+        .update(id.toString + (process.env.SECRET ?? '42'))
+        .digest('hex');
+};
+
+const writeFile = (path: string, data: any) => new Promise<void>((resolve, reject) => _writeFile(path, data, {}, (err) => err ? reject(err) : resolve()));
 
 const getUserPhoto = async (ctx: Context) => {
     try {
@@ -12,9 +23,13 @@ const getUserPhoto = async (ctx: Context) => {
         const photo = photos[0][0];
         const url = await ctx.telegram.getFileLink(photo.file_id);
 
-        return url.toString()
-            .replace('https://api.telegram.org/file/bot', '')
-            .replace(process.env.BOT_TOKEN, '');
+        const file = `images/${getImageKey(ctx.from.id)}.jpg`;
+        const imagePath = `${process.env.STATIC_DIR}/${file}`;
+        const { data } = await axios.get(url.toString(), { responseType: 'arraybuffer' });
+        
+        await writeFile(imagePath, data);
+            
+        return `/cdn/${file}`;
     } catch(e) {
         console.error(`Failed to fetch image for user (${ctx.from.id}): ${e}`);
 
