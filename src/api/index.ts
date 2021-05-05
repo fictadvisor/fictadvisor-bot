@@ -1,6 +1,7 @@
 import axios from "axios";
 import oauth from './oauth';
 import reviews from "./reviews";
+import supeheroes from "./supeheroes";
 
 const client = axios.create({
     baseURL: process.env.API_BASE_URL,
@@ -10,6 +11,7 @@ const client = axios.create({
 const api = {
     oauth: oauth(client),
     reviews: reviews(client),
+    superheroes: supeheroes(client),
 };
 
 export default api;

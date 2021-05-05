@@ -5,6 +5,8 @@ import cancelLogin from "./actions/cancelLogin";
 import debug from "./actions/debug";
 import approveReview from "./actions/approveReview";
 import denyReview from "./actions/denyReview";
+import approveSuperhero from "./actions/approveSuperhero";
+import denySuperhero from "./actions/denySuperhero";
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -16,6 +18,8 @@ const callbackQueries = [
     { match: (data) => data === 'cancel_login', handler: cancelLogin() },
     { match: (data) => /^approve_review:.+/.test(data), handler: approveReview() },
     { match: (data) => /^deny_review:.+/.test(data), handler: denyReview() },
+    { match: (data) => /^approve_superhero:.+/.test(data), handler: approveSuperhero() },
+    { match: (data) => /^deny_superhero:.+/.test(data), handler: denySuperhero() },
 ];
 
 bot.on('callback_query', (ctx) => {
