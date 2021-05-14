@@ -2,6 +2,8 @@ import axios from "axios";
 import oauth from './oauth';
 import reviews from "./reviews";
 import supeheroes from "./supeheroes";
+import teachers from './teachers';
+import courses from './courses';
 
 const client = axios.create({
     baseURL: process.env.API_BASE_URL,
@@ -12,6 +14,8 @@ const api = {
     oauth: oauth(client),
     reviews: reviews(client),
     superheroes: supeheroes(client),
+    teachers: teachers(client),
+    courses: courses(client),
 };
 
 export default api;
