@@ -57,6 +57,7 @@ To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
+* fictadvisor-api (see instructions [here](https://github.com/fictadvisor/fictadvisor-api))
 * yarn `npm i -g yarn`
 
 ### Installation
