@@ -11,6 +11,8 @@ import approveTeacher from './actions/approveTeacher';
 import denyTeacher from './actions/denyTeacher';
 import approveCourse from './actions/approveCourse';
 import denyCourse from './actions/denyCourse';
+import denyTeacherContact from './actions/denyTeacherContact';
+import approveTeacherContact from './actions/approveTeacherContact';
 import approveSubject from './actions/approveSubject';
 import denySubject from './actions/denySubject';
 
@@ -32,6 +34,8 @@ const callbackQueries = [
     { match: (data) => /^deny_course:.+/.test(data), handler: denyCourse() },
     { match: (data) => /^approve_subject:.+/.test(data), handler: approveSubject() },
     { match: (data) => /^deny_subject:.+/.test(data), handler: denySubject() },
+    { match: (data) => /^approve_contact:.+/.test(data), handler: approveTeacherContact() },
+    { match: (data) => /^deny_contact:.+/.test(data), handler: denyTeacherContact() },
 ];
 
 bot.on('callback_query', (ctx) => {
