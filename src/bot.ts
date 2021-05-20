@@ -11,6 +11,8 @@ import approveTeacher from './actions/approveTeacher';
 import denyTeacher from './actions/denyTeacher';
 import approveCourse from './actions/approveCourse';
 import denyCourse from './actions/denyCourse';
+import approveSubject from './actions/approveSubject';
+import denySubject from './actions/denySubject';
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -28,6 +30,8 @@ const callbackQueries = [
     { match: (data) => /^deny_teacher:.+/.test(data), handler: denyTeacher() },
     { match: (data) => /^approve_course:.+/.test(data), handler: approveCourse() },
     { match: (data) => /^deny_course:.+/.test(data), handler: denyCourse() },
+    { match: (data) => /^approve_subject:.+/.test(data), handler: approveSubject() },
+    { match: (data) => /^deny_subject:.+/.test(data), handler: denySubject() },
 ];
 
 bot.on('callback_query', (ctx) => {

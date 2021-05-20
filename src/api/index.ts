@@ -4,6 +4,7 @@ import reviews from "./reviews";
 import supeheroes from "./supeheroes";
 import teachers from './teachers';
 import courses from './courses';
+import subjects from './subjects';
 
 const client = axios.create({
     baseURL: process.env.API_BASE_URL,
@@ -16,6 +17,7 @@ const api = {
     superheroes: supeheroes(client),
     teachers: teachers(client),
     courses: courses(client),
+    subjects: subjects(client),
 };
 
 export default api;
