@@ -61,6 +61,7 @@ export default () => {
                 `Вони використовуються лише в межах авторизації та ідентифікації нашої системи.\n\n` + 
                 `<b>Якщо кнопка не працює, тицьни <a href="${url}">сюди</a>.</b>`, {
                 parse_mode: 'HTML',
+                disable_web_page_preview: true,
                 reply_markup: {
                     inline_keyboard: [
                         [{ text: 'Авторизуватись', url }],
