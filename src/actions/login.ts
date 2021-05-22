@@ -56,7 +56,7 @@ export default () => {
             const url = `${process.env.FRONT_BASE_URL}/oauth?access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
 
             await ctx.reply(
-                `<b>Авторизація на сайті fictadvisor.com</b>\n\n` + 
+                `<b>Авторизація на сайті <a href="https://fictadvisor.com">fictadvisor.com</a></b>\n\n` + 
                 `Мы не передаємо і не будемо ніколи передавати твої дані.\n` + 
                 `Вони використовуються лише в межах авторизації та ідентифікації нашої системи.\n\n` + 
                 `<b>Якщо кнопка не працює, тицьни <a href="${url}">сюди</a>.</b>`, {
