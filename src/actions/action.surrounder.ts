@@ -8,8 +8,14 @@ export default abstract class Action {
   inline_message_id: string;
   from: User;
   item_name: string;
+  context: Context;
+
+  get ctx() {
+    return this.context;
+  }
 
   set ctx (ctx: Context) {
+    this.context = ctx;
     this.id = (ctx.callbackQuery as any).data.split(':')[1];
     this.message = ctx.callbackQuery.message;
     this.inline_message_id = ctx.callbackQuery.inline_message_id;
