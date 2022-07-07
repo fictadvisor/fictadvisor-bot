@@ -3,18 +3,19 @@ import login from './actions/login';
 import start from "./actions/start";
 import cancelLogin from "./actions/cancelLogin";
 import debug from "./actions/debug";
-import approveReview from "./actions/approveReview";
-import denyReview from "./actions/denyReview";
-import approveSuperhero from "./actions/approveSuperhero";
-import denySuperhero from "./actions/denySuperhero";
-import approveTeacher from './actions/approveTeacher';
-import denyTeacher from './actions/denyTeacher';
-import approveCourse from './actions/approveCourse';
-import denyCourse from './actions/denyCourse';
-import denyTeacherContact from './actions/denyTeacherContact';
-import approveTeacherContact from './actions/approveTeacherContact';
-import approveSubject from './actions/approveSubject';
-import denySubject from './actions/denySubject';
+import Action from "./actions/action.surrounder";
+import {ApproveReview} from "./actions/approve.review";
+import {ApproveCourse} from "./actions/approve.course";
+import {ApproveSuperhero} from "./actions/approve.superhero";
+import {ApproveTeacher} from "./actions/approve.teacher";
+import {ApproveSubject} from "./actions/approve.subject";
+import {ApproveTeachersContact} from "./actions/approve.teachers.contact";
+import {DenySuperhero} from "./actions/deny.superhero";
+import {DenyTeacher} from "./actions/deny.teacher";
+import {DenyCourse} from "./actions/deny.course";
+import {DenySubject} from "./actions/deny.subject";
+import {DenyTeachersContact} from "./actions/deny.teachers.contact";
+import {DenyReview} from "./actions/deny.review";
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -24,25 +25,33 @@ bot.command('/debug', debug());
 
 const callbackQueries = [
     { match: (data) => data === 'cancel_login', handler: cancelLogin() },
-    { match: (data) => /^approve_review:.+/.test(data), handler: approveReview() },
-    { match: (data) => /^deny_review:.+/.test(data), handler: denyReview() },
-    { match: (data) => /^approve_superhero:.+/.test(data), handler: approveSuperhero() },
-    { match: (data) => /^deny_superhero:.+/.test(data), handler: denySuperhero() },
-    { match: (data) => /^approve_teacher:.+/.test(data), handler: approveTeacher() },
-    { match: (data) => /^deny_teacher:.+/.test(data), handler: denyTeacher() },
-    { match: (data) => /^approve_course:.+/.test(data), handler: approveCourse() },
-    { match: (data) => /^deny_course:.+/.test(data), handler: denyCourse() },
-    { match: (data) => /^approve_subject:.+/.test(data), handler: approveSubject() },
-    { match: (data) => /^deny_subject:.+/.test(data), handler: denySubject() },
-    { match: (data) => /^approve_contact:.+/.test(data), handler: approveTeacherContact() },
-    { match: (data) => /^deny_contact:.+/.test(data), handler: denyTeacherContact() },
+    { match: (data) => /^approve_review:.+/.test(data), handler: new ApproveReview() },
+    { match: (data) => /^deny_review:.+/.test(data), handler: new DenyReview() },
+    { match: (data) => /^approve_superhero:.+/.test(data), handler: new ApproveSuperhero() },
+    { match: (data) => /^deny_superhero:.+/.test(data), handler: new DenySuperhero() },
+    { match: (data) => /^approve_teacher:.+/.test(data), handler: new ApproveTeacher() },
+    { match: (data) => /^deny_teacher:.+/.test(data), handler: new DenyTeacher() },
+    { match: (data) => /^approve_course:.+/.test(data), handler: new ApproveCourse() },
+    { match: (data) => /^deny_course:.+/.test(data), handler: new DenyCourse() },
+    { match: (data) => /^approve_subject:.+/.test(data), handler: new ApproveSubject() },
+    { match: (data) => /^deny_subject:.+/.test(data), handler: new DenySubject() },
+    { match: (data) => /^approve_contact:.+/.test(data), handler: new ApproveTeachersContact() },
+    { match: (data) => /^deny_contact:.+/.test(data), handler: new DenyTeachersContact() },
 ];
 
-bot.on('callback_query', (ctx) => {
+bot.on('callback_query', async (ctx) => {
     const data = (ctx.callbackQuery as any).data as string;
 
     for (let { match, handler } of callbackQueries) {
-        if (match(data)) {
+        if (!match(data)) continue;
+        if (handler instanceof Action) {
+            handler.ctx = ctx;
+            try {
+                await handler.execute();
+            } catch (e) {
+                handler.catch(e);
+            }
+        } else {
             return handler(ctx);
         }
     }
