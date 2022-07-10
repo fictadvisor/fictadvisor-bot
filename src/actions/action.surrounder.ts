@@ -1,9 +1,11 @@
 import { Context } from 'telegraf'
 import { Message, User } from 'telegraf/typings/core/types/typegram'
 import { AxiosError } from 'axios'
+import { ExtraEditMessageText } from 'telegraf/typings/telegram-types'
+import { ParseMode } from 'typegram/message'
 
 const PARSE_HTML_OBJECT = {
-  parse_mode: 'HTML',
+  parse_mode: 'HTML' as ParseMode
 }
 
 export default abstract class Action {
@@ -37,7 +39,7 @@ export default abstract class Action {
   async execute (): Promise<void> {
     await this.updateState()
 
-    const extra: object = Object.assign({}, PARSE_HTML_OBJECT);
+    const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT)
 
     this.addMarkup(extra)
 
@@ -60,7 +62,7 @@ export default abstract class Action {
           this.message.message_id,
           this.inline_message_id,
           `<b>🔴 ${this.item_name} ${this.id} вже було видалено.</b>`,
-          Object.assign({}, PARSE_HTML_OBJECT),
+          Object.assign({}, PARSE_HTML_OBJECT) as ExtraEditMessageText
         )
 
         return

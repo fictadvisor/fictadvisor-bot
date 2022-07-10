@@ -15,7 +15,7 @@ import { DenySuperhero } from './deny.superhero'
 
 export class ActionsFactory {
   static create (name: string, ctx: Context): Action {
-    const action: string = name.split(':')[0];
+    const action: string = name.split(':')[0]
 
     const map = new Map([
       ['approve_review', ApproveReview],
@@ -33,8 +33,8 @@ export class ActionsFactory {
     ])
 
     if (map.has(action)) {
-      const actionClass = map.get(action);
-      return new actionClass(ctx);
+      const ActionClass = map.get(action)
+      return new ActionClass(ctx)
     } else {
       return null
     }
