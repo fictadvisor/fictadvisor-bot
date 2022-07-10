@@ -46,7 +46,7 @@ export default abstract class Action {
       this.message.chat.id,
       this.message.message_id,
       this.inline_message_id,
-      this.createMessage(),
+      this.createMessage(data),
       extra
     );
   }
@@ -72,7 +72,7 @@ export default abstract class Action {
     await this.ctx.reply(e.toString(), { reply_to_message_id: this.message.message_id });
   }
 
-  abstract createMessage(): string;
+  abstract createMessage(data: object): string;
 
   abstract updateState(): Promise<object>;
 

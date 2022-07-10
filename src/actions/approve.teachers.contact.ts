@@ -8,8 +8,9 @@ export class ApproveTeachersContact extends ApproveAction {
     return `deny_contact:${this.id}`;
   }
 
-  createMessage (): string {
+  createMessage (data: {name: string, value: string}): string {
     return `<b>🟢 Додавання контакту ${this.id} схвалено.</b>\n\n` +
+        `<b>${data.name}:</b> ${data.value}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }

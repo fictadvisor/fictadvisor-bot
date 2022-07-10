@@ -8,8 +8,9 @@ export class ApproveSuperhero extends ApproveAction {
     return `deny_superhero:${this.id}`;
   }
 
-  createMessage (): string {
+  createMessage (data: {username: string}): string {
     return `<b>🟢 Заявка на супергероя ${this.id} схвалена.</b>\n\n` +
+        `<b>Нікнейм:</b> @${data.username}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }

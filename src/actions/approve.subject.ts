@@ -8,8 +8,9 @@ export class ApproveSubject extends ApproveAction {
     return `deny_subject:${this.id}`;
   }
 
-  createMessage (): string {
+  createMessage (data: {name: string}): string {
     return `<b>🟢 Додавання предмету ${this.id} схвалено.</b>\n\n` +
+        `<b>Назва предмету</b>: ${data.name}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }

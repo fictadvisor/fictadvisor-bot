@@ -8,8 +8,9 @@ export class ApproveCourse extends ApproveAction {
     return `deny_course:${this.id}`;
   }
 
-  createMessage (): string {
+  createMessage (data: {name: string}): string {
     return `<b>🟢 Додавання курсу ${this.id} схвалено.</b>\n\n` +
+      `<b>Назва курсу:</b> ${data.name}\n\n` +
       `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
       `<b>Коли:</b> ${new Date().toISOString()}`;
   }
