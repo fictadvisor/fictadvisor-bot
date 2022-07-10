@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios'
+import { AxiosInstance } from 'axios';
 
 type OAuthTelegramPayload = {
     telegram_id: number;
@@ -9,9 +9,9 @@ type OAuthTelegramPayload = {
 };
 
 export default (client: AxiosInstance) => {
-  const telegram = (payload: OAuthTelegramPayload) => client.post('/oauth/telegram', payload)
+  const telegram = (payload: OAuthTelegramPayload) => client.post('/oauth/telegram', payload);
 
   return {
     telegram
-  }
-}
+  };
+};

@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios'
+import { AxiosInstance } from 'axios';
 
 type UpdateCoursePayload = {
     description?: string;
@@ -6,11 +6,11 @@ type UpdateCoursePayload = {
 };
 
 export default (client: AxiosInstance) => {
-  const update = (id: string, payload: UpdateCoursePayload) => client.put(`/courses/${id}`, payload)
-  const deleteCourse = (id: string) => client.delete(`/courses/${id}`)
+  const update = (id: string, payload: UpdateCoursePayload) => client.put(`/courses/${id}`, payload);
+  const deleteCourse = (id: string) => client.delete(`/courses/${id}`);
 
   return {
     update,
     delete: deleteCourse
-  }
-}
+  };
+};

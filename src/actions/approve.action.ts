@@ -1,4 +1,4 @@
-import Action from './action.surrounder'
+import Action from './action.surrounder';
 
 export abstract class ApproveAction extends Action {
   abstract createCallback();
@@ -8,6 +8,6 @@ export abstract class ApproveAction extends Action {
       inline_keyboard: [
         [{ text: 'Скасувати та видалити', callback_data: this.createCallback() }]
       ]
-    }
+    };
   }
 }
