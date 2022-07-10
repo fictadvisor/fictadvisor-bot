@@ -1,24 +1,23 @@
-import './configure';
-import bot from './bot';
-import { existsSync, mkdirSync } from 'fs';
+import './configure'
+import bot from './bot'
+import { existsSync, mkdirSync } from 'fs'
 
-//import server from './server';
+// import server from './server';
 
-//server.listen(process.env.PORT, () => console.log(`Server was launched on ${process.env.PORT} port`));
+// server.listen(process.env.PORT, () => console.log(`Server was launched on ${process.env.PORT} port`));
 
-const staticPaths = ['/images'];
+const staticPaths = ['/images']
 
-for (let path of staticPaths) {
-    const fullPath = `${process.env.STATIC_DIR}${path}`;
+for (const path of staticPaths) {
+  const fullPath = `${process.env.STATIC_DIR}${path}`
 
-    if (existsSync(fullPath)) {
-        continue;
-    }
+  if (existsSync(fullPath)) {
+    continue
+  }
 
-    mkdirSync(fullPath, { recursive: true });
+  mkdirSync(fullPath, { recursive: true })
 }
 
 bot.launch()
-    .then(() => console.log('Bot was launched.'))
-    .catch((e) => console.log(`Failed to start the bot: ${e}`));
-    
+  .then(() => console.log('Bot was launched.'))
+  .catch((e) => console.log(`Failed to start the bot: ${e}`))
