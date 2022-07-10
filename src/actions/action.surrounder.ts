@@ -2,6 +2,10 @@ import { Context } from 'telegraf'
 import { Message, User } from 'telegraf/typings/core/types/typegram'
 import { AxiosError } from 'axios'
 
+const PARSE_HTML_OBJECT = {
+  parse_mode: 'HTML',
+}
+
 export default abstract class Action {
   item_name: string
   context: Context
@@ -33,9 +37,7 @@ export default abstract class Action {
   async execute (): Promise<void> {
     await this.updateState()
 
-    const extra: object = {
-      parse_mode: 'HTML'
-    }
+    const extra: object = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra)
 
@@ -57,10 +59,8 @@ export default abstract class Action {
           this.message.chat.id,
           this.message.message_id,
           this.inline_message_id,
-            `<b>🔴 ${this.item_name} ${this.id} вже було видалено.</b>`,
-            {
-              parse_mode: 'HTML'
-            }
+          `<b>🔴 ${this.item_name} ${this.id} вже було видалено.</b>`,
+          Object.assign({}, PARSE_HTML_OBJECT),
         )
 
         return
