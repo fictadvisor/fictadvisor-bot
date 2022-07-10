@@ -14,7 +14,8 @@ export class ApproveSubject extends ApproveAction {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<void> {
-    await api.subjects.update(this.id, { state: 'approved' });
+  async updateState (): Promise<object> {
+    const obj = await api.subjects.update(this.id, { state: 'approved' });
+    return obj.data;
   }
 }

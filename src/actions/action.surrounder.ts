@@ -10,7 +10,7 @@ const PARSE_HTML_OBJECT = {
 
 export default abstract class Action {
   item_name: string;
-  context: Context;
+  protected context: Context;
 
   constructor (ctx: Context) {
     this.context = ctx;
@@ -37,8 +37,7 @@ export default abstract class Action {
   }
 
   async execute (): Promise<void> {
-    await this.updateState();
-
+    const data = await this.updateState();
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra);
@@ -75,7 +74,7 @@ export default abstract class Action {
 
   abstract createMessage(): string;
 
-  abstract updateState(): Promise<void>;
+  abstract updateState(): Promise<object>;
 
   addMarkup (extra: object) {}
 }

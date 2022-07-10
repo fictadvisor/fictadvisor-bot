@@ -10,7 +10,8 @@ export class DenyReview extends Action {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<void> {
-    await api.reviews.update(this.id, { state: 'declined' });
+  async updateState (): Promise<object> {
+    const obj = await api.reviews.update(this.id, { state: 'declined' });
+    return obj.data;
   }
 }

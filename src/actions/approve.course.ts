@@ -14,7 +14,8 @@ export class ApproveCourse extends ApproveAction {
       `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<void> {
-    await api.courses.update(this.id, { state: 'approved' });
+  async updateState (): Promise<object> {
+    const obj = await api.courses.update(this.id, { state: 'approved' });
+    return obj.data;
   }
 }

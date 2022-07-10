@@ -14,7 +14,8 @@ export class ApproveSuperhero extends ApproveAction {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<void> {
-    await api.superheroes.update(this.id, { state: 'approved' });
+  async updateState (): Promise<object> {
+    const obj = await api.superheroes.update(this.id, { state: 'approved' });
+    return obj.data;
   }
 }

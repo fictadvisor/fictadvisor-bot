@@ -10,7 +10,8 @@ export class DenySuperhero extends Action {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<void> {
-    await api.superheroes.update(this.id, { state: 'hidden' });
+  async updateState (): Promise<object> {
+    const obj = await api.superheroes.update(this.id, { state: 'hidden' });
+    return obj.data;
   }
 }
