@@ -1,15 +1,16 @@
 import api from '../api';
 import { ApproveAction } from './approve.action';
+import { TeacherDto } from '../api/dtos/teacher.dto';
 
 export class ApproveTeacher extends ApproveAction {
   item_name = 'Викладача';
 
-  createCallback (): string {
+  createCallback(): string {
     return `deny_teacher:${this.id}`;
   }
 
-  createMessage (rawData): string {
-    const data = rawData as {firstName: string, middleName: string, lastName: string};
+  createMessage(rawData): string {
+    const data = rawData as TeacherDto;
 
     return `<b>🟢 Додавання викладача ${this.id} схвалено.</b>\n\n` +
         `<b>ПІБ Викладача:</b> ${data.lastName} ${data.firstName} ${data.middleName}\n\n` +
@@ -17,7 +18,7 @@ export class ApproveTeacher extends ApproveAction {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<object> {
+  async updateState(): Promise<object> {
     const obj = await api.teachers.update(this.id, { state: 'approved' });
     return obj.data;
   }

@@ -12,31 +12,31 @@ export default abstract class Action {
   item_name: string;
   protected context: Context;
 
-  constructor (ctx: Context) {
+  constructor(ctx: Context) {
     this.context = ctx;
   }
 
-  get from ():User {
+  get from():User {
     return this.context.callbackQuery.from;
   }
 
-  get id (): string {
+  get id(): string {
     return (this.context.callbackQuery as any).data.split(':')[1];
   }
 
-  get message (): Message.CommonMessage {
+  get message(): Message.CommonMessage {
     return this.context.callbackQuery.message;
   }
 
-  get inline_message_id (): string {
+  get inline_message_id(): string {
     return this.context.callbackQuery.inline_message_id;
   }
 
-  get ctx () {
+  get ctx() {
     return this.context;
   }
 
-  async execute (): Promise<void> {
+  async execute(): Promise<void> {
     const data = await this.updateState();
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
@@ -51,7 +51,7 @@ export default abstract class Action {
     );
   }
 
-  async catch (e) {
+  async catch(e) {
     const axiosError = e as AxiosError;
 
     if (axiosError.isAxiosError) {
@@ -76,5 +76,5 @@ export default abstract class Action {
 
   abstract updateState(): Promise<object>;
 
-  addMarkup (extra: object) {}
+  addMarkup(extra: object) {}
 }

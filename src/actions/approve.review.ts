@@ -1,15 +1,16 @@
 import api from '../api';
 import { ApproveAction } from './approve.action';
+import { ReviewDto } from '../api/dtos/review.dto';
 
 export class ApproveReview extends ApproveAction {
   item_name = 'Відгук';
 
-  createCallback (): string {
+  createCallback(): string {
     return `deny_review:${this.id}`;
   }
 
-  createMessage (rawData): string {
-    const data = rawData as {content: string, rating: number};
+  createMessage(rawData): string {
+    const data = rawData as ReviewDto;
 
     return `<b>🟢 Відгук ${this.id} схвалено.</b>\n\n` +
       `<b>Відгук:</b> <pre>${data.content}</pre>\n` +
@@ -18,7 +19,7 @@ export class ApproveReview extends ApproveAction {
       `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<object> {
+  async updateState(): Promise<object> {
     const obj = await api.reviews.update(this.id, { state: 'approved' });
     return obj.data;
   }

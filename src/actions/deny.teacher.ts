@@ -1,11 +1,12 @@
 import Action from './action.surrounder';
 import api from '../api';
+import { TeacherDto } from '../api/dtos/teacher.dto';
 
 export class DenyTeacher extends Action {
   item_name = 'Викладача';
 
-  createMessage (rawData): string {
-    const data = rawData as {firstName: string, middleName: string, lastName: string};
+  createMessage(rawData): string {
+    const data = rawData as TeacherDto;
 
     return `<b>🔴 Додавання викладача ${this.id} відхилено.</b>\n\n` +
         `<b>ПІБ Викладача:</b> ${data.lastName} ${data.firstName} ${data.middleName}\n\n` +
@@ -13,7 +14,7 @@ export class DenyTeacher extends Action {
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState (): Promise<object> {
+  async updateState(): Promise<object> {
     const obj = await api.teachers.update(this.id, { state: 'declined' });
     return obj.data;
   }

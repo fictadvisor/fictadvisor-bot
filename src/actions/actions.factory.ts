@@ -14,7 +14,7 @@ import { ApproveSuperhero } from './approve.superhero';
 import { DenySuperhero } from './deny.superhero';
 
 export class ActionsFactory {
-  static create (name: string, ctx: Context): Action {
+  static create(name: string, ctx: Context): Action {
     const action: string = name.split(':')[0];
 
     const map = new Map([
@@ -30,13 +30,13 @@ export class ActionsFactory {
       ['deny_teacher', DenyTeacher],
       ['deny_contact', DenyTeachersContact],
       ['deny_superhero', DenySuperhero]
-    ])
+    ]);
 
     if (map.has(action)) {
-      const actionClass = map.get(action);
-      return new actionClass(ctx);
+      const ActionClass = map.get(action);
+      return new ActionClass(ctx);
     } else {
-      return null
+      return null;
     }
   }
 }
