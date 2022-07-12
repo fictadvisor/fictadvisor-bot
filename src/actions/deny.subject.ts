@@ -4,7 +4,9 @@ import api from '../api';
 export class DenySubject extends Action {
   item_name = 'Предмет';
 
-  createMessage (data: {name: string}): string {
+  createMessage (rawData: {name: string}): string {
+    const data = rawData as {name: string};
+
     return `<b>🔴 Додавання предмету ${this.id} відхилено.</b>\n\n` +
         `<b>Назва предмету</b>: ${data.name}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +

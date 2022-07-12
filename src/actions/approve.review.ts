@@ -8,7 +8,9 @@ export class ApproveReview extends ApproveAction {
     return `deny_review:${this.id}`;
   }
 
-  createMessage (data: {content: string, rating: number}): string {
+  createMessage (rawData): string {
+    const data = rawData as {content: string, rating: number};
+
     return `<b>🟢 Відгук ${this.id} схвалено.</b>\n\n` +
       `<b>Відгук:</b> <pre>${data.content}</pre>\n` +
       `<b>Оцінка:</b> ${data.rating}\n\n` +

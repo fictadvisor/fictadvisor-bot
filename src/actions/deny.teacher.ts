@@ -4,7 +4,9 @@ import api from '../api';
 export class DenyTeacher extends Action {
   item_name = 'Викладача';
 
-  createMessage (data: {firstName: string, middleName: string, lastName: string}): string {
+  createMessage (rawData): string {
+    const data = rawData as {firstName: string, middleName: string, lastName: string};
+
     return `<b>🔴 Додавання викладача ${this.id} відхилено.</b>\n\n` +
         `<b>ПІБ Викладача:</b> ${data.lastName} ${data.firstName} ${data.middleName}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +

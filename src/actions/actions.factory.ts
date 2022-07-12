@@ -16,27 +16,27 @@ import { DenySuperhero } from './deny.superhero';
 export class ActionsFactory {
   static create (name: string, ctx: Context): Action {
     const action: string = name.split(':')[0];
-    let ActionClass = null;
 
-    switch (action) {
-      case 'approve_review': ActionClass = ApproveReview; break;
-      case 'approve_course': ActionClass = ApproveCourse; break;
-      case 'approve_subject': ActionClass = ApproveSubject; break;
-      case 'approve_teacher': ActionClass = ApproveTeacher; break;
-      case 'approve_contact': ActionClass = ApproveTeachersContact; break;
-      case 'approve_superhero': ActionClass = ApproveSuperhero; break;
-      case 'deny_review': ActionClass = DenyReview; break;
-      case 'deny_course': ActionClass = DenyCourse; break;
-      case 'deny_subject': ActionClass = DenySubject; break;
-      case 'deny_teacher': ActionClass = DenyTeacher; break;
-      case 'deny_contact': ActionClass = DenyTeachersContact; break;
-      case 'deny_superhero': ActionClass = DenySuperhero; break;
-    }
+    const map = new Map([
+      ['approve_review', ApproveReview],
+      ['approve_course', ApproveCourse],
+      ['approve_subject', ApproveSubject],
+      ['approve_teacher', ApproveTeacher],
+      ['approve_contact', ApproveTeachersContact],
+      ['approve_superhero', ApproveSuperhero],
+      ['deny_review', DenyReview],
+      ['deny_course', DenyCourse],
+      ['deny_subject', DenySubject],
+      ['deny_teacher', DenyTeacher],
+      ['deny_contact', DenyTeachersContact],
+      ['deny_superhero', DenySuperhero]
+    ])
 
-    if (ActionClass !== null) {
-      return new ActionClass(ctx);
+    if (map.has(action)) {
+      const actionClass = map.get(action);
+      return new actionClass(ctx);
     } else {
-      return null;
+      return null
     }
   }
 }

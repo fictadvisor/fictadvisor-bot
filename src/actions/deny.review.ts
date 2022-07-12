@@ -4,7 +4,9 @@ import api from '../api';
 export class DenyReview extends Action {
   item_name = 'Відгук';
 
-  createMessage (data: {content: string, rating: number}): string {
+  createMessage (rawData): string {
+    const data = rawData as {content: string, rating: number};
+
     return `<b>🔴 Відгук ${this.id} відхилено.</b>\n\n` +
         `<b>Відгук:</b> <pre>${data.content}</pre>\n` +
         `<b>Оцінка:</b> ${data.rating}\n\n` +

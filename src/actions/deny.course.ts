@@ -4,7 +4,9 @@ import api from '../api';
 export class DenyCourse extends Action {
   item_name = 'Курс';
 
-  createMessage (data: {name: string, teacher: {first_name: string, middle_name: string, last_name: string}}): string {
+  createMessage (rawData): string {
+    const data = rawData as {name: string, teacher: {first_name: string, middle_name: string, last_name: string}};
+
     return `<b>🔴 Додавання курсу ${this.id} відхилено.</b>\n\n` +
         `<b>Назва курсу:</b> ${data.name}\n` +
         `<b>ПІБ Викладача:</b> ${data.teacher.last_name} ${data.teacher.first_name} ${data.teacher.middle_name}\n\n` +

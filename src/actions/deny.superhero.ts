@@ -4,7 +4,9 @@ import api from '../api';
 export class DenySuperhero extends Action {
   item_name = 'Супергероя';
 
-  createMessage (data: {username: string}): string {
+  createMessage (rawData): string {
+    const data = rawData as {username: string};
+
     return `<b>🔴 Додавання супергероя ${this.id} відхилено.</b>\n\n` +
         `<b>Нікнейм:</b> @${data.username}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +

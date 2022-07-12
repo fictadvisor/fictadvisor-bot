@@ -8,7 +8,9 @@ export class ApproveTeacher extends ApproveAction {
     return `deny_teacher:${this.id}`;
   }
 
-  createMessage (data: {firstName: string, middleName: string, lastName: string}): string {
+  createMessage (rawData): string {
+    const data = rawData as {firstName: string, middleName: string, lastName: string};
+
     return `<b>🟢 Додавання викладача ${this.id} схвалено.</b>\n\n` +
         `<b>ПІБ Викладача:</b> ${data.lastName} ${data.firstName} ${data.middleName}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
