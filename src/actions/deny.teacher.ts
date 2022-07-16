@@ -9,7 +9,7 @@ export class DenyTeacher extends Action {
     const data = rawData as TeacherDto;
 
     return `<b>🔴 Додавання викладача ${this.id} відхилено.</b>\n\n` +
-        `<b>ПІБ Викладача:</b> ${data.lastName} ${data.firstName} ${data.middleName}\n\n` +
+        `<b>ПІБ Викладача:</b> ${data.last_name} ${data.first_name} ${data.middle_name}\n\n` +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
