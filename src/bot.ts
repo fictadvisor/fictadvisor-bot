@@ -1,20 +1,10 @@
-import { Telegraf } from "telegraf";
+import { Telegraf } from 'telegraf';
 import login from './actions/login';
-import start from "./actions/start";
-import cancelLogin from "./actions/cancelLogin";
-import debug from "./actions/debug";
-import approveReview from "./actions/approveReview";
-import denyReview from "./actions/denyReview";
-import approveSuperhero from "./actions/approveSuperhero";
-import denySuperhero from "./actions/denySuperhero";
-import approveTeacher from './actions/approveTeacher';
-import denyTeacher from './actions/denyTeacher';
-import approveCourse from './actions/approveCourse';
-import denyCourse from './actions/denyCourse';
-import denyTeacherContact from './actions/denyTeacherContact';
-import approveTeacherContact from './actions/approveTeacherContact';
-import approveSubject from './actions/approveSubject';
-import denySubject from './actions/denySubject';
+import start from './actions/start';
+import cancelLogin from './actions/cancelLogin';
+import debug from './actions/debug';
+import Action from './actions/action.surrounder';
+import { ActionsFactory } from './actions/actions.factory';
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -23,29 +13,25 @@ bot.start(start());
 bot.command('/debug', debug());
 
 const callbackQueries = [
-    { match: (data) => data === 'cancel_login', handler: cancelLogin() },
-    { match: (data) => /^approve_review:.+/.test(data), handler: approveReview() },
-    { match: (data) => /^deny_review:.+/.test(data), handler: denyReview() },
-    { match: (data) => /^approve_superhero:.+/.test(data), handler: approveSuperhero() },
-    { match: (data) => /^deny_superhero:.+/.test(data), handler: denySuperhero() },
-    { match: (data) => /^approve_teacher:.+/.test(data), handler: approveTeacher() },
-    { match: (data) => /^deny_teacher:.+/.test(data), handler: denyTeacher() },
-    { match: (data) => /^approve_course:.+/.test(data), handler: approveCourse() },
-    { match: (data) => /^deny_course:.+/.test(data), handler: denyCourse() },
-    { match: (data) => /^approve_subject:.+/.test(data), handler: approveSubject() },
-    { match: (data) => /^deny_subject:.+/.test(data), handler: denySubject() },
-    { match: (data) => /^approve_contact:.+/.test(data), handler: approveTeacherContact() },
-    { match: (data) => /^deny_contact:.+/.test(data), handler: denyTeacherContact() },
+  { match: data => data === 'cancel_login', handler: cancelLogin() }
 ];
 
-bot.on('callback_query', (ctx) => {
-    const data = (ctx.callbackQuery as any).data as string;
+bot.on('callback_query', async ctx => {
+  const data = (ctx.callbackQuery as any).data as string;
+  const handler: Action = ActionsFactory.create(data, ctx);
 
-    for (let { match, handler } of callbackQueries) {
-        if (match(data)) {
-            return handler(ctx);
-        }
+  if (handler !== null) {
+    try {
+      await handler.execute();
+    } catch (e) {
+      handler.catch(e);
     }
+  } else {
+    for (const { match, handler } of callbackQueries) {
+      if (!match(data)) continue;
+      return handler(ctx);
+    }
+  }
 });
 
 export default bot;

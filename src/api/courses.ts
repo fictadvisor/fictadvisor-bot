@@ -6,11 +6,11 @@ type UpdateCoursePayload = {
 };
 
 export default (client: AxiosInstance) => {
-    const update = (id: string, payload: UpdateCoursePayload) => client.put(`/courses/${id}`, payload);
-    const deleteCourse = (id: string) => client.delete(`/courses/${id}`);
+  const update = (id: string, payload: UpdateCoursePayload) => client.put(`/courses/${id}`, payload);
+  const deleteCourse = (id: string) => client.delete(`/courses/${id}`);
 
-    return {
-        update,
-        delete: deleteCourse,
-    };
+  return {
+    update,
+    delete: deleteCourse
+  };
 };
