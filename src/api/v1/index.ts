@@ -1,5 +1,5 @@
 import { Router } from "express";
-import TeachersRoutes from "./teachers.routes";
+import TeachersRoutes from "./teachers/teachers.routes";
 
 const router = Router();
 
