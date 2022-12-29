@@ -1,11 +1,11 @@
-import TelegramService  from './telegram/telegram.sevice'
+import TelegramService  from './telegram/telegram.sevice';
 import login from './actions/login';
 import start from './actions/start';
 import cancelLogin from './actions/cancelLogin';
 import debug from './actions/debug';
 import Action from './actions/action.surrounder';
 import { ActionsFactory } from './actions/actions.factory';
-import * as process from "process";
+import * as process from 'process';
 
 const bot = TelegramService.getInstance(process.env.BOT_TOKEN);
 
