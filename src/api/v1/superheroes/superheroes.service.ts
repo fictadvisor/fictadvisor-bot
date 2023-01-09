@@ -1,4 +1,5 @@
 import TelegramService  from '../../../telegram/telegram.sevice';
+import {escape} from 'html-escaper';
 
 export class SuperheroesService {
     static async broadcastPending(data) {
