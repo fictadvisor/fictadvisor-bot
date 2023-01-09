@@ -6,7 +6,7 @@ export class SuperheroesController {
             const data = SuperheroesService.broadcastPending(req.body);
             return res.status(200).send({message: data});
         } catch(err) {
-            return res.status(400).send({message: 'No JavaScript - Big Problem'});
+            return res.status(400).send({message: 'An exception occured while sending message'});
         }
     }
 }
