@@ -1,6 +1,7 @@
 import api from '../api';
 import { ApproveAction } from './approve.action';
 import { SuperheroDto } from '../api/dtos/superhero.dto';
+import {SuperheroesService} from "../api/v1/superheroes/superheroes.service";
 
 export class ApproveSuperhero extends ApproveAction {
   item_name = 'Супергероя';
@@ -20,6 +21,7 @@ export class ApproveSuperhero extends ApproveAction {
 
   async updateState(): Promise<object> {
     const obj = await api.superheroes.update(this.id, { state: 'approved' });
+    await SuperheroesService.broadcastApprovedSuperhero(this.telegram_id)
     return obj.data;
   }
 }

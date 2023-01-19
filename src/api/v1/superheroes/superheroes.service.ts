@@ -31,4 +31,27 @@ export class SuperheroesService {
                 },
             });
     }
+
+    static async broadcastApprovedSuperhero(id) {
+        const bot = TelegramService.getInstance();
+        await bot.telegram.sendMessage(
+            id,
+            `<b>Вітаємо тебе, ти — супергерой!</b>`,
+            {
+                parse_mode: 'HTML',
+            }
+        );
+    }
+
+    static async broadcastDeclinedSuperhero(id) {
+        const bot = TelegramService.getInstance();
+        await bot.telegram.sendMessage(
+            id,
+            `<b>На жаль, твій запит на супергероя було відхилено.</b>\n\n` +
+            `Якщо в тебе є питання, звертайся до нас через бота зворотнього зв'язку: @fict_robot`,
+            {
+                parse_mode: 'HTML',
+            }
+        );
+    }
 }

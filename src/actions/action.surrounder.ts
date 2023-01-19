@@ -24,6 +24,10 @@ export default abstract class Action {
     return (this.context.callbackQuery as any).data.split(':')[1];
   }
 
+  get telegram_id(): string {
+    return (this.context.callbackQuery as any).data.split(':')[2];
+  }
+
   get message(): Message.CommonMessage {
     return this.context.callbackQuery.message;
   }
