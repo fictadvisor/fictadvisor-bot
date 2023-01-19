@@ -9,4 +9,5 @@ export class TeachersController {
             return res.status(400).send({message: 'Xyina'});
         }
     }
+
 }

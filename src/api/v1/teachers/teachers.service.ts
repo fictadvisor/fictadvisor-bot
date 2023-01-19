@@ -27,4 +27,6 @@ export class TeachersService {
                 },
             });
     }
+
+    static async
 }
