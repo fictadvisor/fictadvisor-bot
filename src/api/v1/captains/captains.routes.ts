@@ -3,6 +3,6 @@ import {CaptainsController} from './captains.controller';
 
 const router = Router();
 
-router.route('/broadcastPending').post(CaptainsController.broadcastPending)
+router.route('/broadcastPending').post(CaptainsController.broadcastPending);
 
 export default router;

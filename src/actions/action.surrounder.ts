@@ -5,7 +5,7 @@ import { ExtraEditMessageText } from 'telegraf/typings/telegram-types';
 import { ParseMode } from 'typegram/message';
 
 const PARSE_HTML_OBJECT = {
-  parse_mode: 'HTML' as ParseMode
+  parse_mode: 'HTML' as ParseMode,
 };
 
 export default abstract class Action {

@@ -12,6 +12,6 @@ export default (client: AxiosInstance) => {
   const telegram = (payload: OAuthTelegramPayload) => client.post('/oauth/telegram', payload);
 
   return {
-    telegram
+    telegram,
   };
 };

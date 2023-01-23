@@ -14,10 +14,10 @@ bot.start(start());
 bot.command('/debug', debug());
 
 const callbackQueries = [
-  { match: data => data === 'cancel_login', handler: cancelLogin() }
+  { match: (data) => data === 'cancel_login', handler: cancelLogin() },
 ];
 
-bot.on('callback_query', async ctx => {
+bot.on('callback_query', async (ctx) => {
   const data = (ctx.callbackQuery as any).data as string;
   const handler: Action = ActionsFactory.create(data, ctx);
 

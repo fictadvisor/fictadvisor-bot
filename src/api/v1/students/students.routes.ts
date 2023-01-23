@@ -3,6 +3,6 @@ import {StudentsController} from './students.controller';
 
 const router = Router();
 
-router.route('/broadcastPending').post(StudentsController.broadcastPending)
+router.route('/broadcastPending').post(StudentsController.broadcastPending);
 
 export default router;

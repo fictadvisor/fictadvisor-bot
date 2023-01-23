@@ -8,7 +8,7 @@ const getImageKey = (id: number) => createHmac('sha256', process.env.SECRET ?? '
   .update(id.toString())
   .digest('hex');
 
-const writeFile = (path: string, data: any) => new Promise<void>((resolve, reject) => _writeFile(path, data, {}, err => (err ? reject(err) : resolve())));
+const writeFile = (path: string, data: any) => new Promise<void>((resolve, reject) => _writeFile(path, data, {}, (err) => (err ? reject(err) : resolve())));
 
 const getUserPhoto = async (ctx: Context) => {
   try {
@@ -46,7 +46,7 @@ export default () => async (ctx: Context) => {
       first_name: from.first_name,
       last_name: from.last_name,
       username: from.username,
-      image
+      image,
     });
 
     const url = `${process.env.FRONT_BASE_URL}/oauth?access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
@@ -61,9 +61,9 @@ export default () => async (ctx: Context) => {
         reply_markup: {
           inline_keyboard: [
             [{ text: 'Авторизуватись', url }],
-            [{ text: 'Відмінити', callback_data: 'cancel_login' }]
-          ]
-        }
+            [{ text: 'Відмінити', callback_data: 'cancel_login' }],
+          ],
+        },
       });
   } catch (e) {
     console.error(`Authorization failed (${from.first_name}, ${from.id}): ${e}`);

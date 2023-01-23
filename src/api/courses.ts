@@ -11,6 +11,6 @@ export default (client: AxiosInstance) => {
 
   return {
     update,
-    delete: deleteCourse
+    delete: deleteCourse,
   };
 };

@@ -9,7 +9,7 @@ import teacherContacts from './teacherContacts';
 
 const client = axios.create({
   baseURL: process.env.API_BASE_URL,
-  headers: { authorization: `Telegram ${process.env.BOT_TOKEN}` }
+  headers: { authorization: `Telegram ${process.env.BOT_TOKEN}` },
 });
 
 const api = {
@@ -19,7 +19,7 @@ const api = {
   teachers: teachers(client),
   courses: courses(client),
   subjects: subjects(client),
-  contacts: teacherContacts(client)
+  contacts: teacherContacts(client),
 };
 
 export default api;
