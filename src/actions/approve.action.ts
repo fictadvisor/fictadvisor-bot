@@ -6,8 +6,8 @@ export abstract class ApproveAction extends Action {
   addMarkup(extra): void {
     extra.reply_markup = {
       inline_keyboard: [
-        [{ text: 'Скасувати та видалити', callback_data: this.createCallback() }]
-      ]
+        [{ text: 'Скасувати та видалити', callback_data: this.createCallback() }],
+      ],
     };
   }
 }

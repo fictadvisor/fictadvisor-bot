@@ -21,7 +21,7 @@ export class ApproveSuperhero extends ApproveAction {
 
   async updateState(): Promise<object> {
     const obj = await api.superheroes.update(this.id, { state: 'approved' });
-    await SuperheroesService.broadcastApprovedSuperhero(this.telegram_id)
+    await SuperheroesService.broadcastApprovedSuperhero(this.telegram_id);
     return obj.data;
   }
 }

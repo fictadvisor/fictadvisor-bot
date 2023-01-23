@@ -12,6 +12,6 @@ export default (client: AxiosInstance) => {
 
   return {
     update,
-    delete: deleteContact
+    delete: deleteContact,
   };
 };

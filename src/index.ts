@@ -18,4 +18,4 @@ for (const path of staticPaths) {
 server.listen(process.env.PORT, () => console.log(`Server was launched on ${process.env.PORT} port`));
 bot.launch()
   .then(() => console.log('Bot was launched.'))
-  .catch(e => console.log(`Failed to start the bot: ${e}`));
+  .catch((e) => console.log(`Failed to start the bot: ${e}`));
