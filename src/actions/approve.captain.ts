@@ -1,7 +1,8 @@
-import api from '../api';
 import {ApproveAction} from './approve.action';
 import {CaptainDto} from '../api/dtos/captain.dto';
 import {CaptainsService} from "../api/v1/captains/captains.service";
+import {UserAPI} from "../api/user";
+import {State} from "../api/state";
 
 export class ApproveCaptain extends ApproveAction {
   item_name = 'Старосту';
@@ -20,9 +21,8 @@ export class ApproveCaptain extends ApproveAction {
             `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState(): Promise<object> {
-    const obj = await api.superheroes.update(this.id, {state: 'approved'});
+  async updateState() {
+    await UserAPI.verifyStudent(this.id, State.APPROVED);
     await CaptainsService.broadcastApprovedCaptain(this.telegram_id);
-    return obj.data;
   }
 }
