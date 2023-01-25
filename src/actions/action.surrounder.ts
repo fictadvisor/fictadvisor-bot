@@ -41,7 +41,7 @@ export default abstract class Action {
   }
 
   async execute(): Promise<void> {
-    const data = await this.updateState();
+    await this.updateState();
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra);
@@ -50,7 +50,7 @@ export default abstract class Action {
       this.message.chat.id,
       this.message.message_id,
       this.inline_message_id,
-      this.createMessage(data),
+      this.createMessage((this.context.callbackQuery as any).data),
       extra
     );
   }
@@ -78,7 +78,7 @@ export default abstract class Action {
 
   abstract createMessage(data: object): string;
 
-  abstract updateState(): Promise<object>;
+  abstract updateState();
 
   addMarkup(extra: object) {}
 }

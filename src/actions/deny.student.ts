@@ -1,7 +1,8 @@
 import Action from './action.surrounder';
-import api from '../api';
 import {StudentDto} from '../api/dtos/student.dto';
 import {StudentsService} from "../api/v1/students/students.service";
+import {UserAPI} from "../api/user";
+import {State} from "../api/state";
 
 export class DenyStudent extends Action {
   item_name = 'Студента';
@@ -16,9 +17,8 @@ export class DenyStudent extends Action {
             `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState(): Promise<object> {
-    const obj = await api.superheroes.update(this.id, {state: 'hidden'});
+  async updateState() {
+    await UserAPI.verifySuperhero(this.id, State.DECLINED);
     await StudentsService.broadcastDeclinedStudent(this.telegram_id);
-    return obj.data;
   }
 }

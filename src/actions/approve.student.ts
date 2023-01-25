@@ -1,7 +1,8 @@
-import api from '../api';
 import {ApproveAction} from './approve.action';
 import {StudentDto} from '../api/dtos/student.dto';
 import {StudentsService} from "../api/v1/students/students.service";
+import {UserAPI} from "../api/user";
+import {State} from "../api/state";
 
 export class ApproveStudent extends ApproveAction {
   item_name = 'Старосту';
@@ -20,9 +21,8 @@ export class ApproveStudent extends ApproveAction {
             `<b>Коли:</b> ${new Date().toISOString()}`;
   }
 
-  async updateState(): Promise<object> {
-    const obj = await api.superheroes.update(this.id, {state: 'approved'});
+  async updateState() {
+    await UserAPI.verifyStudent(this.id, State.APPROVED);
     await StudentsService.broadcastApprovedStudent(this.telegram_id);
-    return obj.data;
   }
 }
