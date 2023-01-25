@@ -1,8 +1,9 @@
 import TelegramService  from '../../../telegram/telegram.sevice';
 import {escape} from 'html-escaper';
+import {SuperheroDto} from "./dto/superhero.dto";
 
 export class SuperheroesService {
-  static async broadcastPending(data) {
+  static async broadcastPending(data: SuperheroDto) {
     const bot = TelegramService.getInstance();
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на супергероя</b>\n\n` +

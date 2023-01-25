@@ -1,8 +1,9 @@
 import TelegramService from '../../../telegram/telegram.sevice';
 import {escape} from 'html-escaper';
+import {CaptainDto} from "./dto/captain.dto";
 
 export class CaptainsService {
-  static async broadcastPending(data) {
+  static async broadcastPending(data: CaptainDto) {
     const bot = TelegramService.getInstance();
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на старосту</b>\n\n` +
