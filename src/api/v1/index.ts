@@ -1,8 +1,13 @@
 import {Router} from 'express';
-import TeachersRoutes from './teachers/teachers.routes';
+import CaptainsRoutes from "./captains/captains.routes";
+import StudentsRoutes from "./students/students.routes";
+import SuperheroesRoutes from "./superheroes/superheroes.routes";
 
 const router = Router();
 
-router.use('/teachers', TeachersRoutes);
+router.use('/captains', CaptainsRoutes);
+router.use('/students', StudentsRoutes);
+router.use('/superheroes', SuperheroesRoutes);
+
 
 export default router;
