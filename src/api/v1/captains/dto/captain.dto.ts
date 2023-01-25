@@ -5,5 +5,5 @@ export interface CaptainDto {
     name: string
     first_name: string
     year: number
-    dorm: boolean
+    group_code: string
 }

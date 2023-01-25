@@ -11,7 +11,7 @@ export class CaptainsService {
             `<b>Ім'я:</b> ${escape(data.name)}\n` +
             `<b>Юзернейм:</b> @${escape(data.username)}\n` +
             `<b>Курс:</b> ${data.year}\n` +
-            `<b>Гуртожиток:</b> ${data.dorm ? 'так' : 'ні'}`,
+            `<b>Група:</b> ${escape(data.group_code)}`,
     {
       parse_mode: 'HTML',
       reply_markup: {
