@@ -1,9 +1,9 @@
 export interface SuperheroDto {
-    id: number
-    telegram_id: number
+    id: string
+    telegramId: number
     username: string
     name: string
-    first_name: string
+    firstName: string
     year: number
     dorm: boolean
 }
