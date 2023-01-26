@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@bot-base/callback-data@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@bot-base/callback-data/-/callback-data-0.3.0.tgz#636783ba7aaddc0e96056a376431afec609e3e43"
+  integrity sha512-j7nFnD4cN5D9y4ufuCOZ60XQB9ELOq9IiB6LXPcAhdGLFrcrGJbJpHUNag/xopvixLmJawh61AgZ5lsGNq+s/g==
+
 "@dabh/diagnostics@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@dabh/diagnostics/-/diagnostics-2.0.2.tgz#290d08f7b381b8f94607dc8f471a12c675f9db31"

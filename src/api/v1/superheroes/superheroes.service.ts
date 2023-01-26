@@ -1,35 +1,39 @@
 import TelegramService  from '../../../telegram/telegram.sevice';
 import {escape} from 'html-escaper';
-import {SuperheroDto} from "./dto/superhero.dto";
+import {SuperheroDTO} from "./dto/superhero.dto";
+import {superheroData} from "../../../callbacks/superhero";
+import {Markup} from "telegraf";
 
 export class SuperheroesService {
-  static async broadcastPending(data: SuperheroDto) {
+  static async broadcastPending(data: SuperheroDTO) {
     const bot = TelegramService.getInstance();
+    const user = (await bot.telegram.getChat(data.telegramId)) as any;
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на супергероя</b>\n\n` +
-            `<b>Від:</b> ${data.firstName} (${data.username ? `@${data.username}, ` : ''}${data.id})\n\n` +
-            `<b>Ім'я:</b> ${escape(data.name)}\n` +
-            `<b>Юзернейм:</b> @${escape(data.username)}\n` +
-            `<b>Курс:</b> ${data.year}\n` +
+            `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n\n` +
+            `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` +
+            `<b>Група:</b> ${escape(data.groupCode)}\n` +
             `<b>Гуртожиток:</b> ${data.dorm ? 'так' : 'ні'}`,
     {
       parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Схвалити',
-              callback_data: `approve_superhero:${data.id}:${data.telegramId}`,
-            },
-          ],
-          [
-            {
-              text: 'Відмовити',
-              callback_data: `deny_superhero:${data.id}:${data.telegramId}`,
-            },
-          ],
-        ],
-      },
+      ...Markup.inlineKeyboard([
+        Markup.button.callback(
+          "Схвалити",
+          superheroData.create({
+            method: "approve",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+        Markup.button.callback(
+          "Відмовити",
+          superheroData.create({
+            method: "deny",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+      ]),
     });
   }
 

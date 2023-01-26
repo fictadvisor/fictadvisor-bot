@@ -1,35 +1,38 @@
 import TelegramService from '../../../telegram/telegram.sevice';
 import {escape} from 'html-escaper';
-import {StudentDto} from "./dto/student.dto";
+import {StudentDTO} from "./dto/student.dto";
+import {studentData} from "../../../callbacks/student";
+import {Markup} from "telegraf";
 
 export class StudentsService {
-  static async broadcastPending(data: StudentDto) {
+  static async broadcastPending(data: StudentDTO) {
     const bot = TelegramService.getInstance();
+    const user = (await bot.telegram.getChat(data.telegramId)) as any;
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на студента</b>\n\n` +
-            `<b>Від:</b> ${data.firstName} (${data.username ? `@${data.username}, ` : ''}${data.id})\n\n` +
-            `<b>Ім'я:</b> ${escape(data.name)}\n` +
-            `<b>Юзернейм:</b> @${escape(data.username)}\n` +
-            `<b>Курс:</b> ${data.year}\n` +
-            `<b>Група:</b> ${escape(data.groupCode)}`,
+      `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n\n` +
+      `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` +
+      `<b>Група:</b> ${escape(data.groupCode)}`,
     {
       parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Схвалити',
-              callback_data: `approve_student:${data.id}:${data.telegramId}`,
-            },
-          ],
-          [
-            {
-              text: 'Відмовити',
-              callback_data: `deny_student:${data.id}:${data.telegramId}`,
-            },
-          ],
-        ],
-      },
+      ...Markup.inlineKeyboard([
+        Markup.button.callback(
+          "Схвалити",
+          studentData.create({
+            method: "approve",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+        Markup.button.callback(
+          "Відмовити",
+          studentData.create({
+            method: "deny",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+      ]),
     });
   }
 

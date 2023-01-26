@@ -1,9 +1,8 @@
-export interface StudentDto {
+export interface StudentDTO {
     id: string
     telegramId: number
-    username: string
-    name: string
     firstName: string
-    year: number
+    middleName: string
+    lastName: string
     groupCode: string
 }

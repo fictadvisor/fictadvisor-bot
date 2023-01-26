@@ -1,35 +1,38 @@
 import TelegramService from '../../../telegram/telegram.sevice';
 import {escape} from 'html-escaper';
-import {CaptainDto} from "./dto/captain.dto";
+import {CaptainDTO} from "./dto/captain.dto";
+import {Markup} from "telegraf";
+import {captainData} from "../../../callbacks/captain";
 
 export class CaptainsService {
-  static async broadcastPending(data: CaptainDto) {
+  static async broadcastPending(data: CaptainDTO) {
     const bot = TelegramService.getInstance();
+    const user = (await bot.telegram.getChat(data.telegramId)) as any;
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на старосту</b>\n\n` +
-            `<b>Від:</b> ${data.firstName} (${data.username ? `@${data.username}, ` : ''}${data.id})\n\n` +
-            `<b>Ім'я:</b> ${escape(data.name)}\n` +
-            `<b>Юзернейм:</b> @${escape(data.username)}\n` +
-            `<b>Курс:</b> ${data.year}\n` +
+            `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n\n` +
+            `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` +
             `<b>Група:</b> ${escape(data.groupCode)}`,
     {
       parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Схвалити',
-              callback_data: `approve_captain:${data.id}:${data.telegramId}`,
-            },
-          ],
-          [
-            {
-              text: 'Відмовити',
-              callback_data: `deny_captain:${data.id}:${data.telegramId}`,
-            },
-          ],
-        ],
-      },
+      ...Markup.inlineKeyboard([
+        Markup.button.callback(
+          "Схвалити",
+          captainData.create({
+            method: "approve",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+        Markup.button.callback(
+          "Відмовити",
+          captainData.create({
+            method: "deny",
+            id: data.id,
+            telegramId: String(data.telegramId),
+          })
+        ),
+      ]),
     });
   }
 
