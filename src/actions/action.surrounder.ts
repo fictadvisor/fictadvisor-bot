@@ -10,6 +10,7 @@ const PARSE_HTML_OBJECT = {
 
 export default abstract class Action {
   item_name: string;
+  user: any;
   protected context: Context;
 
   constructor(ctx: Context) {
@@ -21,11 +22,11 @@ export default abstract class Action {
   }
 
   get id(): string {
-    return (this.context.callbackQuery as any).data.split(':')[1];
+    return (this.context.callbackQuery as any).data.split(':')[2];
   }
 
   get telegram_id(): string {
-    return (this.context.callbackQuery as any).data.split(':')[2];
+    return (this.context.callbackQuery as any).data.split(':')[3];
   }
 
   get message(): Message.CommonMessage {
@@ -42,6 +43,7 @@ export default abstract class Action {
 
   async execute(): Promise<void> {
     await this.updateState();
+    this.user = await this.context.tg.getChat(this.telegram_id);
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra);
@@ -50,7 +52,7 @@ export default abstract class Action {
       this.message.chat.id,
       this.message.message_id,
       this.inline_message_id,
-      this.createMessage((this.context.callbackQuery as any).data),
+      this.createMessage(),
       extra
     );
   }
@@ -76,7 +78,7 @@ export default abstract class Action {
     await this.ctx.reply(e.toString(), { reply_to_message_id: this.message.message_id });
   }
 
-  abstract createMessage(data: object): string;
+  abstract createMessage(): string;
 
   abstract updateState();
 
