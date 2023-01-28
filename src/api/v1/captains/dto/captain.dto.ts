@@ -1,9 +1,8 @@
-export interface CaptainDto {
-    id: number
-    telegram_id: number
-    username: string
-    name: string
-    first_name: string
-    year: number
-    group_code: string
+export interface CaptainDTO {
+    id: string
+    telegramId: number
+    firstName: string
+    middleName: string
+    lastName: string
+    groupCode: string
 }

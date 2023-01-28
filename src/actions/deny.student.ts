@@ -1,5 +1,4 @@
 import Action from './action.surrounder';
-import {StudentDto} from '../api/dtos/student.dto';
 import {StudentsService} from "../api/v1/students/students.service";
 import {UserAPI} from "../api/user";
 import {State} from "../api/state";
@@ -7,11 +6,11 @@ import {State} from "../api/state";
 export class DenyStudent extends Action {
   item_name = 'Студента';
 
-  createMessage(rawData): string {
-    const data = rawData as StudentDto;
+  createMessage(): string {
 
     return `<b>🔴 Додавання студента ${this.id} відхилено.</b>\n\n` +
-            `<b>Нікнейм:</b> @${data.username}\n\n` +
+            `<b>Нікнейм:</b> <a href="tg://user?id=${this.user.id}">${this.user.username ?
+              `@${this.user.username}` : this.user.first_name}</a>\n\n` +
             `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ?
               `@${this.from.username}` : this.from.first_name}</a>\n` +
             `<b>Коли:</b> ${new Date().toISOString()}`;

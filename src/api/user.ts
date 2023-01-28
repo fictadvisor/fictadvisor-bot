@@ -1,4 +1,3 @@
-import { State } from './state';
 import { client } from './index';
 
 export class UserAPI {
