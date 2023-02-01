@@ -1,5 +1,4 @@
 import TelegramService from '../../../telegram/telegram.sevice';
-import {escape} from 'html-escaper';
 import {StudentDTO} from "./dto/student.dto";
 import {studentData} from "../../../callbacks/student";
 import {Markup} from "telegraf";
@@ -7,12 +6,12 @@ import {Markup} from "telegraf";
 export class StudentsService {
   static async broadcastPending(data: StudentDTO) {
     const bot = TelegramService.getInstance();
-    const user = (await bot.telegram.getChat(data.telegramId)) as any;
-    const chatId = process.env.CHAT_ID;
+    const user = (data.telegramId ? (await bot.telegram.getChat(data.telegramId)) as any : undefined);
+    const chatId = data.captainTelegramId;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на студента</b>\n\n` +
-      `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n\n` +
-      `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` +
-      `<b>Група:</b> ${escape(data.groupCode)}`,
+      `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n` +
+      (user ? `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` : ``) +
+      `<b>Група:</b> ${data.groupCode}`,
     {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -37,25 +36,29 @@ export class StudentsService {
   }
 
   static async broadcastApprovedStudent(id) {
-    const bot = TelegramService.getInstance();
-    await bot.telegram.sendMessage(
-      id,
-      `<b>Вітаємо тебе, ти — студент!</b>`,
-      {
-        parse_mode: 'HTML',
-      }
-    );
+    if (id != 'undefined') {
+      const bot = TelegramService.getInstance();
+      await bot.telegram.sendMessage(
+        id,
+        `<b>Вітаємо тебе, ти — студент!</b>`,
+        {
+          parse_mode: 'HTML',
+        }
+      );
+    }
   }
 
   static async broadcastDeclinedStudent(id) {
-    const bot = TelegramService.getInstance();
-    await bot.telegram.sendMessage(
-      id,
-      `<b>На жаль, твій запит на студента було відхилено.</b>\n\n` +
-            `Якщо в тебе є питання, звертайся до нас через бота зворотнього зв'язку: @fict_robot`,
-      {
-        parse_mode: 'HTML',
-      }
-    );
+    if (id != 'undefined') {
+      const bot = TelegramService.getInstance();
+      await bot.telegram.sendMessage(
+        id,
+        `<b>На жаль, твій запит на студента було відхилено.</b>\n\n` +
+        `Якщо в тебе є питання, звертайся до нас через бота зворотнього зв'язку: @fict_robot`,
+        {
+          parse_mode: 'HTML',
+        }
+      );
+    }
   }
 }

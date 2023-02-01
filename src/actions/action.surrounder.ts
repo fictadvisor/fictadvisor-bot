@@ -3,6 +3,7 @@ import { Message, User } from 'telegraf/typings/core/types/typegram';
 import { AxiosError } from 'axios';
 import { ExtraEditMessageText } from 'telegraf/typings/telegram-types';
 import { ParseMode } from 'typegram/message';
+import {UserAPI} from "../api/user";
 
 const PARSE_HTML_OBJECT = {
   parse_mode: 'HTML' as ParseMode,
@@ -11,6 +12,7 @@ const PARSE_HTML_OBJECT = {
 export default abstract class Action {
   item_name: string;
   user: any;
+  student: any;
   protected context: Context;
 
   constructor(ctx: Context) {
@@ -43,7 +45,8 @@ export default abstract class Action {
 
   async execute(): Promise<void> {
     await this.updateState();
-    this.user = await this.context.tg.getChat(this.telegram_id);
+    this.user = (this.telegram_id != 'undefined' ? await this.context.tg.getChat(this.telegram_id) : undefined);
+    this.student = await UserAPI.getUser(this.id);
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra);
