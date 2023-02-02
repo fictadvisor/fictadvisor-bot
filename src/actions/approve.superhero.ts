@@ -18,8 +18,9 @@ export class ApproveSuperhero extends ApproveAction {
   createMessage(): string {
 
     return `<b>🟢 Заявка на супергероя ${this.id} схвалена.</b>\n\n` +
-        `<b>Нікнейм:</b> <a href="tg://user?id=${this.user.id}">${this.user.username ?
-          `@${this.user.username}` : this.user.first_name}</a>\n\n` +
+        `<b>ПІБ:</b> ${this.student.firstName} ${this.student.middleName} ${this.student.lastName}\n` +
+        `<b>Група:</b> ${this.student.groupCode}\n` +
+        (this.user ? `<b>Нікнейм:</b> <a href="tg://user?id=${this.user.id}">${this.user.username ? `@${this.user.username}` : `${this.user.first_name}`}</a>\n\n` : `\n`) +
         `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ? `@${this.from.username}` : this.from.first_name}</a>\n` +
         `<b>Коли:</b> ${new Date().toISOString()}`;
   }
