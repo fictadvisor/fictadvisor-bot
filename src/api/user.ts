@@ -10,7 +10,7 @@ export class UserAPI {
   }
 
   static async getUser(id: string) {
-    const { data } = await client.patch(`/users/${id}/telegram`);
+    const { data } = await client.get(`/users/${id}/telegram`);
     return data;
   }
 }
