@@ -9,7 +9,7 @@ export class StudentsService {
     const user = (data.telegramId ? (await bot.telegram.getChat(data.telegramId)) as any : undefined);
     const chatId = data.captainTelegramId;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на студента</b>\n\n` +
-      `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n` +
+      `<b>Від:</b> ${data.lastName} ${data.firstName} ${data.middleName ? `${data.middleName}` : ``}\n` +
       (user ? `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` : ``) +
       `<b>Група:</b> ${data.groupCode}`,
     {

@@ -9,7 +9,7 @@ export class SuperheroesService {
     const user = (data.telegramId ? (await bot.telegram.getChat(data.telegramId)) as any : undefined);
     const chatId = process.env.CHAT_ID;
     await bot.telegram.sendMessage(chatId, `<b>Заявка на старосту</b>\n\n` +
-            `<b>Від:</b> ${data.firstName} ${data.middleName} ${data.lastName}\n` +
+            `<b>Від:</b> ${data.lastName} ${data.firstName} ${data.middleName ? `${data.middleName}` : ``}\n` +
             (user ? `<b>Юзернейм:</b> <a href="tg://user?id=${user.id}">${user.username ? `@${user.username}` : `${user.first_name}`}</a>\n` : ``) +
             `<b>Група:</b> ${data.groupCode}\n` +
             `<b>Гуртожиток:</b> ${data.dorm ? 'так' : 'ні'}`,
