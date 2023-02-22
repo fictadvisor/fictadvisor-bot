@@ -17,8 +17,10 @@
     "eslint": "^8.0.1",
     "express": "^4.17.1",
     "html-escaper": "^3.0.3",
+    "node-cache": "^5.1.2",
     "pg": "^8.5.1",
     "telegraf": "^4.3.0",
+    "uuid": "^9.0.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
