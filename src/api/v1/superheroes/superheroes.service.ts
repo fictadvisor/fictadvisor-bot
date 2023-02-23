@@ -18,7 +18,7 @@ export class SuperheroesService {
       ...Markup.inlineKeyboard([
         Markup.button.callback(
           "Схвалити",
-          superheroData.create({
+          superheroData.pack({
             method: "approve",
             id: data.id,
             telegramId: String(data.telegramId),
@@ -26,7 +26,7 @@ export class SuperheroesService {
         ),
         Markup.button.callback(
           "Відмовити",
-          superheroData.create({
+          superheroData.pack({
             method: "deny",
             id: data.id,
             telegramId: String(data.telegramId),

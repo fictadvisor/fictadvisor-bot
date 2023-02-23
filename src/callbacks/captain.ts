@@ -1,10 +1,10 @@
-import {CallbackData} from '@bot-base/callback-data';
+import { createCallbackData } from "callback-data";
 
-export const captainData = new CallbackData<{
-  method: string,
-  id: string,
-  telegramId: string,
-}>(
+export const captainData = createCallbackData(
   "1",
-  ["method", "id", "telegramId"]
+  {
+    method: String,
+    id: String,
+    telegramId: String,
+  },
 );

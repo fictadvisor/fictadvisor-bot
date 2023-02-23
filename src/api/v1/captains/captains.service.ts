@@ -17,7 +17,7 @@ export class CaptainsService {
       ...Markup.inlineKeyboard([
         Markup.button.callback(
           "Схвалити",
-          captainData.create({
+          captainData.pack({
             method: "approve",
             id: data.id,
             telegramId: String(data.telegramId),
@@ -25,7 +25,7 @@ export class CaptainsService {
         ),
         Markup.button.callback(
           "Відмовити",
-          captainData.create({
+          captainData.pack({
             method: "deny",
             id: data.id,
             telegramId: String(data.telegramId),

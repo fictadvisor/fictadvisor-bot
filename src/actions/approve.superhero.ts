@@ -8,7 +8,7 @@ export class ApproveSuperhero extends ApproveAction {
   item_name = 'Супергероя';
 
   createCallback(): string {
-    return superheroData.create({
+    return superheroData.pack({
       method: "deny",
       id: this.id,
       telegramId: this.telegram_id,

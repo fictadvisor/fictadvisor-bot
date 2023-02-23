@@ -8,7 +8,7 @@ export class ApproveCaptain extends ApproveAction {
   item_name = 'Старосту';
 
   createCallback(): string {
-    return captainData.create({
+    return captainData.pack({
       method: "deny",
       id: this.id,
       telegramId: this.telegram_id,
