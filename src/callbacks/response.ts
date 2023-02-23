@@ -1,10 +1,9 @@
 import {createCallbackData} from "callback-data";
 
-export const superheroData = createCallbackData(
-  "3",
+export const responseData = createCallbackData(
+  "1",
   {
     method: String,
     id: String,
-    telegramId: String,
   }
 );

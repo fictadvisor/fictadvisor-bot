@@ -11,6 +11,9 @@ import {DenyStudent} from "./actions/deny.student";
 import {superheroData} from "./callbacks/superhero";
 import {ApproveSuperhero} from "./actions/approve.superhero";
 import {DenySuperhero} from "./actions/deny.superhero";
+import {responseData} from "./callbacks/response";
+import {ApproveResponse} from "./actions/approve.response";
+import {DenyResponse} from "./actions/deny.response";
 
 const bot = TelegramService.getInstance(process.env.BOT_TOKEN);
 
@@ -76,6 +79,28 @@ bot.action(superheroData.filter({
   method:"deny",
 }), async (ctx) => {
   const handler = new DenySuperhero(ctx);
+  try {
+    await handler.execute();
+  } catch (e) {
+    handler.catch(e);
+  }
+});
+
+bot.action(responseData.filter({
+  method: "approve",
+}), async (ctx) => {
+  const handler = new ApproveResponse(ctx);
+  try {
+    await handler.execute();
+  } catch (e) {
+    handler.catch(e);
+  }
+});
+
+bot.action(responseData.filter({
+  method: "deny",
+}), async (ctx) => {
+  const handler = new DenyResponse(ctx);
   try {
     await handler.execute();
   } catch (e) {

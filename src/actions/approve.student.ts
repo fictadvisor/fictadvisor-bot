@@ -8,7 +8,7 @@ export class ApproveStudent extends ApproveAction {
   item_name = 'Старосту';
 
   createCallback(): string {
-    return studentData.create({
+    return studentData.pack({
       method: "deny",
       id: this.id,
       telegramId: this.telegram_id,
@@ -18,7 +18,7 @@ export class ApproveStudent extends ApproveAction {
   createMessage(): string {
 
     return `<b>🟢 Заявка на студента ${this.id} схвалена.</b>\n\n` +
-            `<b>ПІБ:</b> ${this.student.firstName} ${this.student.middleName} ${this.student.lastName}\n` +
+            `<b>ПІБ:</b> ${this.student.lastName} ${this.student.firstName} ${this.student.middleName ? `${this.student.middleName}` : ``}\n` +
             `<b>Група:</b> ${this.student.groupCode}\n` +
             (this.user ? `<b>Нікнейм:</b> <a href="tg://user?id=${this.user.id}">${this.user.username ? `@${this.user.username}` : `${this.user.first_name}`}</a>\n\n` : `\n`) +
             `<b>Ким:</b> <a href="tg://user?id=${this.from.id}">${this.from.username ?
