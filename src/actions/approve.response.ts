@@ -35,7 +35,7 @@ export class ApproveResponse extends Action {
     await ResponseApi.verifyResponse(this.discipline_teacher_id, {
       userId: (this.ctx.callbackQuery.message as any).text.match(/userId:\s+.*/)[0].split(`userId: `)[1],
       questionId: (this.ctx.callbackQuery.message as any).text.match(/^questionId:\s+.*/)[0].split(`questionId: `)[1],
-      value: (this.ctx.callbackQuery.message as any).text.match(/Відгук:\s+.*/s)[0].split(`Відгук: `)[1],
+      value: (this.ctx.callbackQuery.message as any).text.match(/Відгук:\s+.*/s)[0].slice(8),
     });
   }
 }
