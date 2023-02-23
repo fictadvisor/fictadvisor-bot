@@ -12,7 +12,7 @@ export class DenyResponse extends Action {
   }
 
   createMessage(): string {
-    return (this.ctx.callbackQuery.message as any).text.replace(`Відгук`, `🔴 Відгук ${this.discipline_teacher_id} схвалено`);
+    return (this.ctx.callbackQuery.message as any).text.replace(`Відгук`, `🔴 Відгук ${this.discipline_teacher_id} відхилено`);
   }
 
   async execute(): Promise<void> {
