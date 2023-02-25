@@ -10,13 +10,13 @@ export class ResponsesService {
     const bot = TelegramService.getInstance();
     const user = await UserAPI.getUser(data.userId);
     await bot.telegram.sendMessage(process.env.CHAT_ID,
-      `Відгук\n\n`+
-      `questionId: ${data.questionId}\n\n`+
-      `Предмет: ${data.subject}\n` +
-      `Викладач: ${data.teacherName}\n\n`+
-      `userId: ${data.userId}\n`+
-      `Від: ${user.lastName} ${user.firstName} ${user.middleName ? `${user.middleName}` : ``}\n\n`+
-      `Відгук: ${data.response}`,
+      `<b>Відгук</b>\n\n`+
+      `<b>QuestionId:</b> ${data.questionId}\n\n`+
+      `<b>Предмет:</b> ${data.subject}\n` +
+      `<b>Викладач:</b> ${data.teacherName}\n\n`+
+      `<b>UserId:</b> ${data.userId}\n`+
+      `<b>Від:</b> ${user.lastName} ${user.firstName} ${user.middleName ? `${user.middleName}` : ``}\n\n`+
+      `<b>Відгук:</b> ${data.response}`,
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
