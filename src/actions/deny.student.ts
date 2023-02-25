@@ -18,7 +18,7 @@ export class DenyStudent extends Action {
   }
 
   async updateState() {
-    await UserAPI.verifySuperhero(this.id, State.DECLINED);
+    await UserAPI.verifyStudent(this.id, State.DECLINED, false);
     await StudentsService.broadcastDeclinedStudent(this.telegram_id);
   }
 }

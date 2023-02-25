@@ -27,7 +27,7 @@ export class ApproveCaptain extends ApproveAction {
   }
 
   async updateState() {
-    await UserAPI.verifyStudent(this.id, State.APPROVED);
+    await UserAPI.verifyStudent(this.id, State.APPROVED, true);
     await CaptainsService.broadcastApprovedCaptain(this.telegram_id);
   }
 }
