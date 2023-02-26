@@ -1,8 +1,8 @@
 import { client } from './index';
 
 export class UserAPI {
-  static async verifyStudent(id: string, state: string) {
-    await client.patch(`/users/${id}/verifyStudent`, {state});
+  static async verifyStudent(id: string, state: string, isCaptain: boolean) {
+    await client.patch(`/users/${id}/verifyStudent`, {state: state, isCaptain: isCaptain});
   }
 
   static async verifySuperhero(id: string, state: string) {

@@ -18,7 +18,7 @@ export class DenyCaptain extends Action {
   }
 
   async updateState() {
-    await UserAPI.verifyStudent(this.id, State.DECLINED);
+    await UserAPI.verifyStudent(this.id, State.DECLINED, true);
     await CaptainsService.broadcastDeclinedCaptain(this.telegram_id);
   }
 }
