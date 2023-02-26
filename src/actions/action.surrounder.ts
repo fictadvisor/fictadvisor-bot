@@ -24,6 +24,7 @@ export default abstract class Action {
   }
 
   get id(): string {
+    console.log((this.context.callbackQuery as any).data);
     return (this.context.callbackQuery as any).data.split(':')[2];
   }
 
