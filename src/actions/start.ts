@@ -11,7 +11,7 @@ export default () => async (ctx: Context) => {
     id = uuidv4();
     cache.set(ctx.from.id, id);
   }
-  const url = `${process.env.FRONT_BASE_URL}/oauth?token=${id}`;
+  const url = `${process.env.FRONT_BASE_URL}?token=${id}`;
   await client.post(`/auth/registerTelegram`, {
     token: id,
     telegramId: ctx.from.id,
