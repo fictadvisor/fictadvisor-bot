@@ -3,13 +3,16 @@ import { Message, User } from 'telegraf/typings/core/types/typegram';
 import { AxiosError } from 'axios';
 import { ExtraEditMessageText } from 'telegraf/typings/telegram-types';
 import { ParseMode } from 'typegram/message';
+import {UserAPI} from "../api/user";
 
 const PARSE_HTML_OBJECT = {
-  parse_mode: 'HTML' as ParseMode
+  parse_mode: 'HTML' as ParseMode,
 };
 
 export default abstract class Action {
   item_name: string;
+  user: any;
+  student: any;
   protected context: Context;
 
   constructor(ctx: Context) {
@@ -22,6 +25,10 @@ export default abstract class Action {
 
   get id(): string {
     return (this.context.callbackQuery as any).data.split(':')[1];
+  }
+
+  get telegram_id(): string {
+    return (this.context.callbackQuery as any).data.split(':')[3];
   }
 
   get message(): Message.CommonMessage {
@@ -37,7 +44,9 @@ export default abstract class Action {
   }
 
   async execute(): Promise<void> {
-    const data = await this.updateState();
+    await this.updateState();
+    this.user = (this.telegram_id != 'undefined' ? await this.context.tg.getChat(this.telegram_id) : undefined);
+    this.student = await UserAPI.getUser(this.id);
     const extra: ExtraEditMessageText = Object.assign({}, PARSE_HTML_OBJECT);
 
     this.addMarkup(extra);
@@ -46,7 +55,7 @@ export default abstract class Action {
       this.message.chat.id,
       this.message.message_id,
       this.inline_message_id,
-      this.createMessage(data),
+      this.createMessage(),
       extra
     );
   }
@@ -72,9 +81,9 @@ export default abstract class Action {
     await this.ctx.reply(e.toString(), { reply_to_message_id: this.message.message_id });
   }
 
-  abstract createMessage(data: object): string;
+  abstract createMessage(): string;
 
-  abstract updateState(): Promise<object>;
+  abstract updateState();
 
   addMarkup(extra: object) {}
 }
