@@ -2,6 +2,9 @@ from pydantic import BaseSettings, SecretStr, AnyUrl
 
 
 class Settings(BaseSettings):
+    LOG_LEVEL: str
+    LOG_FORMAT: str
+
     TOKEN: SecretStr
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl
