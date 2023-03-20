@@ -9,6 +9,9 @@ packages = [{include = "fictadvisor_bot"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+aiogram = {version = "^3.0.0b7", allow-prereleases = true}
+fastapi = "^0.95.0"
+pydantic = "^1.10.6"
 
 
 [build-system]
