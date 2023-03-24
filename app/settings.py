@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     BASE_URL: AnyUrl
     WEBHOOK_PATH: str
 
+    API_URL: AnyUrl
+
     @property
     def WEBHOOK_URL(self) -> str:
         return f"{self.BASE_URL}{self.WEBHOOK_PATH}"
