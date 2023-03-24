@@ -15,11 +15,13 @@ class UserAPI(BaseAPI):
     _path = "/users"
 
     async def verify_student(self, student_id: UUID, state: State, is_captain: bool) -> Dict[str, Any]:
-        async with self._session.patch(f"{self.path}/{student_id}/verifyStudent", json={"state": state, "isCaptain": is_captain}) as response:
+        async with self._session.patch(f"{self.path}/{student_id}/verifyStudent",
+                                       json={"state": state, "isCaptain": is_captain}) as response:
             return await response.json()
 
     async def verify_superhero(self, student_id: UUID, state: State, is_captain: bool) -> Dict[str, Any]:
-        async with self._session.patch(f"{self.path}/{student_id}/verifyStudent", json={"state": state, "isCaptain": is_captain}) as response:
+        async with self._session.patch(f"{self.path}/{student_id}/verifyStudent",
+                                       json={"state": state, "isCaptain": is_captain}) as response:
             return await response.json()
 
     async def get_user(self, user_id: UUID) -> Dict[str, Any]:
