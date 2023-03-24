@@ -13,7 +13,6 @@ class BaseAPI:
     _base_url: Optional[URL] = None
 
     def __init__(self):
-        print("base_url", self.base_url)
         self._session = aiohttp.ClientSession(self.base_url, headers=self.get_headers())
 
     @property
