@@ -1,9 +1,9 @@
 from functools import partial
 
 from aiogram import Dispatcher, Bot
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter, Depends
 
-from app.api.middlewares.authentication import AuthenticationMiddleware
+from app.api.middlewares.authentication import verify_token
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
 from app.custom_logging import CustomizeLogger
@@ -40,6 +40,9 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     app.add_event_handler('startup', partial(on_startup, bot))
     app.add_event_handler('shutdown', partial(on_shutdown, bot))
     app.include_router(webhook_router)
-    app.add_middleware(AuthenticationMiddleware, token=settings.TOKEN)
+
+    api = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_token)])
+
+    app.include_router(api)
 
     return app
