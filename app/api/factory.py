@@ -3,6 +3,7 @@ from functools import partial
 from aiogram import Dispatcher, Bot
 from fastapi import FastAPI
 
+from app.api.middlewares.authentication import AuthenticationMiddleware
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
 from app.custom_logging import CustomizeLogger
@@ -39,5 +40,6 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     app.add_event_handler('startup', partial(on_startup, bot))
     app.add_event_handler('shutdown', partial(on_shutdown, bot))
     app.include_router(webhook_router)
+    app.add_middleware(AuthenticationMiddleware, token=settings.TOKEN)
 
     return app

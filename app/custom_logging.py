@@ -33,24 +33,23 @@ class InterceptHandler(logging.Handler):
 
 
 class CustomizeLogger:
-
     @classmethod
-    def make_logger(cls, level: str, format: str):
+    def make_logger(cls, level: str, log_format: str):
         logger = cls.customize_logging(
             level=level,
-            format=format
+            log_format=log_format
         )
         return logger
 
     @classmethod
-    def customize_logging(cls, level: str, format: str):
+    def customize_logging(cls, level: str, log_format: str):
         logger.remove()
         logger.add(
             sys.stdout,
             enqueue=True,
             backtrace=True,
             level=level.upper(),
-            format=format
+            format=log_format
         )
         logging.basicConfig(handlers=[InterceptHandler()], level=0)
         logging.getLogger("uvicorn.access").handlers = [InterceptHandler()]
