@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, SecretStr, AnyUrl
+from pydantic import BaseSettings, SecretStr, AnyUrl, PositiveInt
 
 
 class Settings(BaseSettings):
@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     LOG_FORMAT: str
 
     TOKEN: SecretStr
+    CHAT_ID: PositiveInt
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl
     WEBHOOK_PATH: str

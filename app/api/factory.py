@@ -4,6 +4,7 @@ from aiogram import Dispatcher, Bot
 from fastapi import FastAPI, APIRouter, Depends
 
 from app.api.middlewares.authentication import verify_token
+from app.api.routes.response import response_router
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
 from app.custom_logging import CustomizeLogger
@@ -42,6 +43,8 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     app.include_router(webhook_router)
 
     api = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_token)])
+    for router in [response_router]:
+        api.include_router(router)
 
     app.include_router(api)
 
