@@ -1,9 +1,11 @@
+from typing import Optional
+
 from pydantic import BaseSettings, SecretStr, AnyUrl, PositiveInt
 
 
 class Settings(BaseSettings):
-    LOG_LEVEL: str
-    LOG_FORMAT: str
+    LOG_LEVEL: Optional[str]
+    LOG_FORMAT: Optional[str]
 
     TOKEN: SecretStr
     CHAT_ID: PositiveInt
