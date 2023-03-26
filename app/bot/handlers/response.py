@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import UUID
 
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import CallbackQuery
 
 from app.bot.schemas.response import ResponseData
 from app.services.response_api import ResponseAPI
@@ -30,32 +30,13 @@ async def approve_response(callback: CallbackQuery, callback_data: ResponseData)
     message = re.sub(r"^(.*)", f"<b>🟢 Відгук {callback_data.discipline_teacher_id} схвалено.</b>",
                      callback.message.html_text)
     message += f"\n\n<b>Ким</b>: {callback.from_user.mention_html()}\n<b>Коли:</b> {datetime.now()}"
-    await callback.message.edit_text(
-        text=message,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Скасувати та видалити",
-                                                                                 callback_data=ResponseData(
-                                                                                     method=State.DECLINED,
-                                                                                     discipline_teacher_id=callback_data.discipline_teacher_id
-                                                                                 )
-                                                                                 .pack())]])
-    )
+    await callback.message.edit_text(text=message)
 
 
 @response_router.callback_query(ResponseData.filter(
     F.method == State.DECLINED
 ))
 async def deny_response(callback: CallbackQuery, callback_data: ResponseData):
-    entities = [el.extract_from(callback.message.text) for el in
-                filter(lambda x: x.type == "code", callback.message.entities)]
-
-    async with ResponseAPI() as api:
-        await api.verify_response(
-            discipline_teacher_id=callback_data.discipline_teacher_id,
-            question_id=UUID(entities[0]),
-            user_id=UUID(entities[1]),
-            value=entities[2]
-        )
-
     message = re.sub(r"^(.*)", f"<b>🔴 Відгук {callback_data.discipline_teacher_id} відхилено.</b>",
                      callback.message.html_text)
     if 'схвалена' in callback.message.text:
