@@ -19,12 +19,13 @@ async def echo_handler(callback: CallbackQuery, callback_data: StudentData):
             state=callback_data.method,
             is_captain=False
         )
+
     message = callback.message.html_text.replace("<b>Заявка на студента</b>",
                                                  f"<b>🟢 Заявка на студента {callback_data.user_id} схвалена.</b>")
     message += f"\n\n<b>Ким</b>: {callback.from_user.mention_html()}\n<b>Коли:</b> {datetime.now()}"
     await callback.message.edit_text(
         text=message,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Скасувати та відхилити",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Скасувати та видалити",
                                                                                  callback_data=StudentData(
                                                                                      method=State.DECLINED,
                                                                                      user_id=callback_data.user_id,
