@@ -27,7 +27,7 @@ async def approve_response(callback: CallbackQuery, callback_data: ResponseData)
             value=entities[2]
         )
 
-    message = re.sub(r"^(.*)", f"<b>🟢 Заявка на студента {callback_data.discipline_teacher_id} схвалена.</b>",
+    message = re.sub(r"^(.*)", f"<b>🟢 Відгук {callback_data.discipline_teacher_id} схвалено.</b>",
                      callback.message.html_text)
     message += f"\n\n<b>Ким</b>: {callback.from_user.mention_html()}\n<b>Коли:</b> {datetime.now()}"
     await callback.message.edit_text(
