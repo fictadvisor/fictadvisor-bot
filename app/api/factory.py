@@ -10,7 +10,7 @@ from app.api.routes.student import student_router
 from app.api.routes.superhero import superhero_router
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
-from app.custom_logging import CustomizeLogger
+from app.custom_logging import init_logging
 from app.settings import settings
 
 
@@ -31,6 +31,8 @@ async def on_shutdown(bot: Bot):
 def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI:
     app = FastAPI()
 
+    init_logging(settings.LOG_LEVEL, settings.LOG_FORMAT)
+
     app.dependency_overrides.update(
         {
             BotStub: lambda: bot,
@@ -38,8 +40,6 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
             SecretStub: lambda: webhook_secret,
         }
     )
-    logger = CustomizeLogger.make_logger(settings.LOG_LEVEL, settings.LOG_FORMAT)
-    app.logger = logger
 
     app.add_middleware(
         CORSMiddleware,

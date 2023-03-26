@@ -1,60 +1,59 @@
 import logging
 import sys
+from pprint import pformat
 
+# if you dont like imports of private modules
+# you can move it to typing.py module
 from loguru import logger
+from loguru._defaults import LOGURU_FORMAT
 
 
 class InterceptHandler(logging.Handler):
-    loglevel_mapping = {
-        50: 'CRITICAL',
-        40: 'ERROR',
-        30: 'WARNING',
-        20: 'INFO',
-        10: 'DEBUG',
-        0: 'NOTSET',
-    }
-
-    def emit(self, record):
+    def emit(self, record: logging.LogRecord):
         try:
             level = logger.level(record.levelname).name
-        except AttributeError:
-            level = self.loglevel_mapping[record.levelno]
+        except ValueError:
+            level = record.levelno
 
         frame, depth = logging.currentframe(), 2
         while frame.f_code.co_filename == logging.__file__:
             frame = frame.f_back
             depth += 1
 
-        log = logger.bind(request_id='app')
-        log.opt(
-            depth=depth,
-            exception=record.exc_info
-        ).log(level, record.getMessage())
-
-
-class CustomizeLogger:
-    @classmethod
-    def make_logger(cls, level: str, log_format: str):
-        logger = cls.customize_logging(
-            level=level,
-            log_format=log_format
+        logger.opt(depth=depth, exception=record.exc_info).log(
+            level, record.getMessage()
         )
-        return logger
 
-    @classmethod
-    def customize_logging(cls, level: str, log_format: str):
-        logger.remove()
-        logger.add(
-            sys.stdout,
-            enqueue=True,
-            backtrace=True,
-            level=level.upper(),
-            format=log_format
+
+def format_record(record: dict) -> str:
+    format_string = LOGURU_FORMAT
+    if record["extra"].get("payload") is not None:
+        record["extra"]["payload"] = pformat(
+            record["extra"]["payload"], indent=4, compact=True, width=88
         )
-        logging.basicConfig(handlers=[InterceptHandler()], level=0)
-        logging.getLogger("uvicorn.access").handlers = [InterceptHandler()]
-        for _log in ['uvicorn', 'uvicorn.error', 'fastapi']:
-            _logger = logging.getLogger(_log)
-            _logger.handlers = [InterceptHandler()]
+        format_string += "\n<level>{extra[payload]}</level>"
 
-        return logger.bind(request_id=None, method=None)
+    format_string += "{exception}\n"
+    return format_string
+
+
+def init_logging(level: str = None, format_string: str = None):
+    loggers = (
+        logging.getLogger(name)
+        for name in logging.root.manager.loggerDict
+        if name.startswith("uvicorn.")
+    )
+    logging.basicConfig(handlers=[InterceptHandler()], level=0)
+
+    for uvicorn_logger in loggers:
+        uvicorn_logger.handlers = []
+
+    intercept_handler = InterceptHandler()
+    for uvicorn_logger in loggers:
+        uvicorn_logger.handlers = []
+    logging.getLogger('uvicorn.access').handlers = [intercept_handler]
+    logging.getLogger("uvicorn").handlers = [intercept_handler]
+
+    logger.configure(
+        handlers=[{"sink": sys.stdout, "level": level or logging.DEBUG, "format": format_string or format_record}]
+    )
