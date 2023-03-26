@@ -8,6 +8,7 @@ from app.api.middlewares.authentication import verify_token
 from app.api.routes.response import response_router
 from app.api.routes.student import student_router
 from app.api.routes.superhero import superhero_router
+from app.api.routes.captain import captain_router
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
 from app.custom_logging import init_logging
@@ -54,7 +55,7 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     app.include_router(webhook_router)
 
     api = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_token)])
-    for router in [response_router, student_router, superhero_router]:
+    for router in [response_router, student_router, superhero_router, captain_router]:
         api.include_router(router)
 
     app.include_router(api)
