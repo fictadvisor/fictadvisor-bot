@@ -15,7 +15,7 @@ response_router = Router(name=__name__)
 @response_router.callback_query(ResponseData.filter(
     F.method == State.APPROVED
 ))
-async def approve_student(callback: CallbackQuery, callback_data: ResponseData):
+async def approve_response(callback: CallbackQuery, callback_data: ResponseData):
     entities = [el.extract_from(callback.message.text) for el in
                 filter(lambda x: x.type == "code", callback.message.entities)]
 
@@ -44,7 +44,7 @@ async def approve_student(callback: CallbackQuery, callback_data: ResponseData):
 @response_router.callback_query(ResponseData.filter(
     F.method == State.DECLINED
 ))
-async def deny_student(callback: CallbackQuery, callback_data: ResponseData):
+async def deny_response(callback: CallbackQuery, callback_data: ResponseData):
     entities = [el.extract_from(callback.message.text) for el in
                 filter(lambda x: x.type == "code", callback.message.entities)]
 
