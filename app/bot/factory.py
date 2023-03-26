@@ -2,12 +2,14 @@ from aiogram import Dispatcher, Bot
 from aiogram.enums import ParseMode
 
 from app.bot.handlers.debug import debug_router
+from app.bot.handlers.student import student_router
 
 
 def create_dispatcher() -> Dispatcher:
     dispatcher = Dispatcher()
 
-    dispatcher.include_router(debug_router)
+    for router in [debug_router, student_router]:
+        dispatcher.include_router(router)
 
     return dispatcher
 
