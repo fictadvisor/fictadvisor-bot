@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     CHAT_ID: PositiveInt
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl
+    FRONT_BASE_URL: AnyUrl
     WEBHOOK_PATH: str
 
     API_URL: AnyUrl
