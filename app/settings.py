@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseSettings, SecretStr, AnyUrl, PositiveInt
+from pydantic import BaseSettings, SecretStr, AnyUrl
 
 
 class Settings(BaseSettings):
@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     LOG_FORMAT: Optional[str]
 
     TOKEN: SecretStr
-    CHAT_ID: PositiveInt
+    CHAT_ID: int
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl
     FRONT_BASE_URL: AnyUrl
