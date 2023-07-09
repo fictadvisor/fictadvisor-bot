@@ -7,7 +7,7 @@ from app.api.schemas.response import BroadcastResponse
 from app.api.stubs import BotStub
 from app.bot.schemas.response import ResponseData
 from app.messages.response import BROADCAST_RESPONSE
-from app.services.user_api import UserAPI, State
+from app.services.user_api import State
 from app.settings import settings
 
 response_router = APIRouter(prefix="/responses", tags=["Responses"])
@@ -18,29 +18,20 @@ async def broadcast_response(
         response: BroadcastResponse,
         bot: Bot = Depends(BotStub)
 ):
-    async with UserAPI() as api:
-        user = await api.get_user(response.user_id)
-        if user.get("firstName") is not None:
-            await bot.send_message(
-                chat_id=settings.CHAT_ID,
-                text=await BROADCAST_RESPONSE.render_async(data=response, user=user),
-                reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                    [InlineKeyboardButton(text="Схвалити", callback_data=ResponseData(method=State.APPROVED,
-                                                                                      discipline_teacher_id=response.discipline_teacher_id).pack()),
-                     InlineKeyboardButton(text="Відмовити", callback_data=ResponseData(method=State.DECLINED,
-                                                                                       discipline_teacher_id=response.discipline_teacher_id).pack())]
-                ])
-            )
+    await bot.send_message(
+        chat_id=settings.CHAT_ID,
+        text=await BROADCAST_RESPONSE.render_async(data=response),
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="Схвалити", callback_data=ResponseData(method=State.APPROVED,
+                                                                              user_id=response.user_id).pack()),
+             InlineKeyboardButton(text="Відмовити", callback_data=ResponseData(method=State.DECLINED,
+                                                                               user_id=response.user_id).pack())]
+        ])
+    )
 
-            return JSONResponse(
-                status_code=status.HTTP_200_OK,
-                content={
-                    "message": "Successfully sent"
-                }
-            )
     return JSONResponse(
-        status_code=status.HTTP_404_NOT_FOUND,
+        status_code=status.HTTP_200_OK,
         content={
-            "message": "User not found"
+            "message": "Successfully sent"
         }
     )

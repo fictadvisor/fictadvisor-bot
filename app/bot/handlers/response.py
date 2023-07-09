@@ -21,13 +21,13 @@ async def approve_response(callback: CallbackQuery, callback_data: ResponseData)
 
     async with ResponseAPI() as api:
         await api.verify_response(
-            discipline_teacher_id=callback_data.discipline_teacher_id,
+            discipline_teacher_id=UUID(entities[1]),
             question_id=UUID(entities[0]),
-            user_id=UUID(entities[1]),
+            user_id=callback_data.user_id,
             value=entities[2]
         )
 
-    message = re.sub(r"^(.*)", f"<b>🟢 Відгук {callback_data.discipline_teacher_id} схвалено.</b>",
+    message = re.sub(r"^(.*)", f"<b>🟢 Відгук {entities[1]} схвалено.</b>",
                      callback.message.html_text)
     message += f"\n\n<b>Ким</b>: {callback.from_user.mention_html()}\n<b>Коли:</b> {datetime.now()}"
     await callback.message.edit_text(text=message)
@@ -36,8 +36,10 @@ async def approve_response(callback: CallbackQuery, callback_data: ResponseData)
 @response_router.callback_query(ResponseData.filter(
     F.method == State.DECLINED
 ))
-async def deny_response(callback: CallbackQuery, callback_data: ResponseData):
-    message = re.sub(r"^(.*)", f"<b>🔴 Відгук {callback_data.discipline_teacher_id} відхилено.</b>",
+async def deny_response(callback: CallbackQuery):
+    entities = [el.extract_from(callback.message.text) for el in
+                filter(lambda x: x.type == "code", callback.message.entities)]
+    message = re.sub(r"^(.*)", f"<b>🔴 Відгук {entities[1]} відхилено.</b>",
                      callback.message.html_text)
     if 'схвалена' in callback.message.text:
         message = re.sub(r"<b>Ким</b>:.*",
