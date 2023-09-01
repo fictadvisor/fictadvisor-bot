@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from pydantic import Field, BaseModel, PositiveInt
+from pydantic import BaseModel, Field, PositiveInt
 
 
 class BroadcastStudent(BaseModel):

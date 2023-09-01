@@ -1,19 +1,30 @@
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 
-from app.bot.handlers.debug import debug_router
-from app.bot.handlers.private import private_router
-from app.bot.handlers.student import student_router
-from app.bot.handlers.superhero import superhero_router
-from app.bot.handlers.response import response_router
-from app.bot.handlers.captain import captain_router
+from app.bot.handlers import router as main_router
+from app.settings import settings
+
+
+async def on_startup(bot: Bot) -> None:
+    await bot.delete_webhook(drop_pending_updates=True)
+    if settings.USE_WEBHOOK:
+        await bot.set_webhook(
+            settings.WEBHOOK_URL,
+            drop_pending_updates=True,
+            secret_token=settings.TELEGRAM_SECRET.get_secret_value()
+        )
+
+
+async def on_shutdown(bot: Bot) -> None:
+    await bot.delete_webhook(drop_pending_updates=True)
 
 
 def create_dispatcher() -> Dispatcher:
     dispatcher = Dispatcher()
 
-    for router in [debug_router, student_router, superhero_router, response_router, captain_router, private_router]:
-        dispatcher.include_router(router)
+    dispatcher.include_router(main_router)
+    dispatcher.startup.register(on_startup)
+    dispatcher.shutdown.register(on_shutdown)
 
     return dispatcher
 

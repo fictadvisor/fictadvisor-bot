@@ -15,7 +15,7 @@ superhero_router = APIRouter(prefix="/superheroes", tags=["Superheroes"])
 
 
 @superhero_router.post("/broadcastPending")
-async def broadcast_superhero(student: BroadcastSuperhero, bot: Bot = Depends(BotStub)):
+async def broadcast_superhero(student: BroadcastSuperhero, bot: Bot = Depends(BotStub)) -> JSONResponse:
     user = await telegram.get_user_by_id(bot, student.telegram_id)
     await bot.send_message(
         chat_id=settings.CHAT_ID,

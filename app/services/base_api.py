@@ -1,4 +1,5 @@
-from typing import Optional, Dict
+from types import TracebackType
+from typing import Dict, Optional, Self, Type
 
 import aiohttp
 from pydantic import AnyUrl
@@ -9,10 +10,10 @@ from app.settings import settings
 
 class BaseAPI:
     _url: AnyUrl = settings.API_URL
-    _path: Optional[str] = None
+    _path: str = ""
     _base_url: Optional[URL] = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._session = aiohttp.ClientSession(self.base_url, headers=self.get_headers())
 
     @property
@@ -24,12 +25,17 @@ class BaseAPI:
 
     @property
     def path(self) -> str:
-        return self._base_url.path + self._path
+        return self.base_url.path + self._path
 
-    async def __aenter__(self) -> "BaseAPI":
+    async def __aenter__(self) -> Self:
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+    async def __aexit__(
+            self,
+            exc_type: Optional[Type[BaseException]],
+            exc_val: Optional[BaseException],
+            exc_tb: Optional[TracebackType]
+    ) -> None:
         await self.close()
 
     async def close(self) -> None:

@@ -1,6 +1,7 @@
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 from aiogram.types import Update
 from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import SecretStr
 from starlette import status
 
@@ -16,9 +17,12 @@ async def webhook_route(
         expected_secret: str = Depends(SecretStub),
         bot: Bot = Depends(BotStub),
         dispatcher: Dispatcher = Depends(DispatcherStub),
-):
+) -> JSONResponse:
     if secret.get_secret_value() != expected_secret:
         raise HTTPException(detail="Invalid secret", status_code=status.HTTP_401_UNAUTHORIZED)
 
     await dispatcher.feed_update(bot, update=update)
-    return {"ok": True}
+    return JSONResponse(
+        status_code=200,
+        content={"ok": True}
+    )

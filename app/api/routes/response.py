@@ -1,5 +1,5 @@
 from aiogram import Bot
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
@@ -17,7 +17,7 @@ response_router = APIRouter(prefix="/responses", tags=["Responses"])
 async def broadcast_response(
         response: BroadcastResponse,
         bot: Bot = Depends(BotStub)
-):
+) -> JSONResponse:
     await bot.send_message(
         chat_id=settings.CHAT_ID,
         text=await BROADCAST_RESPONSE.render_async(data=response),

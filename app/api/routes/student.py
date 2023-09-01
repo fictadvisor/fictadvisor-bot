@@ -15,7 +15,7 @@ student_router = APIRouter(prefix="/students", tags=["Students"])
 
 
 @student_router.post("/broadcastPending")
-async def broadcast_student(student: BroadcastStudent, bot: Bot = Depends(BotStub)):
+async def broadcast_student(student: BroadcastStudent, bot: Bot = Depends(BotStub)) -> JSONResponse:
     user = await telegram.get_user_by_id(bot, student.telegram_id)
     try:
         await bot.send_message(

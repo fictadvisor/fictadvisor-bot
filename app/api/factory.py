@@ -1,39 +1,22 @@
-from functools import partial
+from typing import Any
 
-from aiogram import Dispatcher, Bot
-from fastapi import FastAPI, APIRouter, Depends
+from aiogram import Bot, Dispatcher
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.middlewares.authentication import verify_token
 from app.api.routes.broadcast import broadcast_router
+from app.api.routes.captain import captain_router
 from app.api.routes.response import response_router
 from app.api.routes.student import student_router
 from app.api.routes.superhero import superhero_router
-from app.api.routes.captain import captain_router
 from app.api.routes.webhook import webhook_router
 from app.api.stubs import BotStub, DispatcherStub, SecretStub
-from app.custom_logging import init_logging
 from app.settings import settings
-
-
-async def on_startup(bot: Bot):
-    webhook_info = await bot.get_webhook_info()
-    if webhook_info != settings.WEBHOOK_URL:
-        await bot.set_webhook(
-            settings.WEBHOOK_URL,
-            drop_pending_updates=True,
-            secret_token=settings.TELEGRAM_SECRET.get_secret_value()
-        )
-
-
-async def on_shutdown(bot: Bot):
-    await bot.delete_webhook(drop_pending_updates=True)
 
 
 def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI:
     app = FastAPI()
-
-    init_logging(settings.LOG_LEVEL, settings.LOG_FORMAT)
 
     app.dependency_overrides.update(
         {
@@ -51,13 +34,28 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
         allow_headers=["*"],
     )
 
-    app.add_event_handler('startup', partial(on_startup, bot))
-    app.add_event_handler('shutdown', partial(on_shutdown, bot))
     app.include_router(webhook_router)
 
     api = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_token)])
     for router in [response_router, student_router, superhero_router, captain_router, broadcast_router]:
         api.include_router(router)
+
+    workflow_data = {
+        "app": app,
+        "dispatcher": dispatcher,
+        "bot": bot,
+        **dispatcher.workflow_data,
+    }
+
+    async def on_startup(*a: Any, **kw: Any) -> None:  # pragma: no cover
+        await dispatcher.emit_startup(**workflow_data)
+
+    async def on_shutdown(*a: Any, **kw: Any) -> None:  # pragma: no cover
+        await dispatcher.emit_shutdown(**workflow_data)
+
+    if settings.USE_WEBHOOK:
+        app.add_event_handler('startup', on_startup)
+        app.add_event_handler('shutdown', on_shutdown)
 
     app.include_router(api)
 

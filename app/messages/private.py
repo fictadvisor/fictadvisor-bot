@@ -10,5 +10,5 @@ START = environment.from_string("""
 REGISTER = environment.from_string("""
 <b>Для реєстрації перейдіть за посиланням</b>
 
-Якщо кнопка не працює, тицьни <a href="{{ register_url }}">сюди</a> 
+Якщо кнопка не працює, тицьни <a href="{{ register_url }}">сюди</a>
 """)

@@ -15,7 +15,7 @@ captain_router = APIRouter(prefix="/captains", tags=["Captains"])
 
 
 @captain_router.post("/broadcastPending")
-async def broadcast_captain(captain: BroadcastCaptain, bot: Bot = Depends(BotStub)):
+async def broadcast_captain(captain: BroadcastCaptain, bot: Bot = Depends(BotStub)) -> JSONResponse:
     user = await telegram.get_user_by_id(bot, captain.telegram_id)
 
     await bot.send_message(

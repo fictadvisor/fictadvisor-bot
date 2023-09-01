@@ -1,4 +1,4 @@
-from typing import Dict, Any, Union
+from typing import Any, Dict, Union
 from uuid import UUID
 
 from app.services.base_api import BaseAPI
