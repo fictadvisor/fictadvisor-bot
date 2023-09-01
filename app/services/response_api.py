@@ -19,4 +19,4 @@ class ResponseAPI(BaseAPI):
             "questionId": str(question_id),
             "value": value
         }) as response:
-            return await response.json()
+            return await response.json(content_type=None)
