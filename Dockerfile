@@ -1,11 +1,24 @@
-FROM node:18-alpine3.15
+# python version
+ARG PYTHON_VERSION=3.11
 
-WORKDIR /app
+# build stage
+FROM python:${PYTHON_VERSION}-slim AS builder
 
-COPY . /app
+ENV PATH /opt/venv/bin:$PATH
+WORKDIR /opt
+RUN python -m venv venv
+RUN pip install poetry
 
-RUN yarn install
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-interaction --no-root --only main
 
-RUN yarn build
+#run stage
+FROM python:${PYTHON_VERSION}-slim
 
-ENTRYPOINT yarn start
+WORKDIR /opt
+COPY --from=builder /opt/venv venv
+ENV PATH /opt/venv/bin:$PATH
+COPY app app
+
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]
