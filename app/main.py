@@ -1,5 +1,7 @@
 import asyncio
 import logging
+import socket
+from typing import Optional, List
 
 import uvicorn
 
@@ -17,8 +19,14 @@ app = create_app(
 logging.basicConfig(level="DEBUG")
 
 
+class Server(uvicorn.Server):
+    async def shutdown(self, sockets: Optional[List[socket.socket]] = None) -> None:
+        await dispatcher.stop_polling()
+        return await super().shutdown(sockets)
+
+
 async def start() -> None:
-    server = uvicorn.Server(uvicorn.Config(app, workers=1, loop="asyncio"))
+    server = Server(uvicorn.Config(app, workers=1, loop="auto"))
     await asyncio.wait([
         asyncio.create_task(dispatcher.start_polling(bot, allowed_updates=dispatcher.resolve_used_update_types())),
         asyncio.create_task(server.serve())
@@ -26,4 +34,5 @@ async def start() -> None:
 
 
 def development() -> None:
-    asyncio.run(start())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(start())
