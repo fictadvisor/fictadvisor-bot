@@ -8,18 +8,18 @@ from app.bot.schemas.captain import CaptainData
 from app.bot.schemas.response import ResponseData
 from app.bot.schemas.student import StudentData
 from app.bot.schemas.superhero import SuperheroData
-from app.services.user_api import State
+from app.enums.states import States
 
 router = Router(name=__name__)
 
-router.callback_query.register(approve_captain, CaptainData.filter(F.method == State.APPROVED))
-router.callback_query.register(deny_captain, CaptainData.filter(F.method == State.DECLINED))
+router.callback_query.register(approve_captain, CaptainData.filter(F.method == States.APPROVED))
+router.callback_query.register(deny_captain, CaptainData.filter(F.method == States.DECLINED))
 
-router.callback_query.register(approve_response, ResponseData.filter(F.method == State.APPROVED))
-router.callback_query.register(deny_response, ResponseData.filter(F.method == State.DECLINED))
+router.callback_query.register(approve_response, ResponseData.filter(F.method == States.APPROVED))
+router.callback_query.register(deny_response, ResponseData.filter(F.method == States.DECLINED))
 
-router.callback_query.register(approve_student, StudentData.filter(F.method == State.APPROVED))
-router.callback_query.register(deny_student, StudentData.filter(F.method == State.DECLINED))
+router.callback_query.register(approve_student, StudentData.filter(F.method == States.APPROVED))
+router.callback_query.register(deny_student, StudentData.filter(F.method == States.DECLINED))
 
-router.callback_query.register(approve_superhero, SuperheroData.filter(F.method == State.APPROVED))
-router.callback_query.register(deny_superhero, SuperheroData.filter(F.method == State.DECLINED))
+router.callback_query.register(approve_superhero, SuperheroData.filter(F.method == States.APPROVED))
+router.callback_query.register(deny_superhero, SuperheroData.filter(F.method == States.DECLINED))

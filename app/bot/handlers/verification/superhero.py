@@ -4,7 +4,8 @@ from datetime import datetime
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.bot.schemas.superhero import SuperheroData
-from app.services.user_api import State, UserAPI
+from app.enums.states import States
+from app.services.user_api import UserAPI
 
 
 async def approve_superhero(callback: CallbackQuery, callback_data: SuperheroData) -> None:
@@ -24,7 +25,7 @@ async def approve_superhero(callback: CallbackQuery, callback_data: SuperheroDat
         text=message,
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Скасувати та видалити",
                                                                                  callback_data=SuperheroData(
-                                                                                     method=State.DECLINED,
+                                                                                     method=States.DECLINED,
                                                                                      user_id=callback_data.user_id,
                                                                                      telegram_id=callback_data.telegram_id)
                                                                                  .pack())]])

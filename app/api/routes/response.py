@@ -6,8 +6,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.response import BroadcastResponse
 from app.api.stubs import BotStub
 from app.bot.schemas.response import ResponseData
+from app.enums.states import States
 from app.messages.response import BROADCAST_RESPONSE
-from app.services.user_api import State
 from app.settings import settings
 
 response_router = APIRouter(prefix="/responses", tags=["Responses"])
@@ -22,9 +22,9 @@ async def broadcast_response(
         chat_id=settings.CHAT_ID,
         text=await BROADCAST_RESPONSE.render_async(data=response),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="Схвалити", callback_data=ResponseData(method=State.APPROVED,
+            [InlineKeyboardButton(text="Схвалити", callback_data=ResponseData(method=States.APPROVED,
                                                                               user_id=response.user_id).pack()),
-             InlineKeyboardButton(text="Відмовити", callback_data=ResponseData(method=State.DECLINED,
+             InlineKeyboardButton(text="Відмовити", callback_data=ResponseData(method=States.DECLINED,
                                                                                user_id=response.user_id).pack())]
         ])
     )
