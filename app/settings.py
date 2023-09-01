@@ -1,13 +1,8 @@
-from typing import Optional
-
 from pydantic import AnyUrl, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    LOG_LEVEL: Optional[str]
-    LOG_FORMAT: Optional[str]
-
     USE_WEBHOOK: bool = True
 
     TOKEN: SecretStr

@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import socket
-from typing import Optional, List
+from typing import List, Optional
 
 import uvicorn
 

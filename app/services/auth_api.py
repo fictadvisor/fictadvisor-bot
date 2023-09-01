@@ -12,4 +12,4 @@ class AuthAPI(BaseAPI):
             "token": str(token),
             "telegramId": str(telegram_id)
         }) as response:
-            return await response.json()
+            return await response.json(content_type=None)
