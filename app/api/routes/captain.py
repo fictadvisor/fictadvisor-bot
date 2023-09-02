@@ -6,8 +6,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.captain import BroadcastCaptain
 from app.api.stubs import BotStub
 from app.bot.schemas.captain import CaptainData
+from app.enums.states import States
 from app.messages.captain import BROADCAST_CAPTAIN
-from app.services.user_api import State
 from app.settings import settings
 from app.utils import telegram
 
@@ -23,11 +23,11 @@ async def broadcast_captain(captain: BroadcastCaptain, bot: Bot = Depends(BotStu
         text=await BROADCAST_CAPTAIN.render_async(data=captain, user=user),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="Схвалити",
-                                  callback_data=CaptainData(method=State.APPROVED,
+                                  callback_data=CaptainData(method=States.APPROVED,
                                                             user_id=captain.id,
                                                             telegram_id=captain.telegram_id).pack()),
              InlineKeyboardButton(text="Відмовити",
-                                  callback_data=CaptainData(method=State.DECLINED,
+                                  callback_data=CaptainData(method=States.DECLINED,
                                                             user_id=captain.id,
                                                             telegram_id=captain.telegram_id).pack())]
         ])
