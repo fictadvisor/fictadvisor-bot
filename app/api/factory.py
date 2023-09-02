@@ -53,9 +53,8 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     async def on_shutdown(*a: Any, **kw: Any) -> None:  # pragma: no cover
         await dispatcher.emit_shutdown(**workflow_data)
 
-    if settings.USE_WEBHOOK:
-        app.add_event_handler('startup', on_startup)
-        app.add_event_handler('shutdown', on_shutdown)
+    app.add_event_handler('startup', on_startup)
+    app.add_event_handler('shutdown', on_shutdown)
 
     app.include_router(api)
 

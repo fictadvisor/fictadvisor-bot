@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import socket
+import sys
 from typing import List, Optional
 
 import uvicorn
@@ -19,20 +20,9 @@ app = create_app(
 logging.basicConfig(level="DEBUG")
 
 
-class Server(uvicorn.Server):
-    async def shutdown(self, sockets: Optional[List[socket.socket]] = None) -> None:
-        await dispatcher.stop_polling()
-        return await super().shutdown(sockets)
-
-
-async def start() -> None:
-    server = Server(uvicorn.Config(app, workers=1, loop="auto"))
-    await asyncio.wait([
-        asyncio.create_task(dispatcher.start_polling(bot, allowed_updates=dispatcher.resolve_used_update_types())),
-        asyncio.create_task(server.serve())
-    ])
-
-
-def development() -> None:
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(start())
+if settings.DEVELOPMENT:
+    from pyngrok import ngrok
+    port = sys.argv[sys.argv.index("--port") + 1] if "--port" in sys.argv else 8000
+    public_url = ngrok.connect(port).public_url
+    settings.BASE_URL = public_url
+    logging.info("ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}\"".format(public_url, port))
