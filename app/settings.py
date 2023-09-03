@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     TOKEN: SecretStr
     CHAT_ID: int
     TELEGRAM_SECRET: SecretStr
-    BASE_URL: AnyUrl = "http://localhost:8000"
+    BASE_URL: AnyUrl = AnyUrl("http://localhost:8000")
     FRONT_BASE_URL: AnyUrl
     WEBHOOK_PATH: str
 

@@ -1,5 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
+from app.enums.telegram_source import TelegramSource
 
 
 class UpdateTelegramGroup(BaseModel):
-    telegram_id: int = Field(alias="telegramId")
+    source: TelegramSource

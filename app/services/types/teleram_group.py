@@ -1,7 +1,7 @@
 from pydantic import Field
 
-from app.services.types.update_telegram_group import UpdateTelegramGroup
+from app.services.types.create_telegram_group import CreateTelegramGroup
 
 
-class TelegramGroup(UpdateTelegramGroup):
+class TelegramGroup(CreateTelegramGroup):
     group_id: str = Field(alias="groupId")
