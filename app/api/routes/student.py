@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.student import BroadcastStudent
 from app.api.stubs import BotStub
 from app.bot.schemas.student import StudentData
-from app.enums.states import States
+from app.enums.state import State
 from app.messages.student import BROADCAST_STUDENT
 from app.utils import telegram
 
@@ -23,11 +23,11 @@ async def broadcast_student(student: BroadcastStudent, bot: Bot = Depends(BotStu
             text=await BROADCAST_STUDENT.render_async(data=student, user=user),
             reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="Схвалити",
-                                      callback_data=StudentData(method=States.APPROVED,
+                                      callback_data=StudentData(method=State.APPROVED,
                                                                 user_id=student.id,
                                                                 telegram_id=student.telegram_id).pack()),
                  InlineKeyboardButton(text="Відмовити",
-                                      callback_data=StudentData(method=States.DECLINED,
+                                      callback_data=StudentData(method=State.DECLINED,
                                                                 user_id=student.id,
                                                                 telegram_id=student.telegram_id).pack())]
             ])

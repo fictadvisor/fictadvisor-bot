@@ -4,7 +4,7 @@ from datetime import datetime
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.bot.schemas.captain import CaptainData
-from app.enums.states import States
+from app.enums.state import State
 from app.services.user_api import UserAPI
 
 
@@ -26,7 +26,7 @@ async def approve_captain(callback: CallbackQuery, callback_data: CaptainData) -
         text=message,
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Скасувати та видалити",
                                                                                  callback_data=CaptainData(
-                                                                                     method=States.DECLINED,
+                                                                                     method=State.DECLINED,
                                                                                      user_id=callback_data.user_id,
                                                                                      telegram_id=callback_data.telegram_id)
                                                                                  .pack())]])

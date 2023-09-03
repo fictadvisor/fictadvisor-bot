@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.superhero import BroadcastSuperhero
 from app.api.stubs import BotStub
 from app.bot.schemas.superhero import SuperheroData
-from app.enums.states import States
+from app.enums.state import State
 from app.messages.superhero import BROADCAST_SUPERHERO
 from app.settings import settings
 from app.utils import telegram
@@ -22,11 +22,11 @@ async def broadcast_superhero(student: BroadcastSuperhero, bot: Bot = Depends(Bo
         text=await BROADCAST_SUPERHERO.render_async(data=student, user=user),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="Схвалити",
-                                  callback_data=SuperheroData(method=States.APPROVED,
+                                  callback_data=SuperheroData(method=State.APPROVED,
                                                               user_id=student.id,
                                                               telegram_id=student.telegram_id).pack()),
              InlineKeyboardButton(text="Відмовити",
-                                  callback_data=SuperheroData(method=States.DECLINED,
+                                  callback_data=SuperheroData(method=State.DECLINED,
                                                               user_id=student.id,
                                                               telegram_id=student.telegram_id).pack())]
         ])
