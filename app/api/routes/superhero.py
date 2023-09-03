@@ -6,8 +6,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.superhero import BroadcastSuperhero
 from app.api.stubs import BotStub
 from app.bot.schemas.superhero import SuperheroData
+from app.enums.state import State
 from app.messages.superhero import BROADCAST_SUPERHERO
-from app.services.user_api import State
 from app.settings import settings
 from app.utils import telegram
 

@@ -7,8 +7,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.student import BroadcastStudent
 from app.api.stubs import BotStub
 from app.bot.schemas.student import StudentData
+from app.enums.state import State
 from app.messages.student import BROADCAST_STUDENT
-from app.services.user_api import State
 from app.utils import telegram
 
 student_router = APIRouter(prefix="/students", tags=["Students"])

@@ -1,10 +1,9 @@
 from uuid import UUID
 
-from aiogram.filters.callback_data import CallbackData
+from app.bot.schemas.base import BaseData
+from app.enums.state import State
 
-from app.services.user_api import State
 
-
-class ResponseData(CallbackData, prefix="response"):
+class ResponseData(BaseData, prefix="response"):
     method: State
     user_id: UUID

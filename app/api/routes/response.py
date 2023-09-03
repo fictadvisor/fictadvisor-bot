@@ -6,8 +6,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.response import BroadcastResponse
 from app.api.stubs import BotStub
 from app.bot.schemas.response import ResponseData
+from app.enums.state import State
 from app.messages.response import BROADCAST_RESPONSE
-from app.services.user_api import State
 from app.settings import settings
 
 response_router = APIRouter(prefix="/responses", tags=["Responses"])

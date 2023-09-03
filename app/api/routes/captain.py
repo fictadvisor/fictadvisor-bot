@@ -6,8 +6,8 @@ from fastapi.responses import JSONResponse
 from app.api.schemas.captain import BroadcastCaptain
 from app.api.stubs import BotStub
 from app.bot.schemas.captain import CaptainData
+from app.enums.state import State
 from app.messages.captain import BROADCAST_CAPTAIN
-from app.services.user_api import State
 from app.settings import settings
 from app.utils import telegram
 

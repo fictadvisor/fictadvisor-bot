@@ -8,7 +8,7 @@ from app.bot.schemas.captain import CaptainData
 from app.bot.schemas.response import ResponseData
 from app.bot.schemas.student import StudentData
 from app.bot.schemas.superhero import SuperheroData
-from app.services.user_api import State
+from app.enums.state import State
 
 router = Router(name=__name__)
 

@@ -4,7 +4,8 @@ from datetime import datetime
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.bot.schemas.superhero import SuperheroData
-from app.services.user_api import State, UserAPI
+from app.enums.state import State
+from app.services.user_api import UserAPI
 
 
 async def approve_superhero(callback: CallbackQuery, callback_data: SuperheroData) -> None:

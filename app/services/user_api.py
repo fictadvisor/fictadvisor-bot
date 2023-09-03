@@ -1,14 +1,8 @@
-from enum import Enum
 from typing import Any, Dict
 from uuid import UUID
 
+from app.enums.state import State
 from app.services.base_api import BaseAPI
-
-
-class State(str, Enum):
-    PENDING = "PENDING"
-    APPROVED = 'APPROVED'
-    DECLINED = 'DECLINED'
 
 
 class UserAPI(BaseAPI):
