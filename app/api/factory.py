@@ -52,8 +52,8 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     async def on_startup(*a: Any, **kw: Any) -> None:  # pragma: no cover
         if settings.DEVELOPMENT:
             from ngrok import ngrok
-            sys.argv[sys.argv.index("--port") + 1] if "--port" in sys.argv else 8000
-            tunnel = await ngrok.default()  # type: ignore[misc]
+            port = sys.argv[sys.argv.index("--port") + 1] if "--port" in sys.argv else 8000
+            tunnel = await ngrok.connect(port)  # type: ignore[misc]
             public_url = tunnel.url()
             settings.BASE_URL = AnyUrl(public_url)
         await dispatcher.emit_startup(**workflow_data)

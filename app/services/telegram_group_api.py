@@ -39,8 +39,8 @@ class TelegramGroupAPI(BaseAPI):
                 raise ResponseException.from_json(json)
 
     async def get_telegram_groups(self, group_id: UUID) -> TelegramGroups:
-        async with self._session.delete(f"{self.path}/{group_id}") as response:
-            json = await response.json()
+        async with self._session.get(f"{self.path}/{group_id}") as response:
+            json = await response.json(content_type=None)
             if response.status == 200:
                 return TelegramGroups.model_validate(json)
             raise ResponseException.from_json(json)
