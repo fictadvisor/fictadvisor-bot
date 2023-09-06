@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     WEBHOOK_PATH: str
 
     API_URL: AnyUrl
+    API_ACCESS_TOKEN: SecretStr
 
     @property
     def WEBHOOK_URL(self) -> str:
