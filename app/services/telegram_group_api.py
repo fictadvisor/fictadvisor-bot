@@ -4,7 +4,11 @@ from uuid import UUID
 from app.services.base_api import BaseAPI
 from app.services.exceptions.response_exception import ResponseException
 from app.services.types.telegram_groups import TelegramGroups
-from app.services.types.teleram_group import CreateTelegramGroup, TelegramGroup, UpdateTelegramGroup
+from app.services.types.teleram_group import (
+    CreateTelegramGroup,
+    TelegramGroup,
+    UpdateTelegramGroup,
+)
 
 
 class TelegramGroupAPI(BaseAPI):
