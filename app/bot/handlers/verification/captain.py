@@ -5,15 +5,18 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 
 from app.bot.schemas.captain import CaptainData
 from app.enums.state import State
+from app.services.types.student import VerifyStudent
 from app.services.user_api import UserAPI
 
 
 async def approve_captain(callback: CallbackQuery, callback_data: CaptainData) -> None:
     async with UserAPI() as api:
         await api.verify_student(
-            student_id=callback_data.user_id,
-            state=callback_data.method,
-            is_captain=True
+            callback_data.user_id,
+            VerifyStudent(
+                state=callback_data.method,
+                is_captain=True
+            )
         )
 
     message = re.sub(
@@ -36,9 +39,11 @@ async def approve_captain(callback: CallbackQuery, callback_data: CaptainData) -
 async def deny_captain(callback: CallbackQuery, callback_data: CaptainData) -> None:
     async with UserAPI() as api:
         await api.verify_student(
-            student_id=callback_data.user_id,
-            state=callback_data.method,
-            is_captain=True
+            callback_data.user_id,
+            VerifyStudent(
+                state=callback_data.method,
+                is_captain=True
+            )
         )
 
     message = re.sub(

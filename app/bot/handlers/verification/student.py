@@ -5,15 +5,18 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 
 from app.bot.schemas.student import StudentData
 from app.enums.state import State
+from app.services.types.student import VerifyStudent
 from app.services.user_api import UserAPI
 
 
 async def approve_student(callback: CallbackQuery, callback_data: StudentData) -> None:
     async with UserAPI() as api:
         await api.verify_student(
-            student_id=callback_data.user_id,
-            state=callback_data.method,
-            is_captain=False
+            callback_data.user_id,
+            VerifyStudent(
+                state=callback_data.method,
+                is_captain=False
+            )
         )
 
     message = re.sub(
@@ -36,9 +39,11 @@ async def approve_student(callback: CallbackQuery, callback_data: StudentData) -
 async def deny_student(callback: CallbackQuery, callback_data: StudentData) -> None:
     async with UserAPI() as api:
         await api.verify_student(
-            student_id=callback_data.user_id,
-            state=callback_data.method,
-            is_captain=False
+            callback_data.user_id,
+            VerifyStudent(
+                state=callback_data.method,
+                is_captain=False
+            )
         )
 
     message = re.sub(
