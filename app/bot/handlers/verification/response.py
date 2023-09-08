@@ -6,18 +6,21 @@ from aiogram.types import CallbackQuery
 
 from app.bot.schemas.response import ResponseData
 from app.services.response_api import ResponseAPI
+from app.services.types.response import VerifyResponse
 
 
 async def approve_response(callback: CallbackQuery, callback_data: ResponseData) -> None:
-    entities = [el.extract_from(callback.message.text) for el in   # type: ignore[union-attr]
-                filter(lambda x: x.type == "code", callback.message.entities)]   # type: ignore
+    entities = [el.extract_from(callback.message.text) for el in  # type: ignore[union-attr]
+                filter(lambda x: x.type == "code", callback.message.entities)]  # type: ignore
 
     async with ResponseAPI() as api:
         await api.verify_response(
-            discipline_teacher_id=UUID(entities[1]),
-            question_id=UUID(entities[0]),
-            user_id=callback_data.user_id,
-            value=entities[2]
+            entities[1],
+            VerifyResponse(
+                question_id=UUID(entities[0]),
+                user_id=callback_data.user_id,
+                value=entities[2]
+            )
         )
 
     message = re.sub(r"^(.*)", f"<b>🟢 Відгук {entities[1]} схвалено.</b>",
