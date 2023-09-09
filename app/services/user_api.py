@@ -10,8 +10,10 @@ class UserAPI(BaseAPI):
     _path = "/users"
 
     async def verify_student(self, student_id: Union[UUID, str], data: VerifyStudent) -> None:
-        async with self._session.patch(f"{self.path}/{student_id}/verifyStudent",
-                                       json=data.model_dump(by_alias=True)) as response:
+        async with self._session.patch(
+                f"{self.path}/{student_id}/verifyStudent",
+                json=data.model_dump(mode="json", by_alias=True)
+        ) as response:
             json = await response.json(content_type=None)
             if response.status != 200:
                 raise ResponseException.from_json(json)

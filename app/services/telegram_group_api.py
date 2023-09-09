@@ -15,7 +15,10 @@ class TelegramGroupAPI(BaseAPI):
     _path = "telegramGroups"
 
     async def create(self, group_id: Union[UUID, str], create_telegram_group: CreateTelegramGroup) -> TelegramGroup:
-        async with self._session.post(f"{self.path}/{group_id}", json=create_telegram_group.model_dump(by_alias=True)) as response:
+        async with self._session.post(
+                f"{self.path}/{group_id}",
+                json=create_telegram_group.model_dump(mode="json", by_alias=True)
+        ) as response:
             json = await response.json(content_type=None)
             if response.status == 201:
                 return TelegramGroup.model_validate(json)
@@ -25,7 +28,7 @@ class TelegramGroupAPI(BaseAPI):
         async with self._session.patch(
                 f"{self.path}",
                 params={"telegramId": telegram_id, "groupId": group_id},
-                json=update_telegram_group.model_dump(by_alias=True)
+                json=update_telegram_group.model_dump(mode="json", by_alias=True)
         ) as response:
             json = await response.json(content_type=None)
             if response.status == 200:

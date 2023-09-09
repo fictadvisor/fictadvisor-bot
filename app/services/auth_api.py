@@ -8,7 +8,10 @@ class AuthAPI(BaseAPI):
     _path = "/auth"
 
     async def register_telegram(self, data: RegisterTelegram) -> None:
-        async with self._session.post(f"{self.path}/registerTelegram", json=data.model_dump(by_alias=True)) as response:
+        async with self._session.post(
+                f"{self.path}/registerTelegram",
+                json=data.model_dump(mode="json", by_alias=True)
+        ) as response:
             json = await response.json(content_type=None)
-            if response.status != 200:
+            if response.status != 201:
                 raise ResponseException.from_json(json)

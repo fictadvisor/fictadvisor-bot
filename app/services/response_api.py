@@ -14,7 +14,10 @@ class ResponseAPI(BaseAPI):
             discipline_teacher_id: Union[UUID, str],
             data: VerifyResponse
     ) -> None:
-        async with self._session.post(f"{self.path}/{discipline_teacher_id}/responses", json=data.model_dump(by_alias=True)) as response:
+        async with self._session.post(
+                f"{self.path}/{discipline_teacher_id}/responses",
+                json=data.model_dump(mode="json", by_alias=True)
+        ) as response:
             json = await response.json(content_type=None)
             if response.status == 200:
                 raise ResponseException.from_json(json)
