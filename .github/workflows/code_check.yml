@@ -1,4 +1,4 @@
-name: Mypy
+name: Code check
 
 on: [push]
 
@@ -24,5 +24,7 @@ jobs:
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
         run: poetry install
-      - name: Run mypy
-        run: poetry run mypy app
+      - name: Run ruff and mypy
+        run: |
+          poetry run ruff app --format github
+          poetry run mypy app
