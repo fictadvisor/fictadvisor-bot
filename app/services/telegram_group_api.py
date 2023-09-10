@@ -3,7 +3,10 @@ from uuid import UUID
 
 from app.services.base_api import BaseAPI
 from app.services.exceptions.response_exception import ResponseException
-from app.services.types.telegram_groups import TelegramGroups
+from app.services.types.telegram_groups import (
+    TelegramGroups,
+    TelegramGroupsByTelegramId,
+)
 from app.services.types.teleram_group import (
     CreateTelegramGroup,
     TelegramGroup,
@@ -49,4 +52,11 @@ class TelegramGroupAPI(BaseAPI):
             json = await response.json(content_type=None)
             if response.status == 200:
                 return TelegramGroups.model_validate(json)
+            raise ResponseException.from_json(json)
+
+    async def get_by_telegram_id(self, telegram_id: int) -> TelegramGroupsByTelegramId:
+        async with self._session.get(f"{self.path}/telegram/{telegram_id}") as response:
+            json = await response.json(content_type=None)
+            if response.status == 200:
+                return TelegramGroupsByTelegramId.model_validate(json)
             raise ResponseException.from_json(json)
