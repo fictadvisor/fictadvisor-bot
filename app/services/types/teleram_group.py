@@ -9,7 +9,7 @@ class UpdateTelegramGroup(BaseModel):
 
 
 class CreateTelegramGroup(UpdateTelegramGroup):
-    telegram_id: int = Field(alias="telegramId")
+    telegram_id: int = Field(serialization_alias="telegramId")
 
 
 class TelegramGroup(CreateTelegramGroup):
