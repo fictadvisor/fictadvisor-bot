@@ -23,6 +23,7 @@ repos:
         args: [
           --strict,
           --ignore-missing-imports,
+          --no-warn-unused-ignores,
           --config-file=pyproject.toml
         ]
         additional_dependencies: [

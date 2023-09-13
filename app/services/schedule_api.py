@@ -7,7 +7,7 @@ from app.services.types.general_events import FortnightGeneralEvents, GeneralEve
 
 
 class ScheduleAPI(BaseAPI):
-    _path = "schedule"
+    _path = "/schedule"
 
     async def get_general_group_events_by_day(self, group_id: Union[UUID, str], day: Optional[int] = None) -> GeneralEvents:
         params = None
