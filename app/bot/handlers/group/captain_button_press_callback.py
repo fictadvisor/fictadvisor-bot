@@ -30,5 +30,7 @@ async def captain_button_press_callback(callback: CallbackQuery) -> None:
                                             CreateTelegramGroup(
                                                 source=TelegramSource.GROUP,
                                                 telegram_id=callback.message.chat.id))  # type: ignore[union-attr]
+            await callback.message.edit_text("Групу додано")  # type: ignore[union-attr]
         except ResponseException as e:
+            await callback.answer(e.message)
             logging.error(e)

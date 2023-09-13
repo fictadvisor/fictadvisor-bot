@@ -15,7 +15,7 @@ from app.services.types.teleram_group import (
 
 
 class TelegramGroupAPI(BaseAPI):
-    _path = "telegramGroups"
+    _path = "/telegramGroups"
 
     async def create(self, group_id: Union[UUID, str], create_telegram_group: CreateTelegramGroup) -> TelegramGroup:
         async with self._session.post(
