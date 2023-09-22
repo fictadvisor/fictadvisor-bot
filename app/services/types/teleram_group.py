@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from app.enums.telegram_source import TelegramSource
+from app.services.types.base import Base
 from app.services.types.group import Group
 
 
-class UpdateTelegramGroup(BaseModel):
+class UpdateTelegramGroup(Base):
     source: TelegramSource
 
 

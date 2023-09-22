@@ -1,16 +1,17 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from app.services.types.base import Base
 from app.services.types.teleram_group import (
     TelegramGroup,
     TelegramGroupByTelegramIdResponse,
 )
 
 
-class TelegramGroups(BaseModel):
+class TelegramGroups(Base):
     groups: List[TelegramGroup]
 
 
-class TelegramGroupsByTelegramId(BaseModel):
+class TelegramGroupsByTelegramId(Base):
     telegram_groups: List[TelegramGroupByTelegramIdResponse] = Field(alias="telegramGroups")

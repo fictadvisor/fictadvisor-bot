@@ -1,10 +1,12 @@
 from typing import Union
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from app.services.types.base import Base
 
 
-class VerifyResponse(BaseModel):
-    user_id: Union[UUID, str] = Field(serialization_alias="userId")
-    question_id: Union[UUID, str] = Field(serialization_alias="questionId")
+class VerifyResponse(Base):
+    user_id: Union[UUID, str] = Field(alias="userId")
+    question_id: Union[UUID, str] = Field(alias="questionId")
     value: str
