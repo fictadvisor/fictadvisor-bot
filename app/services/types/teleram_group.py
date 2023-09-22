@@ -1,12 +1,11 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import Field
 
 from app.enums.telegram_source import TelegramSource
+from app.services.types.base import Base
 from app.services.types.group import Group
 
 
-class UpdateTelegramGroup(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
+class UpdateTelegramGroup(Base):
     source: TelegramSource
 
 

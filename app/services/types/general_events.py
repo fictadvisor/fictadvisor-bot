@@ -1,14 +1,15 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from app.services.types.base import Base
 from app.services.types.general_event import GeneralEvent
 
 
-class GeneralEvents(BaseModel):
+class GeneralEvents(Base):
     events: List[GeneralEvent]
 
 
-class FortnightGeneralEvents(BaseModel):
+class FortnightGeneralEvents(Base):
     first_week_events: List[GeneralEvent] = Field(alias="firstWeekEvents")
     second_week_events: List[GeneralEvent] = Field(alias="secondWeekEvents")

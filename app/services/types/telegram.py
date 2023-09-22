@@ -1,9 +1,11 @@
 from typing import Union
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from app.services.types.base import Base
 
 
-class RegisterTelegram(BaseModel):
+class RegisterTelegram(Base):
     token: Union[UUID, str]
-    telegram_id: int = Field(serialization_alias="telegramId")
+    telegram_id: int = Field(alias="telegramId")
