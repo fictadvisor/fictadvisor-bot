@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 
 from app.bot.handlers import router as main_router
+from app.bot.middlewares.throttling import ThrottlingMiddleware
 from app.schedule import Schedule
 from app.settings import settings
 
@@ -27,6 +28,8 @@ def create_dispatcher() -> Dispatcher:
     dispatcher.include_router(main_router)
     dispatcher.startup.register(on_startup)
     dispatcher.shutdown.register(on_shutdown)
+
+    dispatcher.update.middleware(ThrottlingMiddleware())
 
     return dispatcher
 

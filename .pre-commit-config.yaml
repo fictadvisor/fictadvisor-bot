@@ -28,7 +28,8 @@ repos:
         ]
         additional_dependencies: [
           pydantic,
-          types-cachetools
+          types-cachetools,
+          aiogram
         ]
 -   repo: https://github.com/python-poetry/poetry
     rev: '1.6.0'
