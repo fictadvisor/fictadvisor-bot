@@ -25,6 +25,10 @@ class Schedule:
         now = datetime.now()
         async with ScheduleAPI() as schedule_api:
             telegram_group = group.telegram_groups[-1]
+
+            if not telegram_group.post_info:
+                return
+
             events = await schedule_api.get_general_group_events_by_day(group.id)
             for event in events.events:
                 delta = (event.start_time.hour - now.hour) * 60 + event.start_time.minute - now.minute
