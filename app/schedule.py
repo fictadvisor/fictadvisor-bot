@@ -24,27 +24,25 @@ class Schedule:
     async def schedule_group(group: GroupWithTelegramGroupsResponse, bot: Bot) -> None:
         now = datetime.now()
         async with ScheduleAPI() as schedule_api:
-            telegram_group = group.telegram_groups[-1]
-
-            if not telegram_group.post_info:
-                return
-
+            groups_to_send = filter(lambda x: x.post_info, group.telegram_groups)
             events = await schedule_api.get_general_group_events_by_day(group.id)
-            for event in events.events:
-                delta = (event.start_time.hour - now.hour) * 60 + event.start_time.minute - now.minute
-                if delta == 5:
-                    await bot.send_message(
-                        telegram_group.telegram_id,
-                        await BROADCAST_EVENT.render_async(delta="5 хвилин", event=event),
-                        telegram_group.thread_id
-                    )
-                elif delta == 15:
-                    await bot.send_message(
-                        telegram_group.telegram_id,
-                        await BROADCAST_EVENT.render_async(delta="15 хвилин", event=event),
-                        telegram_group.thread_id
-                    )
-                await sleep(0.2)
+
+            for telegram_group in groups_to_send:
+                for event in events.events:
+                    delta = (event.start_time.hour - now.hour) * 60 + event.start_time.minute - now.minute
+                    if delta == 5:
+                        await bot.send_message(
+                            telegram_group.telegram_id,
+                            await BROADCAST_EVENT.render_async(delta="5 хвилин", event=event),
+                            telegram_group.thread_id
+                        )
+                    elif delta == 15:
+                        await bot.send_message(
+                            telegram_group.telegram_id,
+                            await BROADCAST_EVENT.render_async(delta="15 хвилин", event=event),
+                            telegram_group.thread_id
+                        )
+                    await sleep(0.2)
 
     async def schedule(self, bot: Bot) -> None:
         async with GroupAPI() as group_api:
