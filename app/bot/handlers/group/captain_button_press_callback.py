@@ -1,8 +1,6 @@
 import logging
 
-from aiogram.types import (
-    CallbackQuery,
-)
+from aiogram.types import CallbackQuery
 
 from app.enums.role import Role
 from app.enums.telegram_source import TelegramSource
@@ -22,7 +20,7 @@ async def captain_button_press_callback(callback: CallbackQuery) -> None:
             user = await user_api.get_user_by_telegram_id(user_id)
             group = user.group
 
-            if group.role != Role.CAPTAIN:
+            if group.role not in (Role.CAPTAIN, Role.MODERATOR):
                 await callback.answer("Ти не староста!")
                 return
 
