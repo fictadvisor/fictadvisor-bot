@@ -21,14 +21,14 @@ async def captain_button_press_callback(callback: CallbackQuery) -> None:
             group = user.group
 
             if group.role not in (Role.CAPTAIN, Role.MODERATOR):
-                await callback.answer("Ти не староста!")
+                await callback.answer("В тебе немає прав")
                 return
 
             await telegram_group_api.create(group.id,
                                             CreateTelegramGroup(
                                                 source=TelegramSource.GROUP,
                                                 telegram_id=callback.message.chat.id))  # type: ignore[union-attr]
-            await callback.message.edit_text("Групу додано")  # type: ignore[union-attr]
+            await callback.message.edit_text("Чат прикріплено")  # type: ignore[union-attr]
         except ResponseException as e:
             await callback.answer(e.message)
             logging.error(e)

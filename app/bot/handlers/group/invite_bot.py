@@ -22,9 +22,9 @@ async def invite_bot(event: Union[ChatMemberUpdated, Message], bot: Bot) -> None
     if event.chat.id not in cache:
         await bot.send_message(
             chat_id=event.chat.id,
-            text="Староста групи має натиснути цю кнопку",
+            text="Для того щоб прикріпити чат до групи, потрібно щоб староста або заступник старости натиснув на цю кнопку",
             reply_markup=InlineKeyboardMarkup(
-                inline_keyboard=[[InlineKeyboardButton(text="Тиць", callback_data="captain_press")]]),
+                inline_keyboard=[[InlineKeyboardButton(text="Прикріпити чат до групи", callback_data="captain_press")]]),
         )
 
 
