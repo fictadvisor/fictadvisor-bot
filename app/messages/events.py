@@ -1,10 +1,25 @@
 from app.messages.environment import environment
 
-BROADCAST_EVENT = environment.from_string("""
-Через {{ delta }} хвилин розпочинається {{ get_discipline_type_name(event.discipline_type.name) }} з "{{ event.name }}"
+STARTING_EVENTS = environment.from_string("""
+Розпочалися пари:
+{% for event in events %}
+{{ get_discipline_type_name(event.discipline_type.name)|title }} з "{{ event.name }}"
 {% if event.url %}
 Посилання: {{ event.url }}
 {% endif %}
+
+{% endfor %}
+""")
+
+BROADCAST_EVENTS = environment.from_string("""
+Через {{ delta }} хвилин розпочинається:
+{% for event in events %}
+{{ get_discipline_type_name(event.discipline_type.name)|title }} з "{{ event.name }}"
+{% if event.url %}
+Посилання: {{ event.url }}
+{% endif %}
+
+{% endfor %}
 """)
 
 EVENT_LIST = environment.from_string("""
