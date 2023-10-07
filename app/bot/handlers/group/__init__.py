@@ -12,6 +12,7 @@ from app.bot.handlers.group.bind import bind
 from app.bot.handlers.group.captain_button_press_callback import (
     captain_button_press_callback,
 )
+from app.bot.handlers.group.enable import enable
 from app.bot.handlers.group.invite_bot import invite_bot, migrate_chat
 from app.bot.handlers.group.kick_bot import kick_bot
 
@@ -27,3 +28,4 @@ router.message.register(migrate_chat, F.migrate_from_chat_id.as_("migrate_from_c
 router.callback_query.register(captain_button_press_callback, F.data == "captain_press")
 
 router.message.register(bind, Command("bind"), F.reply_to_message.forum_topic_created)
+router.message.register(enable, Command("enable"))
