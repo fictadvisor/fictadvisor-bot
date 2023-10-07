@@ -4,12 +4,16 @@ from aiogram.filters import (
     JOIN_TRANSITION,
     LEAVE_TRANSITION,
     ChatMemberUpdatedFilter,
+    Command,
     CommandStart,
 )
 
+from app.bot.filters.is_captain_or_deputy import IsCaptainOrDeputy
+from app.bot.handlers.group.bind import bind
 from app.bot.handlers.group.captain_button_press_callback import (
     captain_button_press_callback,
 )
+from app.bot.handlers.group.enable import enable
 from app.bot.handlers.group.invite_bot import invite_bot, migrate_chat
 from app.bot.handlers.group.kick_bot import kick_bot
 
@@ -19,7 +23,10 @@ router.message.filter(F.chat.type.in_({ChatType.GROUP, ChatType.SUPERGROUP}))
 router.my_chat_member.register(kick_bot, ChatMemberUpdatedFilter(LEAVE_TRANSITION))
 
 router.my_chat_member.register(invite_bot, ChatMemberUpdatedFilter(JOIN_TRANSITION))
-router.message.register(invite_bot, CommandStart())
+router.message.register(invite_bot, CommandStart(), IsCaptainOrDeputy())
 router.message.register(migrate_chat, F.migrate_from_chat_id.as_("migrate_from_chat_id"))
 
 router.callback_query.register(captain_button_press_callback, F.data == "captain_press")
+
+router.message.register(bind, Command("bind"), F.reply_to_message.forum_topic_created, IsCaptainOrDeputy())
+router.message.register(enable, Command("enable"), IsCaptainOrDeputy())

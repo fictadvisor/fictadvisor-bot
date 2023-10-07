@@ -3,6 +3,7 @@ from asyncio import sleep
 from datetime import datetime
 
 from aiogram import Bot
+from aiogram.exceptions import DetailedAiogramError
 from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
 
 from app.messages.events import BROADCAST_EVENTS, STARTING_EVENTS
@@ -38,8 +39,10 @@ class Schedule:
                 elif delta == 15:
                     message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
                 for telegram_group in groups_to_send:
-                    await bot.send_message(telegram_group.telegram_id, message)
-                    await sleep(0.2)
+                    try:
+                        await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id)
+                    except DetailedAiogramError:
+                        await sleep(0.2)
 
     async def schedule(self, bot: Bot) -> None:
         async with GroupAPI() as group_api:
