@@ -14,16 +14,19 @@ class UpdateTelegramGroup(Base):
     post_info: Optional[bool] = Field(None, alias="postInfo")
 
 
-class CreateTelegramGroup(Base):
-    telegram_id: int = Field(alias="telegramId")
+class TelegramGroupData(Base):
     thread_id: Optional[int] = Field(None, alias="threadId")
     source: TelegramSource
     post_info: bool = Field(False, alias="postInfo")
+
+
+class CreateTelegramGroup(TelegramGroupData):
+    telegram_id: int = Field(alias="telegramId")
 
 
 class TelegramGroup(CreateTelegramGroup):
     group_id: str = Field(alias="groupId")
 
 
-class TelegramGroupByTelegramIdResponse(UpdateTelegramGroup):
+class TelegramGroupByTelegramIdResponse(TelegramGroupData):
     group: Group
