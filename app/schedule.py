@@ -24,7 +24,7 @@ class Schedule:
 
     @staticmethod
     async def schedule_group(group: GroupWithTelegramGroupsResponse, bot: Bot) -> None:
-        now = datetime.now()
+        now = datetime.utcnow()
         async with ScheduleAPI() as schedule_api:
             groups_to_send = list(filter(lambda x: x.post_info, group.telegram_groups))
             general_events = await schedule_api.get_general_group_events_by_day(group.id)

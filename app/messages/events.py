@@ -24,7 +24,7 @@ BROADCAST_EVENTS = environment.from_string("""
 
 EVENT_LIST = environment.from_string("""
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(events) %}
-{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}
+<i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
 {% for event in now %}
 {{ get_discipline_type_name(event.discipline_type.name)|title }}. {{ event.name }}
 {% endfor %}
@@ -34,14 +34,13 @@ EVENT_LIST = environment.from_string("""
 
 WEEK_EVENT_LIST = environment.from_string("""
 {% for weekday, day in group_by_weekday(events) %}
-{{ get_weekday_name(weekday) }}
+<b>{{ get_weekday_name(weekday) }}</b>
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(day) %}
-{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}
+<i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
 {% for event in now %}
 {{ get_discipline_type_name(event.discipline_type.name)|title }}. {{ event.name }}
 {% endfor %}
 
 {% endfor %}
-
 {% endfor %}
 """)
