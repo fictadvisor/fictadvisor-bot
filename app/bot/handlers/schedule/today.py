@@ -13,7 +13,7 @@ async def today(message: Message) -> None:
         general_events = await schedule_api.get_general_group_events_by_day(user.group.id)
 
     if not general_events.events:
-        await message.answer("Пар нема")
+        await message.answer("Пар немає")
         return
 
-    await message.answer(await EVENT_LIST.render_async(events=general_events))
+    await message.answer(await EVENT_LIST.render_async(events=general_events.events))
