@@ -26,7 +26,7 @@ router.my_chat_member.register(invite_bot, ChatMemberUpdatedFilter(JOIN_TRANSITI
 router.message.register(invite_bot, CommandStart(), IsCaptainOrDeputy())
 router.message.register(migrate_chat, F.migrate_from_chat_id.as_("migrate_from_chat_id"))
 
-router.callback_query.register(captain_button_press_callback, F.data == "captain_press")
+router.callback_query.register(captain_button_press_callback, F.data == "captain_press", IsCaptainOrDeputy())
 
 router.message.register(bind, Command("bind"), F.reply_to_message.forum_topic_created, IsCaptainOrDeputy())
 router.message.register(enable, Command("enable"), IsCaptainOrDeputy())

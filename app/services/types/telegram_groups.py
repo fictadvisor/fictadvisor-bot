@@ -10,7 +10,7 @@ from app.services.types.teleram_group import (
 
 
 class TelegramGroups(Base):
-    groups: List[TelegramGroup]
+    telegram_groups: List[TelegramGroup] = Field(alias="telegramGroups")
 
 
 class TelegramGroupsByTelegramId(Base):
