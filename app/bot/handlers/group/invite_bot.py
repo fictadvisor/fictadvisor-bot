@@ -11,6 +11,7 @@ from aiogram.types import (
 )
 from cachetools import TTLCache
 
+from app.messages.group import INVITE_BOT
 from app.services.telegram_group_api import TelegramGroupAPI
 from app.services.types.teleram_group import UpdateTelegramGroup
 
@@ -20,12 +21,21 @@ cache: MutableMapping[int, bool] = TTLCache(maxsize=inf, ttl=10.0)
 async def invite_bot(event: Union[ChatMemberUpdated, Message], bot: Bot) -> None:
     await sleep(1)
     if event.chat.id not in cache:
-        await bot.send_message(
-            chat_id=event.chat.id,
-            text="Для того щоб прикріпити чат до групи, потрібно щоб староста або заступник старости натиснув на цю кнопку",
-            reply_markup=InlineKeyboardMarkup(
-                inline_keyboard=[[InlineKeyboardButton(text="Прикріпити чат до групи", callback_data="captain_press")]]),
-        )
+        if isinstance(event, Message):
+            await event.reply(
+                text=INVITE_BOT,
+                reply_markup=InlineKeyboardMarkup(
+                    inline_keyboard=[
+                        [InlineKeyboardButton(text="Прикріпити чат до групи", callback_data="captain_press")]])
+            )
+        else:
+            await bot.send_message(
+                chat_id=event.chat.id,
+                text=INVITE_BOT,
+                reply_markup=InlineKeyboardMarkup(
+                    inline_keyboard=[
+                        [InlineKeyboardButton(text="Прикріпити чат до групи", callback_data="captain_press")]])
+            )
 
 
 async def migrate_chat(message: Message, migrate_from_chat_id: int) -> None:
