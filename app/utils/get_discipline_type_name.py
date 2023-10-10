@@ -1,9 +1,12 @@
 from app.enums.discipline_types import DisciplineTypes
 
 discipline_types = {
-    DisciplineTypes.PRACTICE: "практика",
-    DisciplineTypes.LECTURE: "лекція",
-    DisciplineTypes.LABORATORY: "лабораторна"
+    DisciplineTypes.PRACTICE: "🟧",
+    DisciplineTypes.LECTURE: "🟦",
+    DisciplineTypes.LABORATORY: "🟩",
+    DisciplineTypes.EXAM: "🟪",
+    DisciplineTypes.CONSULTATION: "🟪",
+    DisciplineTypes.WORKOUT: "🟪"
 }
 
 
