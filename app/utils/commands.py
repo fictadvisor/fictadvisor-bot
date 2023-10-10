@@ -4,8 +4,8 @@ from aiogram import Bot
 from aiogram.types import (
     BotCommand,
     BotCommandScope,
-    BotCommandScopeDefault,
     BotCommandScopeAllChatAdministrators,
+    BotCommandScopeDefault,
 )
 
 

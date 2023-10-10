@@ -2,10 +2,10 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 
 from app.bot.handlers import router as main_router
-from app.utils.commands import set_bot_commands
 from app.bot.middlewares.throttling import ThrottlingMiddleware
 from app.schedule import Schedule
 from app.settings import settings
+from app.utils.commands import set_bot_commands
 
 
 async def on_startup(bot: Bot) -> None:
