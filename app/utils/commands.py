@@ -30,4 +30,4 @@ async def set_bot_commands(bot: Bot) -> None:
         ),
     )
     for commands, scope in uk_commands:
-        await bot.set_my_commands(commands=commands, scope=scope, language_code="uk")  # type: ignore[arg-type]
+        await bot.set_my_commands(commands=commands, scope=scope)  # type: ignore[arg-type]
