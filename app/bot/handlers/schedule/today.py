@@ -9,6 +9,7 @@ from app.services.user_api import UserAPI
 async def today(message: Message) -> None:
     async with UserAPI() as user_api:
         user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type: ignore[union-attr]
+    user.group.id = "96145c16-1706-4215-829c-34b2ea80bee2"
     async with ScheduleAPI() as schedule_api:
         general_events = await schedule_api.get_general_group_events_by_day(user.group.id)
 
