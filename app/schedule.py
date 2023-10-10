@@ -40,7 +40,7 @@ class Schedule:
                     message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
                 for telegram_group in groups_to_send:
                     try:
-                        await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id)
+                        await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id, disable_web_page_preview=True)
                     except DetailedAiogramError:
                         await sleep(0.2)
 
