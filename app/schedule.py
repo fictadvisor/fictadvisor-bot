@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from asyncio import sleep
 from datetime import datetime
 
@@ -32,16 +33,19 @@ class Schedule:
 
             for (start_hour, start_minute, _end_hour, _end_minute), events in grouped:
                 delta = (start_hour - now.hour) * 60 + start_minute - now.minute
+                message = None
                 if delta == 0:
                     message = await STARTING_EVENTS.render_async(events=events)
                 elif delta == 5:
                     message = await BROADCAST_EVENTS.render_async(delta="5 хвилин", events=events)
                 elif delta == 15:
                     message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
-                for telegram_group in groups_to_send:
-                    try:
-                        await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id)
-                    except DetailedAiogramError:
+                if message:
+                    for telegram_group in groups_to_send:
+                        try:
+                            await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id, disable_web_page_preview=True)
+                        except DetailedAiogramError as e:
+                            logging.error(e)
                         await sleep(0.2)
 
     async def schedule(self, bot: Bot) -> None:
