@@ -15,4 +15,7 @@ async def week(message: Message) -> None:
         await message.answer("Пар немає")
         return
 
-    await message.answer(await WEEK_EVENT_LIST.render_async(events=general_events.events))
+    await message.answer(
+        await WEEK_EVENT_LIST.render_async(events=general_events.events),
+        disable_web_page_preview=True
+    )

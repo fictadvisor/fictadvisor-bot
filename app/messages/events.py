@@ -2,34 +2,29 @@ from app.messages.environment import environment
 
 STARTING_EVENTS = environment.from_string("""
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
+
 Розпочалися пари:
 {% for event in events %}
-{{ get_discipline_type_name(event.discipline_type.name) }} "{{ event.name }}"
-{% if event.url %}
-Посилання: {{ event.url }}
-{% endif %}
-
+<a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
 """)
 
 BROADCAST_EVENTS = environment.from_string("""
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
+
 Через {{ delta }} хвилин розпочинається:
 {% for event in events %}
-{{ get_discipline_type_name(event.discipline_type.name) }} "{{ event.name }}"
-{% if event.url %}
-Посилання: {{ event.url }}
-{% endif %}
-
+<a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
 """)
 
 EVENT_LIST = environment.from_string("""
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
+
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(events) %}
 <i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
 {% for event in now %}
-{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}
+<a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
 
 {% endfor %}
@@ -37,12 +32,13 @@ EVENT_LIST = environment.from_string("""
 
 WEEK_EVENT_LIST = environment.from_string("""
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
+
 {% for weekday, day in group_by_weekday(events) %}
 <b>{{ get_weekday_name(weekday) }}</b>
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(day) %}
 <i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
 {% for event in now %}
-{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}
+<a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
 
 {% endfor %}
