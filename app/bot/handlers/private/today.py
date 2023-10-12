@@ -1,4 +1,3 @@
-
 from aiogram.types import Message
 
 from app.messages.events import EVENT_LIST

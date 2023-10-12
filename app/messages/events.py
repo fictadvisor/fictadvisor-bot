@@ -1,6 +1,9 @@
 from app.messages.environment import environment
 
 STARTING_EVENTS = environment.from_string("""
+{% if group %}
+Група: {{ group }}
+{% endif %}
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
 
 Розпочалися пари:
@@ -10,6 +13,9 @@ STARTING_EVENTS = environment.from_string("""
 """)
 
 BROADCAST_EVENTS = environment.from_string("""
+{% if group %}
+Група: {{ group }}
+{% endif %}
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
 
 Через {{ delta }} хвилин розпочинається:
@@ -19,6 +25,9 @@ BROADCAST_EVENTS = environment.from_string("""
 """)
 
 EVENT_LIST = environment.from_string("""
+{% if group %}
+Група: {{ group }}
+{% endif %}
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
 
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(events) %}
@@ -31,6 +40,9 @@ EVENT_LIST = environment.from_string("""
 """)
 
 WEEK_EVENT_LIST = environment.from_string("""
+{% if group %}
+Група: {{ group }}
+{% endif %}
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
 
 {% for weekday, day in group_by_weekday(events) %}
