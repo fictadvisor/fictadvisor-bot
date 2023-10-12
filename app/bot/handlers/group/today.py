@@ -15,4 +15,7 @@ async def today(message: Message) -> None:
         if not general_events.events:
             await message.answer(f"У групи {telegram_group.group.code} пар немає")
         else:
-            await message.reply(await EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events))
+            await message.reply(
+                await EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events),
+                disable_web_page_preview=True
+            )
