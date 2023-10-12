@@ -13,10 +13,9 @@ async def week(message: Message) -> None:
             general_events = await schedule_api.get_general_group_events_by_week(telegram_group.group.id)
 
         if not general_events.events:
-            await message.answer("Пар немає")
-            return
-
-        await message.reply(
-            await WEEK_EVENT_LIST.render_async(events=general_events.events),
-            disable_web_page_preview=True
-        )
+            await message.answer(f"У групи {telegram_group.group.code} пар немає")
+        else:
+            await message.reply(
+                await WEEK_EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events),
+                disable_web_page_preview=True
+            )

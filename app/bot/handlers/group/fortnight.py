@@ -15,14 +15,13 @@ async def fortnight(message: Message) -> None:
             general_events = await schedule_api.get_general_group_events_by_fortnight(telegram_group.group.id)
 
         if not general_events.first_week_events and not general_events.second_week_events:
-            await message.answer("Пар немає")
-            return
-
-        await message.reply(
-            await WEEK_EVENT_LIST.render_async(events=general_events.first_week_events),
-            reply_markup=get_week_keyboard(1, telegram_group.group.id),
-            disable_web_page_preview=True
-        )
+            await message.answer(f"У групи {telegram_group.group.code} пар немає")
+        else:
+            await message.reply(
+                await WEEK_EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.first_week_events),
+                reply_markup=get_week_keyboard(1, telegram_group.group.id),
+                disable_web_page_preview=True
+            )
 
 
 async def select_week(callback: CallbackQuery, callback_data: SelectWeek) -> None:
