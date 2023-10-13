@@ -10,22 +10,24 @@ from aiogram.types import (
 
 
 async def set_bot_commands(bot: Bot) -> None:
-    uk_commands: Tuple[Tuple[List[BotCommand], BotCommandScope]] = (  # type: ignore[assignment]
-        (
-            [
+    schedule = [
                 BotCommand(command="today", description="Вивести розклад на сьогодні"),
                 BotCommand(command="tomorrow", description="Вивести розклад на завтра"),
                 BotCommand(command="week", description="Вивести розклад на тиждень"),
                 BotCommand(command="fortnight", description="Вивести на два тижня")
-            ],
+            ]
+    captain = [
+                BotCommand(command="bind", description="Прив'язати тред для сповіщень"),
+                BotCommand(command="enable", description="Включити/Виключити сповіщення"),
+                BotCommand(command="start", description="Прив'язати телеграм групу"),
+            ]
+    uk_commands: Tuple[Tuple[List[BotCommand], BotCommandScope]] = (  # type: ignore[assignment]
+        (
+            schedule,
             BotCommandScopeDefault(),
         ),
         (
-            [
-                BotCommand(command="bind", description="Прив'язати тред для сповіщень"),
-                BotCommand(command="enable", description="Включити/Виключити сповіщення"),
-                BotCommand(command="start", description="Прив'язати телеграм групу")
-            ],
+            schedule + captain,
             BotCommandScopeAllChatAdministrators(),
         ),
     )
