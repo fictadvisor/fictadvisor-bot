@@ -5,11 +5,15 @@ from app.bot.handlers.group import router as group_router
 from app.bot.handlers.private import router as private_router
 from app.bot.handlers.verification import router as verification_router
 
+from app.settings import settings
+
 router = Router(name=__name__)
 
 router.include_routers(
     verification_router,
     private_router,
-    debug_router,
     group_router
 )
+
+if settings.DEVELOPMENT:
+    router.include_routers(debug_router)
