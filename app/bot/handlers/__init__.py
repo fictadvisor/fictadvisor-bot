@@ -4,7 +4,6 @@ from app.bot.handlers.debug import router as debug_router
 from app.bot.handlers.group import router as group_router
 from app.bot.handlers.private import router as private_router
 from app.bot.handlers.verification import router as verification_router
-
 from app.settings import settings
 
 router = Router(name=__name__)
