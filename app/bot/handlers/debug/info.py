@@ -17,7 +17,7 @@ async def info(message: Message) -> None:
 
     async with TelegramGroupAPI() as telegram_api:
         try:
-            groups = [group.group.code for group in (await telegram_api.get_by_telegram_id(message.chat.id)).telegram_groups]  # type:ignore[union-attr]
+            groups = [group.group.code for group in (await telegram_api.get_by_telegram_id(message.chat.id)).telegram_groups]
             await message.reply(f"Групи прив'язані до даного чату: <pre>{', '.join(groups)}</pre>")
         except ResponseException:
             await message.reply("Схоже, груп на даний момент не закріплено.")
