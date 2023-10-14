@@ -14,5 +14,5 @@ router.include_routers(
     group_router
 )
 
-if settings.DEVELOPMENT:
+if settings.DEBUG:
     router.include_routers(debug_router)
