@@ -8,7 +8,6 @@ from app.services.user_api import UserAPI
 async def info(message: Message) -> None:
 
     async with UserAPI() as user_api:
-
         try:
             user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type:ignore[union-attr]
             await message.reply(f"Username: <pre>{user.username}</pre>")
