@@ -19,11 +19,17 @@ async def captain_button_press_callback(callback: CallbackQuery, user: Student) 
                 await callback.answer("В тебе немає прав")
                 return
 
-            await telegram_group_api.create(group.id,
-                                            CreateTelegramGroup(
-                                                source=TelegramSource.GROUP,
-                                                telegram_id=callback.message.chat.id))  # type: ignore[union-attr]
-            await callback.message.edit_text("Чат прикріплено")  # type: ignore[union-attr]
+            try:
+                await telegram_group_api.get_by_telegram_id(callback.message.chat.id) # type: ignore[union-attr]
+            except ResponseException:
+                await telegram_group_api.create(group.id,
+                                                CreateTelegramGroup(
+                                                    source=TelegramSource.GROUP,
+                                                    telegram_id=callback.message.chat.id))  # type: ignore[union-attr]
+                await callback.message.edit_text("Чат прикріплено")  # type: ignore[union-attr]
+            else:
+                await callback.answer("В даному чаті вже прикріплена група.")
+
         except ResponseException as e:
             await callback.answer(e.message)
             logging.error(e)
