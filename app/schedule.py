@@ -36,8 +36,6 @@ class Schedule:
                 message = None
                 if delta == 0:
                     message = await STARTING_EVENTS.render_async(events=events)
-                elif delta == 5:
-                    message = await BROADCAST_EVENTS.render_async(delta="5 хвилин", events=events)
                 elif delta == 15:
                     message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
                 if message:
