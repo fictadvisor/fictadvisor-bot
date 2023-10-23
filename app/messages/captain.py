@@ -1,6 +1,4 @@
-from jinja2 import Environment
-
-environment = Environment(trim_blocks=True, enable_async=True)
+from app.messages.environment import environment
 
 BROADCAST_CAPTAIN = environment.from_string("""
 <b>Заявка на старосту</b>

@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     DEVELOPMENT: bool = False
+    DEBUG: bool = True
 
     TOKEN: SecretStr
     CHAT_ID: int
@@ -13,6 +14,7 @@ class Settings(BaseSettings):
     WEBHOOK_PATH: str
 
     API_URL: AnyUrl
+    API_ACCESS_TOKEN: SecretStr
 
     @property
     def WEBHOOK_URL(self) -> str:

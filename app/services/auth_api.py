@@ -1,15 +1,17 @@
-from typing import Any, Dict, Union
-from uuid import UUID
 
 from app.services.base_api import BaseAPI
+from app.services.exceptions.response_exception import ResponseException
+from app.services.types.telegram import RegisterTelegram
 
 
 class AuthAPI(BaseAPI):
     _path = "/auth"
 
-    async def register_telegram(self, token: Union[UUID, str], telegram_id: int) -> Dict[str, Any]:
-        async with self._session.post(f"{self.path}/registerTelegram", json={
-            "token": str(token),
-            "telegramId": str(telegram_id)
-        }) as response:
-            return await response.json(content_type=None)
+    async def register_telegram(self, data: RegisterTelegram) -> None:
+        async with self._session.post(
+                f"{self.path}/registerTelegram",
+                json=data.model_dump(mode="json", by_alias=True)
+        ) as response:
+            json = await response.json(content_type=None)
+            if response.status != 201:
+                raise ResponseException.from_json(json)

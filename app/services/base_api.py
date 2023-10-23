@@ -44,5 +44,5 @@ class BaseAPI:
     @staticmethod
     def get_headers() -> Dict[str, str]:
         return {
-            "Authorization": f"Telegram {settings.TOKEN.get_secret_value()}"
+            "Authorization": f"Telegram {settings.API_ACCESS_TOKEN.get_secret_value()}"
         }

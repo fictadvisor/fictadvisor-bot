@@ -1,6 +1,4 @@
-from jinja2 import Environment
-
-environment = Environment(enable_async=True)
+from app.messages.environment import environment
 
 BROADCAST_RESPONSE = environment.from_string("""
 <b>Відгук</b>
