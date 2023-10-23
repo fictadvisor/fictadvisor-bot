@@ -14,7 +14,7 @@ async def tomorrow(message: Message) -> None:
             general_events = await schedule_api.get_general_group_events_by_day(telegram_group.group.id, DateService.get_current_day() + 1)
 
         if not general_events.events:
-            await message.answer(f"У групи {telegram_group.group.code} пар немає")
+            await message.reply(f"У групи {telegram_group.group.code} пар немає")
         else:
             await message.reply(
                 await EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events),

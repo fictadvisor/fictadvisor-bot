@@ -33,6 +33,6 @@ async def bind(message: Message, user: Student, telegram_groups: TelegramGroupsB
                         thread_id=None
                     )
                 )
-            await message.answer("Гілку прикріплено" if telegram_group.thread_id != message.reply_to_message.message_id else "Гілку відкріплено")  # type: ignore[union-attr]
+            await message.reply("Гілку прикріплено" if telegram_group.thread_id != message.reply_to_message.message_id else "Гілку відкріплено")  # type: ignore[union-attr]
     except ResponseException as e:
         logging.error(e)

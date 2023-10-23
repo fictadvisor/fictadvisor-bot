@@ -5,6 +5,8 @@ from app.bot.keyboards.week_keyboard import get_week_keyboard
 from app.messages.events import WEEK_EVENT_LIST
 from app.services.schedule_api import ScheduleAPI
 from app.services.user_api import UserAPI
+from app.utils.date_service import DateService
+from app.utils.events import check_odd
 
 
 async def fortnight(message: Message) -> None:
@@ -17,9 +19,10 @@ async def fortnight(message: Message) -> None:
         await message.answer("Пар немає")
         return
 
+    week = 2 if check_odd(DateService.get_week()) else 1
     await message.answer(
-        await WEEK_EVENT_LIST.render_async(events=general_events.first_week_events, week=1),
-        reply_markup=get_week_keyboard(1, user.group.id),
+        await WEEK_EVENT_LIST.render_async(events=(general_events.first_week_events, general_events.second_week_events)[week - 1], week=week),
+        reply_markup=get_week_keyboard(week, user.group.id),
         disable_web_page_preview=True
     )
 

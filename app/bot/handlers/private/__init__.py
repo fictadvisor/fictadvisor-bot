@@ -11,6 +11,7 @@ from app.bot.keyboards.types.select_week import SelectWeek
 
 router = Router(name=__name__)
 router.message.filter(F.chat.type == ChatType.PRIVATE)
+router.callback_query.filter(F.message.chat.type == ChatType.PRIVATE)
 
 router.message.register(start, CommandStart())
 router.message.register(today, Command("today"))
