@@ -24,4 +24,4 @@ class IsCaptainOrDeputy(Filter):
         else:
             if isinstance(update, Message):
                 await update.reply("Ця команда лише для старости або заступників")
-            return False
+        return False

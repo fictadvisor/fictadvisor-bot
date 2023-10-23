@@ -5,6 +5,7 @@ from datetime import datetime
 
 from aiogram import Bot
 from aiogram.exceptions import DetailedAiogramError
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED  # type: ignore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
 
 from app.messages.events import BROADCAST_EVENTS, STARTING_EVENTS
@@ -19,7 +20,13 @@ class Schedule:
         self._bot = bot
         self._scheduler = AsyncIOScheduler()
 
+    @staticmethod
+    def error_handling(event) -> None:  # type: ignore
+        if event.exception:
+            logging.exception(event.exception)
+
     def start(self) -> None:
+        self._scheduler.add_listener(self.error_handling, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
         self._scheduler.add_job(self.schedule, 'cron', second="02", minute="*", args=(self._bot,))
         self._scheduler.start()
 
