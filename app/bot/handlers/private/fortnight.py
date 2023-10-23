@@ -18,7 +18,7 @@ async def fortnight(message: Message) -> None:
         return
 
     await message.answer(
-        await WEEK_EVENT_LIST.render_async(events=general_events.first_week_events),
+        await WEEK_EVENT_LIST.render_async(events=general_events.first_week_events, week=1),
         reply_markup=get_week_keyboard(1, user.group.id),
         disable_web_page_preview=True
     )
@@ -30,7 +30,7 @@ async def select_week(callback: CallbackQuery, callback_data: SelectWeek) -> Non
     week = callback_data.week
 
     await callback.message.edit_text(  # type: ignore[union-attr]
-        await WEEK_EVENT_LIST.render_async(events=(general_events.first_week_events, general_events.second_week_events)[week - 1]),
+        await WEEK_EVENT_LIST.render_async(events=(general_events.first_week_events, general_events.second_week_events)[week - 1], week=week),
         reply_markup=get_week_keyboard(week, callback_data.group_id),
         disable_web_page_preview=True
     )

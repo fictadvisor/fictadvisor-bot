@@ -1,10 +1,15 @@
 from datetime import date
 from itertools import groupby
-from typing import Iterable, Iterator, List, Tuple
+from typing import Iterable, Iterator, List, Optional, Tuple
 
 from app.services.types.general_event import GeneralEvent
+from app.utils.date_service import DateService
 
 weekdays = ["Понеділок", "Вівторок", "Середа", "Четверг", "П'ятниця", "Субота", "Неділя"]
+
+
+def check_odd(n: int) -> bool:
+    return True if n % 2 == 0 else False
 
 
 def group_by_time(
@@ -19,7 +24,10 @@ def group_by_weekday(
     return groupby(events, lambda x: x.start_time.weekday())
 
 
-def get_weekday_name(weekday: int) -> str:
+def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
+    allocation = "🟥🟥🟥"
+    if week and check_odd(week) != check_odd(DateService.get_week()):
+        allocation = "⬜️⬜️⬜️"
     if date.today().weekday() == weekday:
-        return f"🟥🟥🟥{weekdays[weekday]}🟥🟥🟥"
+        return f"{allocation}{weekdays[weekday]}{allocation}"
     return f"⬜️⬜️⬜️{weekdays[weekday]}⬜️⬜️⬜️"

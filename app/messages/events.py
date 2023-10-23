@@ -46,7 +46,7 @@ WEEK_EVENT_LIST = environment.from_string("""
 🟦 Лекція 🟧 Практика 🟩 Лабораторна
 
 {% for weekday, day in group_by_weekday(events) %}
-<b>{{ get_weekday_name(weekday) }}</b>
+<b>{{ get_weekday_name(weekday, week) }}</b>
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(day) %}
 <i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
 {% for event in now %}
