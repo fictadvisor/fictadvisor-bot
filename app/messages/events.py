@@ -4,7 +4,7 @@ STARTING_EVENTS = environment.from_string("""
 {% if group %}
 Група: {{ group }}
 {% endif %}
-🟦 Лекція 🟧 Практика 🟩 Лабораторна
+🔵 Лекція 🟠 Практика 🟢 Лабораторна
 
 Розпочалися пари:
 {% for event in events %}
@@ -16,7 +16,7 @@ BROADCAST_EVENTS = environment.from_string("""
 {% if group %}
 Група: {{ group }}
 {% endif %}
-🟦 Лекція 🟧 Практика 🟩 Лабораторна
+🔵 Лекція 🟠 Практика 🟢 Лабораторна
 
 Через {{ delta }} хвилин розпочинається:
 {% for event in events %}
@@ -28,7 +28,7 @@ EVENT_LIST = environment.from_string("""
 {% if group %}
 Група: {{ group }}
 {% endif %}
-🟦 Лекція 🟧 Практика 🟩 Лабораторна
+🔵 Лекція 🟠 Практика 🟢 Лабораторна
 
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(events) %}
 <i>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</i>
@@ -43,7 +43,7 @@ WEEK_EVENT_LIST = environment.from_string("""
 {% if group %}
 Група: {{ group }}
 {% endif %}
-🟦 Лекція 🟧 Практика 🟩 Лабораторна
+🔵 Лекція 🟠 Практика 🟢 Лабораторна
 
 {% for weekday, day in group_by_weekday(events) %}
 <b>{{ get_weekday_name(weekday, week) }}</b>
