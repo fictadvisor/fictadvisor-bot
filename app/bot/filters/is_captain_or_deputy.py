@@ -18,5 +18,9 @@ class IsCaptainOrDeputy(Filter):
             if user.group.role in (Role.CAPTAIN, Role.MODERATOR):
                 return {"user": user}
         except ResponseException as e:
+            if isinstance(update, Message):
+                await update.answer("Прив'яжіть телеграм до аккаунта FictAdvisor")
             logging.error(e)
+        if isinstance(update, Message):
+            await update.answer("Ця команда лише для старости або заступників")
         return False
