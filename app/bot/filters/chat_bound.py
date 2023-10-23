@@ -19,7 +19,7 @@ class ChatBound(Filter):
     async def __call__(self, update: Union[Message, CallbackQuery]) -> Union[Dict[str, TelegramGroupsByTelegramId], bool]:
         try:
             async with TelegramGroupAPI() as telegram_group_api:
-                telegram_groups = await telegram_group_api.get_by_telegram_id(self.get_chat_id(update))  # type: ignore[union-attr]
+                telegram_groups = await telegram_group_api.get_by_telegram_id(self.get_chat_id(update))
             return {"telegram_groups": telegram_groups}
         except ResponseException as e:
             if isinstance(update, Message):
