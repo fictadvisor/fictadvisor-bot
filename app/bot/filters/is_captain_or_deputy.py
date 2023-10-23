@@ -19,8 +19,9 @@ class IsCaptainOrDeputy(Filter):
                 return {"user": user}
         except ResponseException as e:
             if isinstance(update, Message):
-                await update.answer("Прив'яжіть телеграм до аккаунта FictAdvisor")
+                await update.reply("Прив'яжіть телеграм до аккаунта FictAdvisor")
             logging.error(e)
-        if isinstance(update, Message):
-            await update.answer("Ця команда лише для старости або заступників")
-        return False
+        else:
+            if isinstance(update, Message):
+                await update.reply("Ця команда лише для старости або заступників")
+            return False

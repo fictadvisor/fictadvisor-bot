@@ -23,6 +23,6 @@ class ChatBound(Filter):
             return {"telegram_groups": telegram_groups}
         except ResponseException as e:
             if isinstance(update, Message):
-                await update.answer("Чат не закріплено за жодною групою, пропишіть /start")
+                await update.reply("Чат не закріплено за жодною групою, пропишіть /start")
             logging.error(e)
         return False
