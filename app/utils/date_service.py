@@ -1,3 +1,4 @@
+import math
 from datetime import date
 
 
@@ -7,3 +8,7 @@ class DateService:
     @classmethod
     def get_current_day(cls) -> int:
         return date.today().timetuple().tm_yday - cls.START_SEMESTER
+
+    @classmethod
+    def get_week(cls) -> int:
+        return math.ceil(cls.get_current_day() / 7)

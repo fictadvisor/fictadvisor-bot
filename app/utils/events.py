@@ -1,3 +1,4 @@
+from datetime import date
 from itertools import groupby
 from typing import Iterable, Iterator, List, Tuple
 
@@ -19,4 +20,6 @@ def group_by_weekday(
 
 
 def get_weekday_name(weekday: int) -> str:
-    return weekdays[weekday]
+    if date.today().weekday() == weekday:
+        return f"🟥🟥🟥{weekdays[weekday]}🟥🟥🟥"
+    return f"⬜️⬜️⬜️{weekdays[weekday]}⬜️⬜️⬜️"
