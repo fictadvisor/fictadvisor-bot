@@ -17,5 +17,6 @@ async def send_message_handler(
         chat_id: int = Query(default=settings.CHAT_ID, alias="id"),
         bot: Bot = Depends(BotStub)
 ) -> JSONResponse:
-    await bot.send_message(chat_id=chat_id, text=message.text, parse_mode=parse_mode)
+    print(message.text)
+    await bot.send_message(chat_id=chat_id, text=message.text)
     return JSONResponse(status_code=200, content={})

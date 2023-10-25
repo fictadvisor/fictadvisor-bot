@@ -18,7 +18,7 @@ BROADCAST_EVENTS = environment.from_string("""
 {% endif %}
 🔵 Лекція 🟠 Практика 🟢 Лабораторна
 
-Через {{ delta }} хвилин розпочинається:
+Через {{ delta }} розпочинається:
 {% for event in events %}
 <a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
