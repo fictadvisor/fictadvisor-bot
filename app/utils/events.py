@@ -29,5 +29,5 @@ def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
     if week and check_odd(week) != check_odd(DateService.get_week()):
         allocation = "⬜️⬜️⬜️"
     if date.today().weekday() == weekday:
-        return f"{allocation} {weekdays[weekday]} {allocation}"
-    return f"⬜️⬜️⬜️ {weekdays[weekday]} ⬜️⬜️⬜️"
+        return f"{allocation} {weekdays[weekday]}"
+    return f"⬜️⬜️⬜️ {weekdays[weekday]}"
