@@ -5,7 +5,7 @@ from typing import Iterable, Iterator, List, Optional, Tuple
 from app.services.types.general_event import GeneralEvent
 from app.utils.date_service import DateService
 
-weekdays = ["Понеділок", "Вівторок", "Середа", "Четверг", "П'ятниця", "Субота", "Неділя"]
+weekdays = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота", "Неділя"]
 
 
 def check_odd(n: int) -> bool:
