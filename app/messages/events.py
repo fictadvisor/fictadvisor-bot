@@ -31,7 +31,7 @@ EVENT_LIST = environment.from_string("""
 🔵 Лекція 🟠 Практика 🟢 Лаба
 
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(events) %}
-<code>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</code>
+<code>{{ start_hour + 2 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 2 }}:{{ "%02d" | format(end_minute) }}</code>
 {% for event in now %}
 <a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
@@ -48,7 +48,7 @@ WEEK_EVENT_LIST = environment.from_string("""
 {% for weekday, day in group_by_weekday(events) %}
 <b>{{ get_weekday_name(weekday, week) }}</b>
 {% for (start_hour, start_minute, end_hour, end_minute), now in group_by_time(day) %}
-<code>{{ start_hour + 3 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 3 }}:{{ "%02d" | format(end_minute) }}</code>
+<code>{{ start_hour + 2 }}:{{ "%02d" | format(start_minute) }}-{{ end_hour + 2 }}:{{ "%02d" | format(end_minute) }}</code>
 {% for event in now %}
 <a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}

@@ -39,7 +39,7 @@ class Schedule:
             grouped = group_by_time(general_events.events)
 
             for (start_hour, start_minute, _end_hour, _end_minute), events in grouped:
-                delta = (start_hour - now.hour) * 60 + start_minute - now.minute
+                delta = (start_hour - now.hour - 1) * 60 + start_minute - now.minute
                 message = None
                 if delta == 0:
                     message = await STARTING_EVENTS.render_async(events=events)
