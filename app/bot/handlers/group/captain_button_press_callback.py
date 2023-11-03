@@ -20,7 +20,7 @@ async def captain_button_press_callback(callback: CallbackQuery, user: Student) 
                 return
 
             try:
-                await telegram_group_api.get_by_telegram_id(callback.message.chat.id) # type: ignore[union-attr]
+                await telegram_group_api.get_by_telegram_id(callback.message.chat.id)  # type: ignore[union-attr]
             except ResponseException:
                 await telegram_group_api.create(group.id,
                                                 CreateTelegramGroup(

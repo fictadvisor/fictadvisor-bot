@@ -14,7 +14,7 @@ class ScheduleAPI(BaseAPI):
         if day:
             params = {"day": day}
         async with self._session.get(
-            f"{self.path}/groups/{group_id}/general/day",
+            f"{self.path}/groups/{group_id}/day",
             params=params
         ) as response:
             json = await response.json(content_type=None)
@@ -27,7 +27,7 @@ class ScheduleAPI(BaseAPI):
         if week:
             params = {"week": week}
         async with self._session.get(
-                f"{self.path}/groups/{group_id}/general/week",
+                f"{self.path}/groups/{group_id}/week",
                 params=params
         ) as response:
             json = await response.json(content_type=None)
@@ -40,7 +40,7 @@ class ScheduleAPI(BaseAPI):
         if week:
             params = {"week": week}
         async with self._session.get(
-                f"{self.path}/groups/{group_id}/general/fortnight",
+                f"{self.path}/groups/{group_id}/fortnight",
                 params=params
         ) as response:
             json = await response.json(content_type=None)
