@@ -11,4 +11,4 @@ discipline_types = {
 
 
 def get_discipline_type_name(discipline_type: DisciplineTypes) -> str:
-    return discipline_types[discipline_type]
+    return discipline_types.get(discipline_type, "🟣")

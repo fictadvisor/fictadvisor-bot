@@ -7,7 +7,7 @@ class GroupAPI(BaseAPI):
     _path = "/groups"
 
     async def get_groups_with_telegram_groups(self) -> GroupsWithTelegramGroup:
-        async with self._session.get(f"{self.path}/telegram/groups") as response:
+        async with self._session.get(f"{self.path}/telegramGroups") as response:
             json = await response.json(content_type=None)
             if response.status == 200:
                 return GroupsWithTelegramGroup.model_validate(json)

@@ -14,4 +14,4 @@ class GeneralEvent(Base):
     url: Optional[str]
     start_time: datetime = Field(alias="startTime")
     end_time: datetime = Field(alias="endTime")
-    discipline_type: GeneralDisciplineType = Field(alias="disciplineType")
+    discipline_type: Optional[GeneralDisciplineType] = Field(alias="disciplineType")

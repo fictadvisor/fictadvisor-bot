@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Dict
 from uuid import UUID
 
 from app.services.base_api import BaseAPI
@@ -9,10 +9,12 @@ from app.services.types.general_events import FortnightGeneralEvents, GeneralEve
 class ScheduleAPI(BaseAPI):
     _path = "/schedule"
 
-    async def get_general_group_events_by_day(self, group_id: Union[UUID, str], day: Optional[int] = None) -> GeneralEvents:
-        params = None
+    async def get_general_group_events_by_day(self, group_id: Union[UUID, str], user_id: Optional[Union[UUID, str]] = None, day: Optional[int] = None) -> GeneralEvents:
+        params: Dict[str, Union[int, str]] = {}
         if day:
-            params = {"day": day}
+            params.update({"day": day})
+        if user_id:
+            params.update({"userId": str(user_id)})
         async with self._session.get(
             f"{self.path}/groups/{group_id}/day",
             params=params
@@ -22,10 +24,12 @@ class ScheduleAPI(BaseAPI):
                 return GeneralEvents.model_validate(json)
             raise ResponseException.from_json(json)
 
-    async def get_general_group_events_by_week(self, group_id: Union[UUID, str], week: Optional[int] = None) -> GeneralEvents:
-        params = None
+    async def get_general_group_events_by_week(self, group_id: Union[UUID, str], user_id: Optional[Union[UUID, str]] = None, week: Optional[int] = None) -> GeneralEvents:
+        params: Dict[str, Union[int, str]] = {}
         if week:
-            params = {"week": week}
+            params.update({"week": week})
+        if user_id:
+            params.update({"userId": str(user_id)})
         async with self._session.get(
                 f"{self.path}/groups/{group_id}/week",
                 params=params
@@ -35,10 +39,12 @@ class ScheduleAPI(BaseAPI):
                 return GeneralEvents.model_validate(json)
             raise ResponseException.from_json(json)
 
-    async def get_general_group_events_by_fortnight(self, group_id: Union[UUID, str], week: Optional[int] = None) -> FortnightGeneralEvents:
-        params = None
+    async def get_general_group_events_by_fortnight(self, group_id: Union[UUID, str], user_id: Optional[Union[UUID, str]] = None, week: Optional[int] = None) -> FortnightGeneralEvents:
+        params: Dict[str, Union[int, str]] = {}
         if week:
-            params = {"week": week}
+            params.update({"week": week})
+        if user_id:
+            params.update({"userId": str(user_id)})
         async with self._session.get(
                 f"{self.path}/groups/{group_id}/fortnight",
                 params=params
