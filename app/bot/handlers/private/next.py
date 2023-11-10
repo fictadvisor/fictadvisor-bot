@@ -13,7 +13,7 @@ from app.utils.events import group_by_time
 async def next_command(message: Message) -> None:
     async with UserAPI() as user_api:
         user = await user_api.get_user_by_telegram_id(message.from_user.id)
-    async with ScheduleAPI() as schedule_api:# type: ignore[union-attr]
+    async with ScheduleAPI() as schedule_api:  # type: ignore[union-attr]
         general_events = await schedule_api.get_general_group_events_by_day(user.group.id, user_id=user.id)
 
     time = datetime.utcnow()

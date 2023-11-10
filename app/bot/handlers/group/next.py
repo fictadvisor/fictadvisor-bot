@@ -5,10 +5,10 @@ from aiogram.types import Message
 
 from app.messages.events import NEXT_EVENT
 from app.services.schedule_api import ScheduleAPI
-from app.services.types.general_event import GeneralEvent
 from app.services.telegram_group_api import TelegramGroupAPI
-from app.utils.events import group_by_time
+from app.services.types.general_event import GeneralEvent
 from app.utils.date_service import DateService
+from app.utils.events import group_by_time
 
 
 async def next_command(message: Message) -> None:
