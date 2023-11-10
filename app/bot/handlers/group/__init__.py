@@ -21,6 +21,8 @@ from app.bot.handlers.group.kick_bot import kick_bot
 from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow
 from app.bot.handlers.group.week import week
+from app.bot.handlers.private.left import left_command
+from app.bot.handlers.private.now import now_command
 from app.bot.keyboards.types.select_week import SelectWeek
 
 router = Router(name=__name__)
@@ -41,4 +43,6 @@ router.message.register(today, Command("today"))
 router.message.register(tomorrow, Command("tomorrow"))
 router.message.register(week, Command("week"))
 router.message.register(fortnight, Command("fortnight"))
+router.message.register(now_command, Command("now"))
+router.message.register(left_command, Command("left"))
 router.callback_query.register(select_week, SelectWeek.filter())
