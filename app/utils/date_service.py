@@ -1,5 +1,5 @@
 import math
-from datetime import date, datetime, UTC
+from datetime import date, datetime
 
 
 class DateService:
@@ -12,11 +12,11 @@ class DateService:
     @classmethod
     def get_week(cls) -> int:
         return math.ceil(cls.get_current_day() / 7)
-    
+
     @classmethod
-    def get_utcnow(cls):
+    def get_utcnow(cls) -> datetime:
         return datetime.utcnow()
-    
+
     @classmethod
-    def get_now(cls):
+    def get_now(cls) -> datetime:
         return datetime.now(tz=None)

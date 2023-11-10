@@ -15,7 +15,7 @@ async def now(message: Message) -> None:
     if not general_events.events:
         await message.answer("Пар немає")
         return
-    
+
     if general_events.events:
         for event in (general_events.events):
             if(event.start_time < DateService.get_utcnow() < event.end_time):
