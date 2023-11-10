@@ -24,6 +24,7 @@ from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow
 from app.bot.handlers.group.week import week
 from app.bot.keyboards.types.select_week import SelectWeek
+from app.bot.handlers.group.next import next_command
 
 router = Router(name=__name__)
 router.message.filter(F.chat.type.in_({ChatType.GROUP, ChatType.SUPERGROUP}))
@@ -45,4 +46,6 @@ router.message.register(week, Command("week"))
 router.message.register(fortnight, Command("fortnight"))
 router.message.register(now_command, Command("now"), ChatBound())
 router.message.register(left_command, Command("left"), ChatBound())
+router.message.register(next_command, Command("next"))
+
 router.callback_query.register(select_week, SelectWeek.filter())
