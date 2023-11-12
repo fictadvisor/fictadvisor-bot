@@ -9,7 +9,7 @@ from app.services.telegram_group_api import TelegramGroupAPI
 from app.utils.events import group_by_time
 
 
-async def today(message: Message) -> None:
+async def left_command(message: Message) -> None:
     async with TelegramGroupAPI() as telegram_group_api:
         telegram_groups = await telegram_group_api.get_by_telegram_id(message.chat.id)
     for telegram_group in telegram_groups.telegram_groups:
