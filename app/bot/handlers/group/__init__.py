@@ -46,6 +46,6 @@ router.message.register(week, Command("week"))
 router.message.register(fortnight, Command("fortnight"))
 router.message.register(now_command, Command("now"), ChatBound())
 router.message.register(left_command, Command("left"), ChatBound())
-router.message.register(next_command, Command("next"))
+router.message.register(next_command, Command("next"), ChatBound())
 
 router.callback_query.register(select_week, SelectWeek.filter())
