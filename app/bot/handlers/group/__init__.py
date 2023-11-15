@@ -18,8 +18,8 @@ from app.bot.handlers.group.enable import enable
 from app.bot.handlers.group.fortnight import fortnight, select_week
 from app.bot.handlers.group.invite_bot import invite_bot, migrate_chat
 from app.bot.handlers.group.kick_bot import kick_bot
-from app.bot.handlers.group.next import next_command
 from app.bot.handlers.group.left import left_command
+from app.bot.handlers.group.next import next_command
 from app.bot.handlers.group.now import now_command
 from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow

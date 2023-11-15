@@ -17,7 +17,7 @@ async def left_command(message: Message) -> None:
         general_events = await schedule_api.get_general_group_events_by_day(user.group.id, user_id=user.id)
 
     if not general_events.events:
-        await message.reply("Сьогодні пар немає")
+        await message.answer("Сьогодні пар немає")
         return
 
     time = datetime.now(tz=pytz.UTC)
@@ -28,7 +28,7 @@ async def left_command(message: Message) -> None:
             break
 
     if not time_left:
-        await message.reply("Зараз немає пар")
+        await message.answer("Зараз немає пар")
         return
 
     await message.answer(
