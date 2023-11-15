@@ -4,6 +4,7 @@ from aiogram.filters import Command, CommandStart
 
 from app.bot.handlers.private.fortnight import fortnight, select_week
 from app.bot.handlers.private.left import left_command
+from app.bot.handlers.private.next import next_command
 from app.bot.handlers.private.now import now_command
 from app.bot.handlers.private.start import start
 from app.bot.handlers.private.today import today
@@ -20,6 +21,7 @@ router.message.register(today, Command("today"))
 router.message.register(tomorrow, Command("tomorrow"))
 router.message.register(week, Command("week"))
 router.message.register(fortnight, Command("fortnight"))
+router.message.register(next_command, Command('next'))
 router.message.register(now_command, Command("now"))
 router.message.register(left_command, Command("left"))
 router.callback_query.register(select_week, SelectWeek.filter())

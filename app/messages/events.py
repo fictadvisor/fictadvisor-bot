@@ -74,3 +74,11 @@ NOW_EVENT = environment.from_string("""
 LEFT_EVENT = environment.from_string("""
 До кінця пари: <b>{% if time_left[0] %}{{ time_left[0] }} год {% endif %}{{ time_left[1] }} хв</b>
 """)
+
+NEXT_EVENT = environment.from_string("""
+Наступнa пара:
+<code>{{ convert_to_time(event_time[0]) }}-{{ convert_to_time(event_time[1]) }}</code>
+{% for event in events %}
+<a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
+{% endfor %}
+""")

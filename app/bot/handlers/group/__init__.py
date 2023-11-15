@@ -19,6 +19,7 @@ from app.bot.handlers.group.fortnight import fortnight, select_week
 from app.bot.handlers.group.invite_bot import invite_bot, migrate_chat
 from app.bot.handlers.group.kick_bot import kick_bot
 from app.bot.handlers.group.left import left_command
+from app.bot.handlers.group.next import next_command
 from app.bot.handlers.group.now import now_command
 from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow
@@ -45,4 +46,6 @@ router.message.register(week, Command("week"))
 router.message.register(fortnight, Command("fortnight"))
 router.message.register(now_command, Command("now"), ChatBound())
 router.message.register(left_command, Command("left"), ChatBound())
+router.message.register(next_command, Command("next"), ChatBound())
+
 router.callback_query.register(select_week, SelectWeek.filter())
