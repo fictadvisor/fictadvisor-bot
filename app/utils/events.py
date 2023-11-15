@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from itertools import groupby
 from typing import Iterable, Iterator, List, Optional, Tuple
 
@@ -14,8 +14,8 @@ def check_odd(n: int) -> bool:
 
 def group_by_time(
         events: List[GeneralEvent]
-) -> Iterator[Tuple[Tuple[int, int, int, int], Iterable[GeneralEvent]]]:
-    return groupby(events, lambda x: (x.start_time.hour, x.start_time.minute, x.end_time.hour, x.end_time.minute))
+) -> Iterator[Tuple[Tuple[datetime, datetime], Iterable[GeneralEvent]]]:
+    return groupby(events, lambda x: (x.start_time, x.end_time))
 
 
 def group_by_weekday(
