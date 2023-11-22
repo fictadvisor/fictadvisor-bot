@@ -3,6 +3,7 @@ import logging
 from asyncio import sleep
 from datetime import datetime
 
+import pytz
 from aiogram import Bot
 from aiogram.exceptions import DetailedAiogramError
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED  # type: ignore
@@ -32,14 +33,14 @@ class Schedule:
 
     @staticmethod
     async def schedule_group(group: GroupWithTelegramGroupsResponse, bot: Bot) -> None:
-        now = datetime.utcnow()
+        now = datetime.now(tz=pytz.UTC)
         async with ScheduleAPI() as schedule_api:
             groups_to_send = list(filter(lambda x: x.post_info, group.telegram_groups))
             general_events = await schedule_api.get_general_group_events_by_day(group.id)
             grouped = group_by_time(general_events.events)
 
-            for (start_hour, start_minute, _end_hour, _end_minute), events in grouped:
-                delta = (start_hour - now.hour) * 60 + start_minute - now.minute
+            for (start_time, _end_time), events in grouped:
+                delta = (start_time - now).seconds // 60
                 message = None
                 if delta == 0:
                     message = await STARTING_EVENTS.render_async(events=events)
