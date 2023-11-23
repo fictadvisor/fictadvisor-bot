@@ -9,7 +9,7 @@ class DateService:
 
     @classmethod
     def get_current_day(cls) -> int:
-        if 24 - datetime.now(tz=timezone.utc).time().hour <= 2:
+        if 24 - datetime.now(tz=pytz.UTC).time().hour <= 2:
             return date.today().timetuple().tm_yday - cls.START_SEMESTER + 1
 
         return date.today().timetuple().tm_yday - cls.START_SEMESTER
