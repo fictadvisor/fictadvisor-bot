@@ -1,7 +1,5 @@
 import math
-from datetime import date, datetime
-
-from pytz import UTC
+from datetime import date, datetime, timezone
 
 
 class DateService:
@@ -9,7 +7,7 @@ class DateService:
 
     @classmethod
     def get_current_day(cls) -> int:
-        if 24 - datetime.now(tz=UTC).time().hour <= 2:
+        if 24 - datetime.now(tz=timezone.utc).time().hour <= 2:
             return date.today().timetuple().tm_yday - cls.START_SEMESTER + 1
 
         return date.today().timetuple().tm_yday - cls.START_SEMESTER
