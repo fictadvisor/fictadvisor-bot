@@ -4,14 +4,12 @@ from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.keyboards.week_keyboard import get_week_keyboard
 from app.messages.events import WEEK_EVENT_LIST
 from app.services.schedule_api import ScheduleAPI
-from app.services.telegram_group_api import TelegramGroupAPI
+from app.services.types.telegram_groups import TelegramGroupsByTelegramId
 from app.utils.date_service import DateService
 from app.utils.events import check_odd
 
 
-async def fortnight(message: Message) -> None:
-    async with TelegramGroupAPI() as telegram_group_api:
-        telegram_groups = await telegram_group_api.get_by_telegram_id(message.chat.id)
+async def fortnight(message: Message, telegram_groups: TelegramGroupsByTelegramId) -> None:
     for telegram_group in telegram_groups.telegram_groups:
         async with ScheduleAPI() as schedule_api:
             general_events = await schedule_api.get_general_group_events_by_fortnight(telegram_group.group.id)
