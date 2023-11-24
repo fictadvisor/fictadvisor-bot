@@ -28,6 +28,6 @@ def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
     allocation = "🟥🟥🟥"
     if week and check_odd(week) != check_odd(DateService.get_week()):
         allocation = "⬜️⬜️⬜️"
-    if DateService.get_current_wday() == weekday:
+    if DateService.get_current_weekday() == weekday:
         return f"{allocation} {weekdays[weekday]}"
     return f"⬜️⬜️⬜️ {weekdays[weekday]}"
