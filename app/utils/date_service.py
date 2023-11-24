@@ -9,7 +9,11 @@ class DateService:
 
     @classmethod
     def get_current_day(cls) -> int:
-        return date.today().timetuple().tm_yday - cls.START_SEMESTER
+        return datetime.now(pytz.timezone("Europe/Kiev")).date().timetuple().tm_yday - cls.START_SEMESTER
+
+    @classmethod
+    def get_current_weekday(cls) -> int:
+        return datetime.now(pytz.timezone("Europe/Kiev")).date().timetuple().tm_wday
 
     @classmethod
     def get_week(cls) -> int:
@@ -18,4 +22,3 @@ class DateService:
     @staticmethod
     def add_tz_offset(time: datetime) -> datetime:
         return time.replace(tzinfo=pytz.UTC).astimezone(pytz.timezone("Europe/Kiev"))
-
