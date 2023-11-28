@@ -9,12 +9,14 @@ from app.services.types.general_events import FortnightGeneralEvents, GeneralEve
 class ScheduleAPI(BaseAPI):
     _path = "/schedule"
 
-    async def get_general_group_events_by_day(self, group_id: Union[UUID, str], user_id: Optional[Union[UUID, str]] = None, day: Optional[int] = None) -> GeneralEvents:
+    async def get_general_group_events_by_day(self, group_id: Union[UUID, str], user_id: Optional[Union[UUID, str]] = None, day: Optional[int] = None, week: Optional[int] = None) -> GeneralEvents:
         params: Dict[str, Union[int, str]] = {}
         if day:
             params.update({"day": day})
         if user_id:
             params.update({"userId": str(user_id)})
+        if week:
+            params.update({"week": week})
         async with self._session.get(
             f"{self.path}/groups/{group_id}/day",
             params=params
