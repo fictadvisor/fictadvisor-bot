@@ -1,3 +1,5 @@
+import logging
+
 from aiogram.types import Message
 
 from app.messages.events import WEEK_EVENT_LIST
@@ -13,6 +15,7 @@ async def week(message: Message, telegram_groups: TelegramGroupsByTelegramId) ->
         if not general_events.events:
             await message.reply(f"У групи {telegram_group.group.code} пар немає")
         else:
+            logging.debug(await WEEK_EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events))
             await message.reply(
                 await WEEK_EVENT_LIST.render_async(group=telegram_group.group.code, events=general_events.events),
                 disable_web_page_preview=True
