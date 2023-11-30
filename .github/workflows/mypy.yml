@@ -1,4 +1,4 @@
-name: Code check
+name: Code check (MyPy)
 
 on: [push]
 
@@ -25,6 +25,8 @@ jobs:
       - name: Install the project dependencies
         run: poetry install
       - name: Run ruff and mypy
-        run: |
-          poetry run ruff app --format github
-          poetry run mypy app
+        run: poetry run ruff app --format github
+      - name: Add mypy annotator
+        uses: pr-annotators/mypy-pr-annotator@v1.0.0
+      - name: Run mypy
+        run: poetry run mypy app
