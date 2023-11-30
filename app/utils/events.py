@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from itertools import groupby
 from typing import Iterable, Iterator, List, Optional, Tuple
 
@@ -28,6 +28,6 @@ def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
     allocation = "🟥🟥🟥"
     if week and check_odd(week) != check_odd(DateService.get_week()):
         allocation = "⬜️⬜️⬜️"
-    if date.today().weekday() == weekday:
+    if DateService.get_current_weekday() == weekday:
         return f"{allocation} {weekdays[weekday]}"
     return f"⬜️⬜️⬜️ {weekdays[weekday]}"

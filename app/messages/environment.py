@@ -10,7 +10,7 @@ from app.utils.get_discipline_type_name import get_discipline_type_name
 async def convert_to_time(time: datetime) -> str:
     return DateService.add_tz_offset(time).strftime("%H:%M")
 
-environment = Environment(enable_async=True, trim_blocks=True)
+environment = Environment(enable_async=True, trim_blocks=True, autoescape=True)
 environment.globals.update(
     get_discipline_type_name=get_discipline_type_name,
     group_by_time=group_by_time,
