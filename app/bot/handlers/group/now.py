@@ -8,7 +8,6 @@ from app.messages.events import NOW_EVENT
 from app.services.schedule_api import ScheduleAPI
 from app.services.types.general_event import GeneralEvent
 from app.services.types.telegram_groups import TelegramGroupsByTelegramId
-from app.utils.date_service import DateService
 from app.utils.events import group_by_time
 
 
@@ -29,10 +28,7 @@ async def now_command(message: Message, telegram_groups: TelegramGroupsByTelegra
             if start_time <= time <= end_time:
                 time_left = end_time - time
                 now_events = events
-                now_time = (
-                    DateService.add_tz_offset(start_time),
-                    DateService.add_tz_offset(end_time)
-                )
+                now_time = (start_time, end_time)
                 break
 
         if not time_left:
