@@ -8,6 +8,7 @@ from app.messages.events import NOW_EVENT
 from app.services.schedule_api import ScheduleAPI
 from app.services.types.general_event import GeneralEvent
 from app.services.types.telegram_groups import TelegramGroupsByTelegramId
+from app.utils.date_service import DateService
 from app.utils.events import group_by_time
 
 
