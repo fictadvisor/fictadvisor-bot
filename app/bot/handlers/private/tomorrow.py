@@ -13,7 +13,7 @@ async def tomorrow(message: Message) -> None:
         general_events = await schedule_api.get_general_group_events_by_day(
             user.group.id,
             user_id=user.id,
-            day=DateService.get_current_weekday(),
+            day=(DateService.get_current_weekday() + 2) % 7,
             week=DateService.get_week_by_day(DateService.get_current_day() + 1)
         )
 
