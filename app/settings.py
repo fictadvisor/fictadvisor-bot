@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import AnyUrl, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -5,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     DEVELOPMENT: bool = False
     DEBUG: bool = True
+    NGROK_AUTHTOKEN: Optional[SecretStr] = None
 
     TOKEN: SecretStr
     CHAT_ID: int

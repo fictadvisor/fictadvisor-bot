@@ -1,19 +1,20 @@
 import math
-from datetime import date, datetime
+from datetime import datetime
 
 import pytz
 
 
 class DateService:
-    START_SEMESTER = date(2023, 9, 3).timetuple().tm_yday
+    TIMEZONE = pytz.timezone("Europe/Kiev")
+    START_SEMESTER = datetime(2023, 9, 3, tzinfo=TIMEZONE)
 
-    @staticmethod
-    def get_now() -> datetime:
-        return datetime.now(pytz.timezone("Europe/Kiev"))
+    @classmethod
+    def get_now(cls) -> datetime:
+        return datetime.now(cls.TIMEZONE)
 
     @classmethod
     def get_current_day(cls) -> int:
-        return cls.get_now().date().timetuple().tm_yday - cls.START_SEMESTER
+        return (cls.get_now() - cls.START_SEMESTER).days
 
     @classmethod
     def get_current_weekday(cls) -> int:
@@ -27,6 +28,6 @@ class DateService:
     def get_week(cls) -> int:
         return math.ceil(cls.get_current_day() / 7)
 
-    @staticmethod
-    def add_tz_offset(time: datetime) -> datetime:
-        return time.replace(tzinfo=pytz.UTC).astimezone(pytz.timezone("Europe/Kiev"))
+    @classmethod
+    def add_tz_offset(cls, time: datetime) -> datetime:
+        return time.replace(tzinfo=pytz.UTC).astimezone(cls.TIMEZONE)
