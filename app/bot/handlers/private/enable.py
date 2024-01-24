@@ -34,13 +34,13 @@ async def enable(message: Message) -> None:
                     )
                 )
             else:
-                await telegram_group_api.update(
+                telegram_group = await telegram_group_api.update(
                     user.group.id,
                     message.chat.id,
                     UpdateTelegramGroup(
                         post_info=not telegram_group.post_info
                     )
                 )
-            await message.reply("Сповіщення увімкнено" if not telegram_group.post_info else "Сповіщення вимкнено")
+            await message.reply("Сповіщення увімкнено" if telegram_group.post_info else "Сповіщення вимкнено")
     except ResponseException as e:
         logging.error(e)
