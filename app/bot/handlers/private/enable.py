@@ -23,7 +23,7 @@ async def enable(message: Message) -> None:
     try:
         async with TelegramGroupAPI() as telegram_group_api:
             telegram_groups: TelegramGroups = await telegram_group_api.get_telegram_groups(user.group.id)
-            telegram_group: Optional[TelegramGroup] = next(filter(lambda x: all((x.source == TelegramSource.PERSONAL_CHAT, x.telegram_id == message.from_user.id)), telegram_groups.telegram_groups), None) # type: ignore
+            telegram_group: Optional[TelegramGroup] = next(filter(lambda x: (x.source == TelegramSource.PERSONAL_CHAT and x.telegram_id == message.from_user.id), telegram_groups.telegram_groups), None) # type: ignore
             if not telegram_group:
                 await telegram_group_api.create(
                     user.group.id,
