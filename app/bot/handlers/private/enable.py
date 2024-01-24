@@ -25,7 +25,7 @@ async def enable(message: Message) -> None:
             telegram_groups: TelegramGroups = await telegram_group_api.get_telegram_groups(user.group.id)
             telegram_group: Optional[TelegramGroup] = next(filter(lambda x: (x.source == TelegramSource.PERSONAL_CHAT and x.telegram_id == message.from_user.id), telegram_groups.telegram_groups), None) # type: ignore
             if not telegram_group:
-                await telegram_group_api.create(
+                telegram_group = await telegram_group_api.create(
                     user.group.id,
                     CreateTelegramGroup(
                         source=TelegramSource.PERSONAL_CHAT,
@@ -41,6 +41,6 @@ async def enable(message: Message) -> None:
                         post_info=not telegram_group.post_info
                     )
                 )
-            await message.reply("Сповіщення увімкнено" if not telegram_group.post_info else "Сповіщення вимкнено") # type: ignore[union-attr]
+            await message.reply("Сповіщення увімкнено" if not telegram_group.post_info else "Сповіщення вимкнено")
     except ResponseException as e:
         logging.error(e)
