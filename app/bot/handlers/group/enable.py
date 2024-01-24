@@ -17,22 +17,13 @@ async def enable(message: Message, user: Student, telegram_groups: TelegramGroup
             if not telegram_group:
                 await message.reply("Цей чат не твоєї групи")
                 return
-            if not telegram_group.post_info:
-                await telegram_group_api.update(
-                    user.group.id,
-                    message.chat.id,
-                    UpdateTelegramGroup(
-                        post_info=True
-                    )
+            telegram_group = await telegram_group_api.update(
+                user.group.id,
+                message.chat.id,
+                UpdateTelegramGroup(
+                    post_info=not telegram_group.post_info
                 )
-            else:
-                await telegram_group_api.update(
-                    user.group.id,
-                    message.chat.id,
-                    UpdateTelegramGroup(
-                        post_info=False
-                    )
-                )
-            await message.reply("Сповіщення увімкнено" if not telegram_group.post_info else "Сповіщення вимкнено")
+            )
+            await message.reply("Сповіщення увімкнено" if telegram_group.post_info else "Сповіщення вимкнено")
     except ResponseException as e:
         logging.error(e)
