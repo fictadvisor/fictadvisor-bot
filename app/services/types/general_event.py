@@ -4,8 +4,8 @@ from uuid import UUID
 
 from pydantic import Field
 
+from app.enums.discipline_types import DisciplineTypes
 from app.services.types.base import Base
-from app.services.types.general_discipline_type import GeneralDisciplineType
 
 
 class GeneralEvent(Base):
@@ -14,4 +14,4 @@ class GeneralEvent(Base):
     url: Optional[str]
     start_time: datetime = Field(alias="startTime")
     end_time: datetime = Field(alias="endTime")
-    discipline_type: Optional[GeneralDisciplineType] = Field(alias="disciplineType")
+    discipline_type: DisciplineTypes = Field(alias="eventType")
