@@ -6,9 +6,10 @@ discipline_types = {
     DisciplineTypes.LABORATORY: "🟢",
     DisciplineTypes.EXAM: "🟣",
     DisciplineTypes.CONSULTATION: "🟣",
-    DisciplineTypes.WORKOUT: "🟣"
+    DisciplineTypes.WORKOUT: "🟣",
+    DisciplineTypes.OTHER: "🟤"
 }
 
 
 def get_discipline_type_name(discipline_type: DisciplineTypes) -> str:
-    return discipline_types.get(discipline_type, "🟣")
+    return discipline_types.get(discipline_type, "🟤")

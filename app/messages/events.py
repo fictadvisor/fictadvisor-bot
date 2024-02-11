@@ -82,3 +82,18 @@ NEXT_EVENT = environment.from_string("""
 <a href="{{ event.url|d('', true) }}">{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}</a>
 {% endfor %}
 """)
+
+EVENT_INFOS_LIST = environment.from_string("""
+{% if group %}
+Група: {{ group }}
+{% endif %}
+🔵 Лекція 🟠 Практика 🟢 Лаба
+
+{% for (start_time, end_time), now in group_by_time(events) %}
+<code>{{ convert_to_time(start_time) }}-{{ convert_to_time(end_time) }}</code>
+{% for event in now %}
+{{ get_discipline_type_name(event.discipline_type.name) }} {{ event.name }}
+<b>{{event.event_info}}</b>
+{% endfor %}
+{% endfor %}
+""")
