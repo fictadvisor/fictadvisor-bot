@@ -6,7 +6,8 @@ discipline_types = {
     DisciplineTypes.LABORATORY: "🟢",
     DisciplineTypes.EXAM: "🟣",
     DisciplineTypes.CONSULTATION: "🟣",
-    DisciplineTypes.WORKOUT: "🟣"
+    DisciplineTypes.WORKOUT: "🟣",
+    DisciplineTypes.OTHER: "🟣"
 }
 
 

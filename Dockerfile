@@ -1,24 +1,25 @@
-# python version
-ARG PYTHON_VERSION=3.11
+FROM python:3.11-buster as builder
 
-# build stage
-FROM python:${PYTHON_VERSION}-slim AS builder
+RUN pip install poetry==1.4.2
 
-ENV PATH /opt/venv/bin:$PATH
-WORKDIR /opt
-RUN python -m venv venv
-RUN pip install poetry
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+WORKDIR /src
 
 COPY pyproject.toml poetry.lock ./
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-interaction --no-root --only main
 
-#run stage
-FROM python:${PYTHON_VERSION}-slim
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-interaction --no-root --only main
 
-WORKDIR /opt
-COPY --from=builder /opt/venv venv
-ENV PATH /opt/venv/bin:$PATH
-COPY app app
+FROM python:3.11-slim-buster as runtime
 
-CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]
+ENV VIRTUAL_ENV=/src/.venv \
+    PATH="/src/.venv/bin:$PATH"
+
+COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+
+COPY app ./app
+
+ENTRYPOINT ["python", "-m", "uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]

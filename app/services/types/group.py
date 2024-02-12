@@ -23,7 +23,7 @@ class TelegramGroup(Base):
 
 class ExtendedGroup(Group):
     state: State
-    role: Role
+    role: Optional[Role] = None
 
 
 class GroupWithTelegramGroupsResponse(Base):
