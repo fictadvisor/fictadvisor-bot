@@ -17,13 +17,13 @@ from app.bot.keyboards.event_info_keyboards import (
 from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
 from app.bot.states.event_info_states import AddEventInfoStates
 from app.messages.events import VERIFY_EVENT_INFO
+from app.services.exceptions.response_exception import ResponseException
 from app.services.schedule_api import ScheduleAPI
 from app.services.types.certain_event import CertainEvent
 from app.services.types.general_event import GeneralEvent, VerifyEvent
 from app.services.types.general_events import FortnightGeneralEvents
 from app.services.types.student import Student
 from app.services.user_api import UserAPI
-from app.services.exceptions.response_exception import ResponseException
 from app.utils.discipline_type import get_discipline_type_color
 from app.utils.events import what_week_event
 
@@ -104,7 +104,7 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
         await callback.answer()
 
 
-async def refresh_dates(callback: CallbackQuery, bot: Bot, state: FSMContext) -> None:
+async def refresh_dates(callback: CallbackQuery, state: FSMContext) -> None:
     if callback.message and callback.data:
         data = await state.get_data()
         certain_event: CertainEvent = data.get("certain_event") # type: ignore[assignment]
@@ -112,7 +112,7 @@ async def refresh_dates(callback: CallbackQuery, bot: Bot, state: FSMContext) ->
                 reply_markup=get_events_dates(certain_event, week=int(callback.data.split(":")[1]))
             )
 
-async def select_date(callback: CallbackQuery, callback_data: SelectDate, bot: Bot, state: FSMContext) -> None:
+async def select_date(callback: CallbackQuery, callback_data: SelectDate, state: FSMContext) -> None:
     if callback.message:
         await state.update_data({"week": callback_data.week, "strdate": callback_data.strdate})
         await callback.message.edit_text(text="Надрукуй інформацію:")
