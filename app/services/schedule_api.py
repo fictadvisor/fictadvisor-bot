@@ -3,9 +3,9 @@ from uuid import UUID
 
 from app.services.base_api import BaseAPI
 from app.services.exceptions.response_exception import ResponseException
-from app.services.types.general_events import FortnightGeneralEvents, GeneralEvents
 from app.services.types.certain_event import CertainEvent
 from app.services.types.general_event import VerifyEvent
+from app.services.types.general_events import FortnightGeneralEvents, GeneralEvents
 
 
 class ScheduleAPI(BaseAPI):
@@ -70,10 +70,10 @@ class ScheduleAPI(BaseAPI):
                 return CertainEvent.model_validate(json)
             raise ResponseException.from_json(json)
 
-    async def add_event_info(self, event_id: Union[UUID, str], group_id: Union[UUID, str], data: VerifyEvent) -> None:
+    async def add_event_info(self, event_id: Union[UUID, str], group_id: Union[UUID, str], verify_event: VerifyEvent) -> None:
         async with self._session.patch(
                 f"{self.path}/groups/{group_id}/events/{event_id}",
-                json=data.model_dump(mode="json", by_alias=True)
+                json=verify_event.model_dump(mode="json", by_alias=True)
         ) as response:
             json = await response.json(content_type=None)
             if response.status != 200:

@@ -19,17 +19,31 @@ class GeneralEvent(Base):
     discipline_type: Optional[DisciplineTypes] = Field(alias="eventType")
     event_info: Optional[str] = Field(alias="eventInfo")
 
+    def __hash__(self) -> int:
+        hash_value = 5381
+        for char in self.name:
+            hash_value = (hash_value * 33) ^ ord(char)
+        return hash_value
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, GeneralEvent):
+            return self.id == other.id or (self.name == other.name and self.discipline_type == other.discipline_type)
+        return False
+
+    def __lt__(self, other: 'GeneralEvent') -> bool:
+        return str(self.name).lower() < str(other.name).lower()
+
 
 class VerifyEvent(Base):
     week: int
-    name: Optional[str]
-    disciplineId: Optional[Union[UUID, str]]
-    eventType: Optional[DisciplineTypes]
-    teachers: Optional[List[Teacher]]
-    start_time: Optional[datetime] = Field(alias="startTime")
+    event_info: str = Field(alias="eventInfo")
+    name: Optional[str] = None
+    disciplineId: Optional[Union[UUID, str]] = None
+    eventType: Optional[DisciplineTypes] = None
+    teachers: Optional[List[Teacher]] = None
+    start_time: Optional[datetime] = None
     changeStartDate: Optional[bool] = False
-    end_time: Optional[datetime] = Field(alias="endTime")
-    period: Optional[EventPeriod]
-    url: Optional[str]
-    event_info: Optional[str] = Field(alias="eventInfo")
-    disciplineInfo: Optional[str] = Field(alias="discipline_info")
+    end_time: Optional[datetime] = None
+    period: Optional[EventPeriod] = None
+    url: Optional[str] = None
+    disciplineInfo: Optional[str] = None

@@ -1,5 +1,5 @@
 from datetime import datetime
-from itertools import chain, groupby
+from itertools import groupby
 from typing import Iterable, Iterator, List, Optional, Tuple, Union
 from uuid import UUID
 
@@ -35,21 +35,11 @@ def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
     return f"⬜️⬜️⬜️ {weekdays[weekday]}"
 
 
-def combine_events(fortnight_general_event: FortnightGeneralEvents) -> List[GeneralEvent]:
-    first_week_ids: List[UUID] = [event.id for event in fortnight_general_event.first_week_events]
-    second_week_ids: List[UUID] = [event.id for event in fortnight_general_event.second_week_events]
-
-    unique_ids: List[UUID] = list(set(chain(first_week_ids, second_week_ids)))
-
-    group_events: List[GeneralEvent] = [
-        event for event in chain(fortnight_general_event.first_week_events, fortnight_general_event.second_week_events)
-        if event.id in unique_ids
-    ]
-    return group_events
-
-
 def what_week_event(fortnight_general_event: FortnightGeneralEvents, event_id: Union[UUID, str]) -> int:
+    week = DateService.get_week()
     if next(filter(lambda x: x.id == event_id, fortnight_general_event.first_week_events), None) and next(filter(lambda x: x.id == event_id, fortnight_general_event.second_week_events), None):
-        return 2 if check_odd(DateService.get_week()) else 1
+        return week
+    elif next(filter(lambda x: x.id == event_id, fortnight_general_event.first_week_events), None):
+        return week + 1 if check_odd(week) else week
     else:
-        return 2 if next(filter(lambda x: x.id == event_id, fortnight_general_event.second_week_events), None) else 1
+        return week if check_odd(week) else week + 1

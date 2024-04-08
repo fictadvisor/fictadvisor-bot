@@ -11,8 +11,9 @@ class SelectEvent(CallbackData, prefix="eventInfo"):
 
 
 class EventFilter(CallbackData, prefix="eventFilter"):
-    type: DisciplineTypes
+    type: Optional[DisciplineTypes] = None
 
 
 class SelectDate(CallbackData, prefix="date"):
     week: int
+    strdate: str
