@@ -113,8 +113,9 @@ EVENT_INFOS_LIST = environment.from_string("""
 VERIFY_EVENT_INFO = environment.from_string("""
 <b>Перевір чи все правильно:</b>
 <b>Пара:</b> {{get_discipline_type_color(discipline_type)}} {{event_name}}
+
 <b>Додаткова інформація на:</b> 📅 {{date}}
+
 <b>Текст інформації:</b>
 {{info}}
-{{event_id}}
 """)

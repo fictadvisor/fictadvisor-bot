@@ -163,11 +163,9 @@ async def add_event_info(callback: CallbackQuery, state: FSMContext) -> None:
         try:
             async with ScheduleAPI() as schedule_api:
                 await schedule_api.add_event_info(event_id=event_id, group_id=telegram_group.group.id, verify_event=verify_event)
-            await callback.message.answer("<b>API Call success</b>") # Debug
             await callback.message.answer("⬆️ Додано ⬆️")
         except ResponseException as ex:
             await callback.message.answer(f"<b>API Call failure: {ex.message}</b>") # Debug
-            await callback.message.answer(f"{data.get('event_id')}") # Debug
         await state.clear()
     elif callback.message:
         await callback.message.delete()

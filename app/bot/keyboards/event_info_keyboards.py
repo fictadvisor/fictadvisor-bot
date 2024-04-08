@@ -67,7 +67,7 @@ def get_events_dates(event: CertainEvent, week: int) -> InlineKeyboardMarkup:
         week += step
         carry += step
     for i in range(carry, DateService.get_least_of_weeks(), step):
-        strdate = f"{(event.start_time.date()+timedelta(weeks=i)).strftime('%d.%m.%Y')} {week}"
+        strdate = f"{(event.start_time.date()+timedelta(weeks=i)).strftime('%d.%m.%Y')}"
         builder.button(text=strdate, callback_data=SelectDate(
             week=week, strdate=strdate))
         week += step

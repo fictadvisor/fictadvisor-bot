@@ -23,6 +23,7 @@ from app.services.types.general_event import GeneralEvent, VerifyEvent
 from app.services.types.general_events import FortnightGeneralEvents
 from app.services.types.student import Student
 from app.services.user_api import UserAPI
+from app.services.exceptions.response_exception import ResponseException
 from app.utils.discipline_type import get_discipline_type_color
 from app.utils.events import what_week_event
 
@@ -134,7 +135,7 @@ async def event_info_text_input(message: Message, bot: Bot, state: FSMContext) -
                 reply_markup=get_approve())
             await state.update_data({"verify_event": verify_event})
         else:
-            await message.reply("Це не текст!")
+            await message.reply("Це не текст!\nНадрукуй інформацію ще раз:")
             await state.set_state(AddEventInfoStates.text)
 
 
@@ -145,9 +146,12 @@ async def add_event_info(callback: CallbackQuery, state: FSMContext) -> None:
         verify_event: VerifyEvent = data.get("verify_event") # type: ignore[assignment]
         event_id: Union[UUID|str] = data.get("event_id") # type: ignore[assignment]
         await callback.message.edit_reply_markup()
-        async with ScheduleAPI() as schedule_api:
-            await schedule_api.add_event_info(event_id=event_id, group_id=user.group.id, verify_event=verify_event)
-        await callback.message.answer("⬆️ Додано ⬆️")
+        try:
+            async with ScheduleAPI() as schedule_api:
+                await schedule_api.add_event_info(event_id=event_id, group_id=user.group.id, verify_event=verify_event)
+            await callback.message.answer("⬆️ Додано ⬆️")
+        except ResponseException as ex:
+            await callback.message.answer(f"<b>API Call failure: {ex.message}</b>") # Debug
         await state.clear()
     elif callback.message:
         await callback.message.delete()
