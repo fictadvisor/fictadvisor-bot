@@ -15,12 +15,12 @@ from app.bot.handlers.private.add_event_info import (
 from app.bot.handlers.private.fortnight import fortnight, select_week
 from app.bot.handlers.private.left import left_command
 from app.bot.handlers.private.next import next_command
+from app.bot.handlers.private.next_week import next_week
 from app.bot.handlers.private.now import now_command
 from app.bot.handlers.private.start import start
 from app.bot.handlers.private.today import today
 from app.bot.handlers.private.tomorrow import tomorrow
 from app.bot.handlers.private.week import week
-from app.bot.handlers.private.next_week import next_week
 from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
 from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.states.event_info_states import AddEventInfoStates

@@ -5,11 +5,11 @@ from aiogram.filters import Filter
 from aiogram.types import CallbackQuery, Message
 
 from app.enums.role import Role
+from app.messages.eggs import get_random_punish
 from app.services.exceptions.response_exception import ResponseException
 from app.services.types.student import Student
 from app.services.user_api import UserAPI
 from app.utils.telegram import send_answer
-from app.messages.eggs import get_random_punish
 
 
 class IsCaptainOrDeputy(Filter):
@@ -21,7 +21,6 @@ class IsCaptainOrDeputy(Filter):
                 return {"user": user}
         except ResponseException as e:
             await send_answer(update, "Прив'яжіть телеграм до аккаунта FictAdvisor")
-            await update.answer()
             logging.error(e)
         else:
             if isinstance(update, CallbackQuery):

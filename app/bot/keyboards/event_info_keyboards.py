@@ -23,13 +23,13 @@ def get_events_keyboard(events: List[GeneralEvent], filter_by: Optional[Discipli
     if not filter_by:
         for event in events:
             builder.button(
-                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}",
+                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}", # type: ignore[arg-type]
                 callback_data=SelectEvent(event_id=event.id)
             )
     else:
-        for event in filter(lambda x: x.discipline_type.name == filter_by, events):
+        for event in list(filter(lambda x: x.discipline_type.name == filter_by, events)): # type: ignore[arg-type, union-attr, assignment]
             builder.button(
-                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}",
+                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}", # type: ignore[arg-type]
                 callback_data=SelectEvent(event_id=event.id)
             )
 

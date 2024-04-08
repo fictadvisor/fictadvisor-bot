@@ -3,8 +3,8 @@ from datetime import datetime
 from jinja2 import Environment
 
 from app.utils.date_service import DateService
-from app.utils.events import get_weekday_name, group_by_time, group_by_weekday
 from app.utils.discipline_type import get_discipline_type_color
+from app.utils.events import get_weekday_name, group_by_time, group_by_weekday
 
 
 async def convert_to_time(time: datetime) -> str:

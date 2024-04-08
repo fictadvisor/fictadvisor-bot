@@ -10,6 +10,16 @@ from aiogram.filters import (
 
 from app.bot.filters.chat_bound import ChatBound
 from app.bot.filters.is_captain_or_deputy import IsCaptainOrDeputy
+from app.bot.handlers.group.add_event_info import (
+    add_event_info,
+    add_info_command,
+    cancel,
+    event_info_text_input,
+    filter_event,
+    refresh_dates,
+    select_date,
+    select_event,
+)
 from app.bot.handlers.group.bind import bind
 from app.bot.handlers.group.captain_button_press_callback import (
     captain_button_press_callback,
@@ -24,18 +34,6 @@ from app.bot.handlers.group.now import now_command
 from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow
 from app.bot.handlers.group.week import week
-from app.bot.handlers.group.add_event_info import add_info_command
-from app.bot.keyboards.types.select_week import SelectWeek
-from app.bot.handlers.group.add_event_info import (
-    add_event_info,
-    add_info_command,
-    cancel,
-    event_info_text_input,
-    filter_event,
-    refresh_dates,
-    select_date,
-    select_event,
-)
 from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
 from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.states.event_info_states import AddEventInfoStates

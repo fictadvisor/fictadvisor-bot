@@ -25,10 +25,10 @@ class GeneralEvent(Base):
             hash_value = (hash_value * 33) ^ ord(char)
         return hash_value
 
-    def __eq__(self, other) -> bool:
-        if isinstance(other, GeneralEvent):
-            return self.id == other.id or (self.name == other.name and self.discipline_type == other.discipline_type)
-        return False
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, GeneralEvent):
+            raise NotImplementedError
+        return self.id == other.id or (self.name == other.name and self.discipline_type == other.discipline_type)
 
     def __lt__(self, other: 'GeneralEvent') -> bool:
         return str(self.name).lower() < str(other.name).lower()

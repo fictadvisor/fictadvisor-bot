@@ -37,7 +37,7 @@ def get_weekday_name(weekday: int, week: Optional[int] = None) -> str:
 
 def what_week_event(fortnight_general_event: FortnightGeneralEvents, event_id: Union[UUID, str]) -> int:
     week = DateService.get_week()
-    if next(filter(lambda x: x.id == event_id, fortnight_general_event.first_week_events), None) and next(filter(lambda x: x.id == event_id, fortnight_general_event.second_week_events), None):
+    if next(filter(lambda x: x.id == event_id, fortnight_general_event.first_week_events), None) and next(filter(lambda x: x.id == event_id, fortnight_general_event.second_week_events), None): # type: ignore[union-attr, arg-type]
         return week
     elif next(filter(lambda x: x.id == event_id, fortnight_general_event.first_week_events), None):
         return week + 1 if check_odd(week) else week

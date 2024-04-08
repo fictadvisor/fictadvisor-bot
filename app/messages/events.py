@@ -43,7 +43,7 @@ EVENT_LIST = environment.from_string("""
 <i>{{event.event_info}}</i>
 {% endif %}
 {% endfor %}
-                                     
+
 {% endfor %}
 """)
 
