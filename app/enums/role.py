@@ -7,3 +7,10 @@ class Role(str, Enum):
     MODERATOR = 'MODERATOR'
     CAPTAIN = 'CAPTAIN'
     ADMIN = 'ADMIN'
+
+class TeacherRole(str, Enum):
+    LECTURER = 'LECTURER'
+    LABORANT = 'LABORANT'
+    PRACTICIAN = 'PRACTICIAN'
+    EXAMINER = 'EXAMINER'
+    OTHER = 'OTHER'

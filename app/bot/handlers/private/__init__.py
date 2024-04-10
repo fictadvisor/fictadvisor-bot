@@ -11,7 +11,9 @@ from app.bot.handlers.private.start import start
 from app.bot.handlers.private.today import today
 from app.bot.handlers.private.tomorrow import tomorrow
 from app.bot.handlers.private.week import week
+from app.bot.handlers.private.poll import poll_command, teacher
 from app.bot.keyboards.types.select_week import SelectWeek
+from app.bot.keyboards.types.select_teacher import SelectTeacher
 
 router = Router(name=__name__)
 router.message.filter(F.chat.type == ChatType.PRIVATE)
@@ -26,4 +28,6 @@ router.message.register(fortnight, Command("fortnight"))
 router.message.register(next_command, Command('next'))
 router.message.register(now_command, Command("now"))
 router.message.register(left_command, Command("left"))
+router.message.register(poll_command, Command("poll"))
 router.callback_query.register(select_week, SelectWeek.filter())
+router.callback_query.register(teacher, SelectTeacher.filter())
