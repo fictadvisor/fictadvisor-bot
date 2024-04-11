@@ -12,6 +12,7 @@ from app.bot.handlers.private.add_event_info import (
     select_date,
     select_event,
 )
+from app.bot.handlers.private.enable import enable
 from app.bot.handlers.private.fortnight import fortnight, select_week
 from app.bot.handlers.private.left import left_command
 from app.bot.handlers.private.next import next_command
@@ -30,6 +31,7 @@ router.message.filter(F.chat.type == ChatType.PRIVATE)
 router.callback_query.filter(F.message.chat.type == ChatType.PRIVATE)
 
 router.message.register(start, CommandStart())
+router.message.register(enable, Command("enable"))
 router.message.register(today, Command("today"))
 router.message.register(tomorrow, Command("tomorrow"))
 router.message.register(week, Command("week"))

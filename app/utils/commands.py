@@ -20,10 +20,10 @@ async def set_bot_commands(bot: Bot) -> None:
                 BotCommand(command="left", description="Вивести скільки залишилось до кінця пари"),
                 BotCommand(command="next", description="Вивести наступну пару"),
                 BotCommand(command="add_info", description="Додати додаткову інформацію на пару"),
+                BotCommand(command="enable", description="Включити/Виключити сповіщення")
             ]
     captain = [
                 BotCommand(command="bind", description="Прив'язати тред для сповіщень"),
-                BotCommand(command="enable", description="Включити/Виключити сповіщення"),
                 BotCommand(command="start", description="Прив'язати телеграм групу"),
             ]
     uk_commands: Tuple[Tuple[List[BotCommand], BotCommandScope]] = (  # type: ignore[assignment]
