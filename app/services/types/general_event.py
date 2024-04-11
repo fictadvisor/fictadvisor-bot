@@ -47,4 +47,3 @@ class VerifyEvent(Base):
     period: Optional[EventPeriod] = None
     url: Optional[str] = None
     disciplineInfo: Optional[str] = None
-    discipline_type: DisciplineTypes = Field(alias="eventType")
