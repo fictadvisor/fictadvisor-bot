@@ -1,6 +1,8 @@
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 from uuid import UUID
+
 from pydantic import Field
+
 from app.enums.role import TeacherRole
 from app.services.types.base import Base
 from app.services.types.cathedra import Cathedra

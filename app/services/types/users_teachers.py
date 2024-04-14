@@ -1,8 +1,9 @@
 from typing import List
-from app.services.types.teacher import ExtendedTeacher
+
 from pydantic import Field
 
 from app.services.types.base import Base
+from app.services.types.teacher import ExtendedTeacher
 
 
 class UsersTeachers(Base):

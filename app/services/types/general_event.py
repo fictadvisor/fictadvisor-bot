@@ -7,6 +7,7 @@ from pydantic import Field
 from app.enums.discipline_types import DisciplineTypes
 from app.services.types.base import Base
 
+
 class Subject(Base):
     id: Union[UUID, str]
     name: str

@@ -1,20 +1,19 @@
-from app.services.base_api import BaseAPI
-from app.services.types.users_teachers import UsersTeachers
-from app.enums.role import TeacherRole
-from typing import Union, Optional, Dict
+from typing import Dict, Optional, Union
 from uuid import UUID
-from app.enums.poll import PollSort, PollOrder
-from app.services.types.users_teachers import UsersTeachers
-from app.services.exceptions.response_exception import ResponseException
 
+from app.enums.poll import PollOrder, PollSort
+from app.enums.role import TeacherRole
+from app.services.base_api import BaseAPI
+from app.services.exceptions.response_exception import ResponseException
+from app.services.types.users_teachers import UsersTeachers
 
 
 class PollAPI(BaseAPI):
     _path = "/poll"
 
     async def get_users_teachers(
-            self, 
-            user_id: Union[UUID, str], 
+            self,
+            user_id: Union[UUID, str],
             search: Optional[str] = None,
             sort: Optional[PollSort]= None,
             order: Optional[PollOrder] = None,
@@ -37,4 +36,3 @@ class PollAPI(BaseAPI):
             if response.status == 200:
                 return UsersTeachers.model_validate(json)
             raise ResponseException.from_json(json)
-        

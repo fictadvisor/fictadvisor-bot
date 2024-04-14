@@ -12,3 +12,15 @@ class PollSort(str, Enum):
 class PollOrder(str, Enum):
     ASC = 'ASC'
     DESC = 'DESC'
+
+
+class QuestionType(str, Enum):
+    TEXT = 'TEXT'
+    SCALE = 'SCALE'
+    TOGGLE = 'TOGGLE'
+
+
+class DisplayType(str, Enum):
+    AMOUNT = 'AMOUNT'
+    RADAR = 'RADAR'
+    CIRCLE = 'CIRCLE'

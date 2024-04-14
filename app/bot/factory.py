@@ -1,11 +1,11 @@
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from aiogram.fsm.storage.memory import SimpleEventIsolation
 from aiogram.fsm.scene import SceneRegistry
+from aiogram.fsm.storage.memory import SimpleEventIsolation
 
 from app.bot.handlers import router as main_router
-from app.bot.scenes.poll import PollScene
 from app.bot.middlewares.throttling import ThrottlingMiddleware
+from app.bot.scenes.poll import PollScene
 from app.schedule import Schedule
 from app.settings import settings
 from app.utils.commands import set_bot_commands
@@ -32,7 +32,6 @@ def create_dispatcher() -> Dispatcher:
     dispatcher = Dispatcher(
         events_isolation=SimpleEventIsolation()
     )
-
     dispatcher.include_router(main_router)
     dispatcher.startup.register(on_startup)
     dispatcher.shutdown.register(on_shutdown)

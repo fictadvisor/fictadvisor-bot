@@ -1,6 +1,10 @@
-from app.services.types.base import Base
-from pydantic import Field
 from typing import Optional
+
+from pydantic import Field
+
+from app.enums.poll import DisplayType, QuestionType
+from app.services.types.base import Base
+
 
 class Question(Base):
     id: str
@@ -11,5 +15,5 @@ class Question(Base):
     text: str
     is_required: bool = Field(alias="isRequired")
     criteria: Optional[str] = None
-    type: str #yet
-    display: str #yet
+    type: QuestionType
+    display: DisplayType
