@@ -5,4 +5,4 @@ from aiogram.filters.callback_data import CallbackData
 
 
 class SelectTeacher(CallbackData, prefix="teacher"):
-    teacher_id: Union[UUID, str]
+    discipline_teacher_id: str

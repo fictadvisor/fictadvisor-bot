@@ -1,14 +1,14 @@
 from typing import Union
 from uuid import UUID
 
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from app.bot.keyboards.types.select_teacher import SelectTeacher
 
 from app.services.types.users_teachers import UsersTeachers
 
 
-def get_teachers_keyboard(users_teachers: UsersTeachers) -> InlineKeyboardMarkup:
+def get_poll_keyboard(users_teachers: UsersTeachers) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     for teacher in users_teachers.teachers:

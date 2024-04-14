@@ -15,7 +15,9 @@ class Teacher(Base):
     description: Optional[str] = None
     avatar: str
     rating: float
+
+class ExtendedTeacher(Teacher):
     roles: List[TeacherRole]
     cathedras: List[Cathedra]
     subject: Subject
-    disciplineTeacherId: str
+    discipline_teacher_id: str = Field(alias="disciplineTeacherId")
