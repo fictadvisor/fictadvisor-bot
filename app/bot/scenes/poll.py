@@ -4,19 +4,22 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.scene import Scene, on
 from aiogram.types import CallbackQuery
 
-from app.bot.keyboards.poll_keyboard import get_poll_keyboard
+from app.bot.keyboards.poll_keyboard import get_poll_keyboard, get_edit_questions_keyboard, get_submit_edit_keyboard
 from app.bot.keyboards.types.poll_answer import (
     BackPoll,
     CancelPoll,
     PollAnswer,
     SubmitPoll,
+    EditPoll
 )
 from app.bot.keyboards.types.select_teacher import SelectTeacher
-from app.messages.poll import POLL_QUESTION
+from app.messages.poll import POLL_QUESTION, SUBMIT_MSG
 from app.services.response_api import ResponseAPI
 from app.services.types.answer import Answer
 from app.services.types.response import UsersQuestions
 from app.services.types.student import Student
+from typing import List
+from app.services.types.question import Question
 
 
 class PollScene(Scene, state="poll"):
@@ -25,121 +28,112 @@ class PollScene(Scene, state="poll"):
     async def on_enter(
         self,
         callback: CallbackQuery,
-        state: FSMContext,
         discipline_teacher_id: str,
-        category_step: int = 0,
         question_step: int = 0
     ) -> None:
-        data = await state.get_data()
-        user: Student = data.get("user") # type: ignore[assignment]
+        data = await self.wizard.state.get_data()
+        user: Student = data.get("user")  # type: ignore[assignment]
         async with ResponseAPI() as response_api:
             users_questions: UsersQuestions = await response_api.get_users_questions(discipline_teacher_id, user.id)
+            questions: List[Question] = []
+            for category in users_questions.categories:
+                questions.extend(category.questions)
+        await self.wizard.state.update_data({"questions": questions, "answers": [], "question_step": question_step})
 
-        if data.get("discipline_teacher_id"):
-            if callback.message:
-                await callback.message.edit_text(
-                    await POLL_QUESTION.render_async(
-                        category=users_questions.categories[category_step].name,
-                        name=users_questions.categories[category_step].questions[question_step].name,
-                        description=users_questions.categories[category_step].questions[question_step].description,
-                        criteria=users_questions.categories[category_step].questions[question_step].criteria
-                    ),
-                    reply_markup=get_poll_keyboard(
-                        question_id=users_questions.categories[category_step].questions[question_step].id,
-                        question_step=question_step,
-                        category_step=category_step,
-                        question_type=users_questions.categories[category_step].questions[question_step].type
-                    )
+        if callback.message:
+            await callback.message.answer(
+                await POLL_QUESTION.render_async(
+                    question=questions[question_step]
+                ),
+                reply_markup=get_poll_keyboard(
+                    question=questions[question_step],
+                    question_step=question_step,
                 )
-        else:
-            if callback.message:
-                await callback.message.answer(
-                    await POLL_QUESTION.render_async(
-                        category=users_questions.categories[category_step].name,
-                        name=users_questions.categories[category_step].questions[question_step].name,
-                        description=users_questions.categories[category_step].questions[question_step].description,
-                        criteria=users_questions.categories[category_step].questions[question_step].criteria
-                    ),
-                    reply_markup=get_poll_keyboard(
-                        question_id=users_questions.categories[category_step].questions[question_step].id,
-                        question_step=question_step,
-                        category_step=category_step,
-                        question_type=users_questions.categories[category_step].questions[question_step].type
-                    )
+            )
+
+    async def question(
+        self,
+        callback: CallbackQuery,
+        questions: List[Question],
+        question_step: int
+    ) -> None:
+        if callback.message:
+            await callback.message.edit_text(
+                await POLL_QUESTION.render_async(
+                    question=questions[question_step]
+                ),
+                reply_markup=get_poll_keyboard(
+                    question=questions[question_step],
+                    question_step=question_step,
                 )
-        await state.update_data(
-            {
-                "discipline_teacher_id": discipline_teacher_id,
-                "category_step": category_step,
-                "question_step": question_step,
-                "len_of_categories": len(users_questions.categories),
-                "len_of_questions": len(users_questions.categories[category_step].questions)
-            }
-        )
+            )
 
     @on.callback_query(CancelPoll.filter())
     async def cancel(self, callback: CallbackQuery):
+        await callback.answer(
+            "Ви скасували опитування!"
+        )
         await callback.message.delete()
         await self.wizard.state.clear()
 
     @on.callback_query(BackPoll.filter())
-    async def prev(self, callback: CallbackQuery, state: FSMContext):
-        data = await state.get_data()
-        category_step = data.get("category_step")
+    async def prev(self, callback: CallbackQuery):
+        data = await self.wizard.state.get_data()
+        questions = data.get("questions")
         question_step = data.get("question_step")
-        len_of_questions = data.get("len_of_questions")
-        discipline_teacher_id = data.get("discipline_teacher_id")
-
+        answers: list = data.get("answers")
+        answers.pop()
+        await self.wizard.state.update_data({"answers": answers})
         if question_step - 1 < 0:
-            if category_step - 1 < 0:
-                return await self.wizard.exit()
-            return await self.wizard.retake(
-                discipline_teacher_id=discipline_teacher_id,
-                category_step=category_step - 1,
-                question_step=len_of_questions - 1
-            )
-        return await self.wizard.retake(
-            discipline_teacher_id=discipline_teacher_id,
-            category_step=category_step,
+            return await self.wizard.exit()
+        await self.wizard.state.update_data({"question_step": question_step - 1})
+        return await self.question(
+            callback=callback,
+            questions=questions,
             question_step=question_step - 1
         )
 
     @on.callback_query(PollAnswer.filter())
-    async def poll_answer(self, callback: CallbackQuery, callback_data: PollAnswer, state: FSMContext):
-        await state.update_data(
-            {
-                "answers": [
-                    Answer(
-                        questionId=callback_data.question_id,
-                        value=callback_data.value
-                    )
-                ]
-            }
-        )
+    async def next(self, callback: CallbackQuery, callback_data: PollAnswer):
         await callback.answer()
 
-        data = await state.get_data()
-        category_step = data.get("category_step")
+        data = await self.wizard.state.get_data()
+        questions = data.get("questions")
         question_step = data.get("question_step")
-        len_of_categories = data.get("len_of_categories")
-        len_of_questions = data.get("len_of_questions")
-        discipline_teacher_id = data.get("discipline_teacher_id")
-
-        new_question_step = question_step + 1
-        if new_question_step >= len_of_questions:
-            if category_step + 1 >= len_of_categories:
-                return await self.wizard.exit()
-            category_step += 1
-            new_question_step = 0
-        return await self.wizard.retake(
-            discipline_teacher_id=discipline_teacher_id,
-            question_step=new_question_step,
-            category_step=category_step
+        answers: list = data.get("answers")
+        answers.append(
+            Answer(
+                question_id=callback_data.question_id,
+                value=callback_data.value
+            )
+        )
+        await self.wizard.state.update_data({"answers": answers})
+        if question_step + 1 >= len(questions):
+            return await callback.message.edit_text(
+                await SUBMIT_MSG.render_async(
+                    questions=questions,
+                    answers=answers
+                ),
+                reply_markup=get_submit_edit_keyboard()
+            )
+        await self.wizard.state.update_data({"question_step": question_step + 1})
+        return await self.question(
+            callback=callback,
+            questions=questions,
+            question_step=question_step + 1
+        )
+    
+    @on.callback_query(EditPoll.filter())
+    async def edit(self, callback: CallbackQuery):
+        questions = (await self.wizard.state.get_data()).get("questions")
+        await callback.message.answer(
+            "Обери відповідь яку хочеш змінити:",
+            reply_markup=get_edit_questions_keyboard(questions=questions)
         )
 
     @on.callback_query(SubmitPoll.filter())
-    async def submit(self, callback: CallbackQuery, state: FSMContext):
-        await state.get_data()
+    async def submit(self, callback: CallbackQuery):
+        # data = await self.wizard.state.get_data()
         # try:
         #     async with ResponseAPI() as response_api:
         #         await response_api.post_users_answers(
@@ -154,4 +148,9 @@ class PollScene(Scene, state="poll"):
         #         f"API FAILURE: {ex.message}"
         #     )
         await callback.message.answer("API Call")
+        await self.wizard.state.clear()
         return await self.wizard.exit()
+    
+    
+
+        

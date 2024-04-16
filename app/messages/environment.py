@@ -16,5 +16,7 @@ environment.globals.update(
     group_by_time=group_by_time,
     group_by_weekday=group_by_weekday,
     get_weekday_name=get_weekday_name,
-    convert_to_time=convert_to_time
+    convert_to_time=convert_to_time,
+    zip=zip,
+    enumerate=enumerate
 )

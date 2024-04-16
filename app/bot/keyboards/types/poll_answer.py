@@ -13,6 +13,10 @@ class SubmitPoll(CallbackData, prefix="submit_poll"):
     pass
 
 
+class EditPoll(CallbackData, prefix="edit_poll"):
+    question_index: int
+
+
 class CancelPoll(CallbackData, prefix="cancel_poll"):
     pass
 

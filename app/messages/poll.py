@@ -1,17 +1,22 @@
 from app.messages.environment import environment
 
 POLL_QUESTION = environment.from_string("""
-{% if category %}
-<b><i>{{category}}</i></b>
+<b>{{question.name}}</b>
+
+{% if question.description %}
+<b><i>{{question.description}}</i></b>
 {% endif %}
 
-<b>{{name}}</b>
-
-{% if description %}
-<b><i>{{description}}</i></b>
+{% if question.criteria %}
+<i>{{question.criteria}}</i>
 {% endif %}
+""")
 
-{% if criteria %}
-<i>{{criteria}}</i>
-{% endif %}
+SUBMIT_MSG = environment.from_string("""
+<b>Перевір чи все правильно</b>
+                                     
+{% for idx, (question, answer) in enumerate(zip(questions, answers)) %}
+<b>{{idx+1}}. {{question.name}}</b>
+Ваша відповідь: <i>{{answer.value}}</i>
+{% endfor %}
 """)
