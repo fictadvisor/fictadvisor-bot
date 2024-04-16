@@ -26,7 +26,7 @@ async def poll_command(message: Message, state: FSMContext) -> None:
     )
 
 async def select_teacher(callback: CallbackQuery, callback_data: SelectTeacher, scenes: ScenesManager) -> None:
-    if callback.message and hasattr(callback.message, 'answer') and hasattr(callback.message, 'delete') and hasattr(callback.message, 'edit_text'):
+    if callback.message and hasattr(callback.message, 'answer') and hasattr(callback.message, 'delete'):
         await callback.message.delete()
         await scenes.enter(PollScene, discipline_teacher_id=callback_data.discipline_teacher_id)
         await callback.answer()

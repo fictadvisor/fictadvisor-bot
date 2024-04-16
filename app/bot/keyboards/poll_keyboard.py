@@ -31,7 +31,6 @@ def get_users_teachers_keyboard(users_teachers: UsersTeachers) -> InlineKeyboard
 def get_poll_keyboard(
         question: Question,
         question_step: int = 0,
-        category_step: int = 0,
 ) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     sizes = []
@@ -60,7 +59,7 @@ def get_poll_keyboard(
             )
         )
 
-    if question_step > 0 or category_step > 0:
+    if question_step > 0:
         if question.type == QuestionType.TEXT:
             builder.button(
                 text=f"{Emoji.SKIP} Пропустити",

@@ -89,7 +89,7 @@ class PollScene(Scene, state="poll"):
     async def prev(self, callback: CallbackQuery) -> None:
         data = await self.wizard.state.get_data()
         questions = data.get("questions")
-        question_step = data.get("question_step", 0)
+        question_step: int = data.get("question_step")  #type: ignore[assignment]
         answers: List[Answer] = data.get("answers", [])
         answers.pop()
         await self.wizard.state.update_data({"answers": answers})
@@ -120,7 +120,7 @@ class PollScene(Scene, state="poll"):
                     value=callback_data.value
                 )
             )
-            if question_step:
+            if question_step is not None:
                 await self.wizard.state.update_data(
                     {
                         "answers": answers,
@@ -150,8 +150,8 @@ class PollScene(Scene, state="poll"):
         questions: List[Question] = data.get("questions")  # type: ignore[assignment]
         question_step: int = data.get("question_step") # type: ignore[assignment]
         if question_step == len(questions) - 1:
-            await self.wizard.state.update_data({"question_step": question_step + 1})
-            if message.content_type == ContentType.TEXT and message.text:
+            if message.content_type == ContentType.TEXT and message.text and len(message.text) >= 4:
+                await self.wizard.state.update_data({"question_step": question_step + 1})
                 answers: List[Answer] = data.get("answers") # type: ignore[assignment]
                 answers.append(
                     Answer(
@@ -168,6 +168,8 @@ class PollScene(Scene, state="poll"):
                     message_id=data.get("message_id"),
                     reply_markup=get_submit_edit_keyboard()
                 )
+            else:
+                await message.answer("Коментар повинен бути текстом і містити мінімум 4 символи!")
         else:
             await message.answer("Письмова відповідь буде в кінці.")
 
