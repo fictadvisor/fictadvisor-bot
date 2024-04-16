@@ -21,5 +21,5 @@ class UsersQuestions(Base):
     categories: List[Category]
 
 class UsersAnswers(Base):
-    answers: List[Answer]
+    answers: List[Answer] = Field(alias="answers")
     user_id: Union[UUID, str] = Field(alias="userId")

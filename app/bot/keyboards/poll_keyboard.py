@@ -1,9 +1,13 @@
-from typing import Optional, List
 
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.bot.keyboards.types.poll_answer import BackPoll, CancelPoll, PollAnswer, SubmitPoll, EditPoll
+from app.bot.keyboards.types.poll_answer import (
+    BackPoll,
+    CancelPoll,
+    PollAnswer,
+    SubmitPoll,
+)
 from app.bot.keyboards.types.select_teacher import SelectTeacher
 from app.enums.poll import QuestionType
 from app.services.types.question import Question
@@ -37,7 +41,7 @@ def get_poll_keyboard(
                 text=f"{Emoji.from_number(i)}",
                 callback_data=PollAnswer(
                     question_id=question.id,
-                    value=str(i))
+                    value=f"{i}")
             )
         sizes.extend([5, 5])
     if question.type == QuestionType.TOGGLE:
@@ -45,14 +49,14 @@ def get_poll_keyboard(
             text="Так",
             callback_data=PollAnswer(
                 question_id=question.id,
-                value="Так"
+                value="1"
             )
         )
         builder.button(
             text="Ні",
             callback_data=PollAnswer(
                 question_id=question.id,
-                value="Ні"
+                value="0"
             )
         )
 
@@ -62,15 +66,20 @@ def get_poll_keyboard(
                 text=f"{Emoji.SKIP} Пропустити",
                 callback_data=PollAnswer(
                     question_id=question.id,
-                    value=""
+                    value="----"
                 )
             )
             sizes.extend([1])
-        builder.button(text=f"{Emoji.BACK} Повернутись", callback_data=BackPoll()),
-        builder.button(text=f"{Emoji.CANCEL} Скасувати", callback_data=CancelPoll())
+        builder.button(
+            text=f"{Emoji.BACK} Назад",
+            callback_data=BackPoll()),
+        builder.button(
+            text=f"{Emoji.CANCEL} Скасувати",
+            callback_data=CancelPoll())
     else:
         builder.button(
-            text=f"{Emoji.CANCEL} Скасувати", callback_data=CancelPoll()
+            text=f"{Emoji.CANCEL} Скасувати",
+            callback_data=CancelPoll()
         )
     sizes.extend([2])
 
@@ -80,14 +89,12 @@ def get_poll_keyboard(
 
 def get_submit_edit_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    builder.button(text=f"{Emoji.SAVE} Надіслати відповіді", callback_data=SubmitPoll())
-    builder.button(text=f"{Emoji.EDIT} Редагувати", callback_data=EditPoll()),
-    return builder.as_markup()
-
-
-def get_edit_questions_keyboard(questions: List[Question]) -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    for i in range(1, len(questions) + 1):
-        builder.button(text=f"{Emoji.from_number(i)}", callback_data=EditPoll())
-    builder.adjust(5, repeat=True)
+    builder.button(
+        text=f"{Emoji.BACK} Повернутись до опитування",
+        callback_data=BackPoll()
+    ),
+    builder.button(
+        text=f"{Emoji.SAVE} Надіслати відповіді",
+        callback_data=SubmitPoll()
+    )
     return builder.as_markup()

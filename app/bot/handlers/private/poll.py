@@ -13,9 +13,9 @@ from app.services.types.users_teachers import UsersTeachers
 from app.services.user_api import UserAPI
 
 
-async def poll_command(message: Message, state: FSMContext):
+async def poll_command(message: Message, state: FSMContext) -> None:
     async with UserAPI() as user_api:
-        user: Student = await user_api.get_user_by_telegram_id(message.from_user.id)
+        user: Student = await user_api.get_user_by_telegram_id(message.from_user.id)  #type: ignore[union-attr]
         await state.update_data({"user": user})
     async with PollAPI() as poll_api:
         users_teachers: UsersTeachers = await poll_api.get_users_teachers(user_id=user.id)
@@ -25,9 +25,10 @@ async def poll_command(message: Message, state: FSMContext):
         reply_markup=get_users_teachers_keyboard(users_teachers)
     )
 
-async def select_teacher(callback: CallbackQuery, callback_data: SelectTeacher, scenes: ScenesManager):
-    await callback.message.delete()
-    await scenes.enter(PollScene, discipline_teacher_id=callback_data.discipline_teacher_id)
-    await callback.answer()
+async def select_teacher(callback: CallbackQuery, callback_data: SelectTeacher, scenes: ScenesManager) -> None:
+    if callback.message and hasattr(callback.message, 'answer') and hasattr(callback.message, 'delete') and hasattr(callback.message, 'edit_text'):
+        await callback.message.delete()
+        await scenes.enter(PollScene, discipline_teacher_id=callback_data.discipline_teacher_id)
+        await callback.answer()
 
 
