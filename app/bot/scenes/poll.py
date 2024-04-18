@@ -178,9 +178,7 @@ class PollScene(Scene, state="poll"):
         if callback.message and hasattr(callback.message, 'answer') and hasattr(callback.message, 'delete') and hasattr(callback.message, 'edit_text'):
             data = await self.wizard.state.get_data()
             discipline_teacher_id: str = data.get('discipline_teacher_id')  # type: ignore[assignment]
-            await callback.message.answer(text=str(discipline_teacher_id))
             answers: List[Answer] = data.get('answers')  # type: ignore[assignment]
-            await callback.message.answer(text=str(answers))
             user: Student = data.get('user')  # type: ignore[assignment]
             async with ResponseAPI() as response_api:
                 await response_api.post_users_answers(
