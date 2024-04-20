@@ -87,9 +87,9 @@ async def cancel(callback: CallbackQuery, callback_data: EventCancel, bot: Bot, 
             for i in range(2):
                 await bot.delete_message(callback.message.chat.id, callback.message.message_id + i)
         elif callback_data.cancel_type == CancelType.DATE:
-            if hasattr(callback.message, "delete"):
+            if callback.message:
                 await callback.message.delete()
-        if hasattr(callback.message, "answer"):
+        if callback.message:
             await callback.message.answer("Відміняю 🚫")
         await state.clear()
 
@@ -106,7 +106,7 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
             certain_event: CertainEvent = await schedule_api.get_certain_event(callback_data.event_id, telegram_group.group.id, week=week)
 
         await state.update_data({"certain_event": certain_event})
-        if hasattr(callback.message, "delete"):
+        if callback.message:
             await callback.message.delete()
 
         await bot.edit_message_text(
@@ -119,7 +119,7 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
 
 
 async def select_date(callback: CallbackQuery, callback_data: SelectDate, state: FSMContext) -> None:
-    if callback.message and hasattr(callback.message, "edit_text"):
+    if callback.message:
         await state.update_data({"week": callback_data.week, "strdate": callback_data.strdate})
         await callback.message.edit_text(text="Надрукуй інформацію:")
         await state.set_state(AddEventInfoStates.text)
@@ -150,14 +150,11 @@ async def add_event_info(callback: CallbackQuery, callback_data: EventApprove, s
         telegram_group: TelegramGroupByTelegramIdResponse = data.get("telegram_group")  # type: ignore[assignment]
         verify_event: VerifyEvent = data.get("verify_event")  # type: ignore[assignment]
         event_id: Union[UUID | str] = data.get("event_id")  # type: ignore[assignment]
-        if hasattr(callback.message, "edit_reply_markup"):
-            await callback.message.edit_reply_markup()
+        await callback.message.edit_reply_markup()
         async with ScheduleAPI() as schedule_api:
             await schedule_api.add_event_info(event_id=event_id, group_id=telegram_group.group.id, verify_event=verify_event)
-        if hasattr(callback.message, "answer"):
-            await callback.message.answer("⬆️ Додано ⬆️")
+        await callback.message.answer("⬆️ Додано ⬆️")
         await state.clear()
-        if hasattr(callback.message, "delete"):
-            await callback.message.delete()
+        await callback.message.delete()
     else:
         await state.clear()

@@ -75,7 +75,7 @@ async def filter_event(callback: CallbackQuery, callback_data: EventFilter, bot:
 
 
 async def cancel(callback: CallbackQuery, callback_data: EventCancel, bot: Bot, state: FSMContext) -> None:
-    if callback.message and hasattr(callback.message, "delete") and hasattr(callback.message, "answer"):
+    if callback.message:
         user: Student = (await state.get_data()).get("user") # type: ignore[assignment]
         if callback_data.cancel_type == CancelType.EVENT:
             for i in range(2):
@@ -98,8 +98,7 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
             certain_event: CertainEvent = await schedule_api.get_certain_event(callback_data.event_id, user.group.id, week=week)
 
         await state.update_data({"certain_event": certain_event})
-        if hasattr(callback.message, "delete"):
-            await callback.message.delete()
+        await callback.message.delete()
 
         await bot.edit_message_text(
             text=f"{get_discipline_type_color(certain_event.discipline_type)} {certain_event.name}\nНа коли хочете додати інформацію?\nНайближчі пари в порядку зростання:",
@@ -113,8 +112,7 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
 async def select_date(callback: CallbackQuery, callback_data: SelectDate, state: FSMContext) -> None:
     if callback.message:
         await state.update_data({"week": callback_data.week, "strdate": callback_data.strdate})
-        if hasattr(callback.message, "edit_text"):
-            await callback.message.edit_text(text="Надрукуй інформацію:")
+        await callback.message.edit_text(text="Надрукуй інформацію:")
         await state.set_state(AddEventInfoStates.text)
 
 
@@ -144,15 +142,12 @@ async def add_event_info(callback: CallbackQuery, callback_data: EventApprove, s
         user: Student = data.get("user") # type: ignore[assignment]
         verify_event: VerifyEvent = data.get("verify_event") # type: ignore[assignment]
         event_id: Union[UUID|str] = data.get("event_id") # type: ignore[assignment]
-        if hasattr(callback.message, "edit_reply_markup"):
-            await callback.message.edit_reply_markup()
+        await callback.message.edit_reply_markup()
         async with ScheduleAPI() as schedule_api:
             await schedule_api.add_event_info(event_id=event_id, group_id=user.group.id, verify_event=verify_event)
-        if hasattr(callback.message, "answer"):
-            await callback.message.answer("⬆️ Додано ⬆️")
+        await callback.message.answer("⬆️ Додано ⬆️")
         await state.clear()
-        if hasattr(callback.message, "delete"):
-            await callback.message.delete()
+        await callback.message.delete()
     else:
         await state.clear()
 
