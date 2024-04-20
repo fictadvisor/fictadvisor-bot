@@ -1,10 +1,18 @@
 from datetime import timedelta
 from typing import List, Optional
 
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
+from app.bot.keyboards.types.event_info import (
+    EventApprove,
+    EventCancel,
+    EventEdit,
+    EventFilter,
+    SelectDate,
+    SelectEvent,
+)
+from app.enums.cancel_types import CancelType
 from app.enums.discipline_types import DisciplineTypes
 from app.enums.event_period import EventPeriod
 from app.services.types.certain_event import CertainEvent
@@ -19,26 +27,23 @@ from app.utils.discipline_type import (
 
 def get_events_keyboard(events: List[GeneralEvent], filter_by: Optional[DisciplineTypes] = None) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-
     if not filter_by:
         for event in events:
             builder.button(
-                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}", # type: ignore[arg-type]
+                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}",
                 callback_data=SelectEvent(event_id=event.id)
             )
     else:
-        for event in list(filter(lambda x: x.discipline_type.name == filter_by, events)): # type: ignore[arg-type, union-attr, assignment]
+        new_events = list(filter(lambda x: x.discipline_type.name == filter_by, events))  # type: ignore[arg-type, union-attr]
+        for event in new_events:  # type: ignore[assignment]
             builder.button(
-                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}", # type: ignore[arg-type]
+                text=f"{get_discipline_type_color(event.discipline_type)} {event.name}",
                 callback_data=SelectEvent(event_id=event.id)
             )
-
-    builder.adjust(2, repeat=True)
-    builder.row(
-        InlineKeyboardButton(
-            text="Cancel", callback_data="event_cancel"
-        )
+    builder.button(
+        text="Cancel", callback_data=EventCancel(cancel_type=CancelType.EVENT)
     )
+    builder.adjust(2, repeat=True)
     return builder.as_markup()
 
 
@@ -51,11 +56,11 @@ def get_events_filter_keyboard() -> InlineKeyboardMarkup:
             callback_data=EventFilter(type=discipline_type)
         )
 
-    builder.adjust(2, repeat=True)
     builder.button(
         text="🔄 До всього переліку",
         callback_data=EventFilter()
     )
+    builder.adjust(2, repeat=True)
     return builder.as_markup()
 
 
@@ -71,18 +76,17 @@ def get_events_dates(event: CertainEvent, week: int) -> InlineKeyboardMarkup:
         builder.button(text=strdate, callback_data=SelectDate(
             week=week, strdate=strdate))
         week += step
+    builder.button(
+        text="Cancel", callback_data=EventCancel(cancel_type=CancelType.DATE)
+    )
     builder.adjust(2, repeat=True)
-    builder.row(InlineKeyboardButton(
-        text="Cancel", callback_data="date_cancel"))
     return builder.as_markup()
 
 
 def get_approve() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
-    builder.row(
-        InlineKeyboardButton(text="Так", callback_data="APPROVE"),
-        InlineKeyboardButton(text="Нє, змінити", callback_data="EDIT")
-    )
+    builder.button(text="Так", callback_data=EventApprove())
+    builder.button(text="Нє, змінити", callback_data=EventEdit())
 
     return builder.as_markup()

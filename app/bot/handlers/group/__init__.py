@@ -16,7 +16,6 @@ from app.bot.handlers.group.add_event_info import (
     cancel,
     event_info_text_input,
     filter_event,
-    refresh_dates,
     select_date,
     select_event,
 )
@@ -34,7 +33,14 @@ from app.bot.handlers.group.now import now_command
 from app.bot.handlers.group.today import today
 from app.bot.handlers.group.tomorrow import tomorrow
 from app.bot.handlers.group.week import week
-from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
+from app.bot.keyboards.types.event_info import (
+    EventApprove,
+    EventCancel,
+    EventEdit,
+    EventFilter,
+    SelectDate,
+    SelectEvent,
+)
 from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.states.event_info_states import AddEventInfoStates
 
@@ -61,13 +67,12 @@ router.message.register(left_command, Command("left"), ChatBound())
 router.message.register(next_command, Command("next"), ChatBound())
 router.message.register(add_info_command, Command("add_info"), ChatBound(), IsCaptainOrDeputy())
 router.message.register(event_info_text_input, AddEventInfoStates.text)
-router.callback_query.register(add_event_info, F.data == "APPROVE", IsCaptainOrDeputy())
-router.callback_query.register(add_event_info, F.data == "EDIT", IsCaptainOrDeputy())
-router.callback_query.register(cancel, F.data.contains("cancel"), IsCaptainOrDeputy())
+router.callback_query.register(add_event_info, EventApprove.filter(), IsCaptainOrDeputy())
+router.callback_query.register(add_event_info, EventEdit.filter(), IsCaptainOrDeputy())
+router.callback_query.register(cancel, EventCancel.filter(), IsCaptainOrDeputy())
 router.callback_query.register(select_week, SelectWeek.filter(), IsCaptainOrDeputy())
 router.callback_query.register(select_event, SelectEvent.filter(), IsCaptainOrDeputy())
 router.callback_query.register(filter_event, EventFilter.filter(), IsCaptainOrDeputy())
 router.callback_query.register(select_date, SelectDate.filter(), IsCaptainOrDeputy())
-router.callback_query.register(refresh_dates, F.data.startswith("refresh"), IsCaptainOrDeputy())
 
 router.callback_query.register(select_week, SelectWeek.filter())

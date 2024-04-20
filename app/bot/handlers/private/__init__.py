@@ -8,7 +8,6 @@ from app.bot.handlers.private.add_event_info import (
     cancel,
     event_info_text_input,
     filter_event,
-    refresh_dates,
     select_date,
     select_event,
 )
@@ -22,7 +21,14 @@ from app.bot.handlers.private.start import start
 from app.bot.handlers.private.today import today
 from app.bot.handlers.private.tomorrow import tomorrow
 from app.bot.handlers.private.week import week
-from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
+from app.bot.keyboards.types.event_info import (
+    EventApprove,
+    EventCancel,
+    EventEdit,
+    EventFilter,
+    SelectDate,
+    SelectEvent,
+)
 from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.states.event_info_states import AddEventInfoStates
 
@@ -42,11 +48,11 @@ router.message.register(now_command, Command("now"))
 router.message.register(left_command, Command("left"))
 router.message.register(add_info_command, Command("add_info"))
 router.message.register(event_info_text_input, AddEventInfoStates.text)
-router.callback_query.register(add_event_info, F.data == "APPROVE")
-router.callback_query.register(add_event_info, F.data == "EDIT")
-router.callback_query.register(cancel, F.data.contains("cancel"))
+router.callback_query.register(add_event_info, EventApprove.filter())
+router.callback_query.register(add_event_info, EventEdit.filter())
+router.callback_query.register(cancel, EventCancel.filter())
 router.callback_query.register(select_week, SelectWeek.filter())
 router.callback_query.register(select_event, SelectEvent.filter())
 router.callback_query.register(filter_event, EventFilter.filter())
 router.callback_query.register(select_date, SelectDate.filter())
-router.callback_query.register(refresh_dates, F.data.startswith("refresh"))
+

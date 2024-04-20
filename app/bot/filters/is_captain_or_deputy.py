@@ -24,7 +24,7 @@ class IsCaptainOrDeputy(Filter):
             logging.error(e)
         else:
             if isinstance(update, CallbackQuery):
-                await update.answer(get_random_punish(), show_alert=True)
+                await send_answer(update, get_random_punish(), show_alert=True)
             else:
                 await send_answer(update, "Ця команда лише для старости або заступників")
         return False

@@ -14,10 +14,16 @@ from app.bot.keyboards.event_info_keyboards import (
     get_events_filter_keyboard,
     get_events_keyboard,
 )
-from app.bot.keyboards.types.event_info import EventFilter, SelectDate, SelectEvent
+from app.bot.keyboards.types.event_info import (
+    EventApprove,
+    EventCancel,
+    EventFilter,
+    SelectDate,
+    SelectEvent,
+)
 from app.bot.states.event_info_states import AddEventInfoStates
+from app.enums.cancel_types import CancelType
 from app.messages.events import VERIFY_EVENT_INFO
-from app.services.exceptions.response_exception import ResponseException
 from app.services.schedule_api import ScheduleAPI
 from app.services.types.certain_event import CertainEvent
 from app.services.types.general_event import GeneralEvent, VerifyEvent
@@ -68,13 +74,13 @@ async def filter_event(callback: CallbackQuery, callback_data: EventFilter, bot:
         await callback.answer()
 
 
-async def cancel(callback: CallbackQuery, bot: Bot, state: FSMContext) -> None:
-    if callback.message:
+async def cancel(callback: CallbackQuery, callback_data: EventCancel, bot: Bot, state: FSMContext) -> None:
+    if callback.message and hasattr(callback.message, "delete") and hasattr(callback.message, "answer"):
         user: Student = (await state.get_data()).get("user") # type: ignore[assignment]
-        if callback.data == "event_cancel":
+        if callback_data.cancel_type == CancelType.EVENT:
             for i in range(2):
                 await bot.delete_message(user.telegram_id, callback.message.message_id + i) # type: ignore[arg-type]
-        elif callback.data == "date_cancel":
+        elif callback_data.cancel_type == CancelType.DATE:
             await callback.message.delete()
         await callback.message.answer("Відміняю 🚫")
         await state.clear()
@@ -92,8 +98,8 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
             certain_event: CertainEvent = await schedule_api.get_certain_event(callback_data.event_id, user.group.id, week=week)
 
         await state.update_data({"certain_event": certain_event})
-
-        await callback.message.delete()
+        if hasattr(callback.message, "delete"):
+            await callback.message.delete()
 
         await bot.edit_message_text(
             text=f"{get_discipline_type_color(certain_event.discipline_type)} {certain_event.name}\nНа коли хочете додати інформацію?\nНайближчі пари в порядку зростання:",
@@ -104,18 +110,11 @@ async def select_event(callback: CallbackQuery, callback_data: SelectEvent, bot:
         await callback.answer()
 
 
-async def refresh_dates(callback: CallbackQuery, state: FSMContext) -> None:
-    if callback.message and callback.data:
-        data = await state.get_data()
-        certain_event: CertainEvent = data.get("certain_event") # type: ignore[assignment]
-        await callback.message.edit_reply_markup(
-                reply_markup=get_events_dates(certain_event, week=int(callback.data.split(":")[1]))
-            )
-
 async def select_date(callback: CallbackQuery, callback_data: SelectDate, state: FSMContext) -> None:
     if callback.message:
         await state.update_data({"week": callback_data.week, "strdate": callback_data.strdate})
-        await callback.message.edit_text(text="Надрукуй інформацію:")
+        if hasattr(callback.message, "edit_text"):
+            await callback.message.edit_text(text="Надрукуй інформацію:")
         await state.set_state(AddEventInfoStates.text)
 
 
@@ -139,23 +138,21 @@ async def event_info_text_input(message: Message, bot: Bot, state: FSMContext) -
             await state.set_state(AddEventInfoStates.text)
 
 
-async def add_event_info(callback: CallbackQuery, state: FSMContext) -> None:
-    if callback.message and callback.data == "APPROVE":
+async def add_event_info(callback: CallbackQuery, callback_data: EventApprove, state: FSMContext) -> None:
+    if callback.message:
         data = await state.get_data()
         user: Student = data.get("user") # type: ignore[assignment]
         verify_event: VerifyEvent = data.get("verify_event") # type: ignore[assignment]
         event_id: Union[UUID|str] = data.get("event_id") # type: ignore[assignment]
-        await callback.message.edit_reply_markup()
-        try:
-            async with ScheduleAPI() as schedule_api:
-                await schedule_api.add_event_info(event_id=event_id, group_id=user.group.id, verify_event=verify_event)
+        if hasattr(callback.message, "edit_reply_markup"):
+            await callback.message.edit_reply_markup()
+        async with ScheduleAPI() as schedule_api:
+            await schedule_api.add_event_info(event_id=event_id, group_id=user.group.id, verify_event=verify_event)
+        if hasattr(callback.message, "answer"):
             await callback.message.answer("⬆️ Додано ⬆️")
-        except ResponseException as ex:
-            await callback.message.answer(f"<b>API Call failure: {ex.message}</b>") # Debug
         await state.clear()
-    elif callback.message:
-        await callback.message.delete()
-        await state.clear()
+        if hasattr(callback.message, "delete"):
+            await callback.message.delete()
     else:
         await state.clear()
 
