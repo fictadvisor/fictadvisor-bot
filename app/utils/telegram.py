@@ -16,9 +16,8 @@ async def get_user_by_id(bot: Bot, user_id: Optional[PositiveInt]) -> Optional[C
         return None
 
 
-async def send_answer(update: Union[Message, CallbackQuery], message: str) -> None:
+async def send_answer(update: Union[Message, CallbackQuery], message: str, show_alert: bool = False) -> None:
     if isinstance(update, Message):
         await update.reply(message)
     else:
-        await update.answer(message)
-
+        await update.answer(message, show_alert=show_alert)

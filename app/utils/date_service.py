@@ -6,7 +6,8 @@ import pytz
 
 class DateService:
     TIMEZONE = pytz.timezone("Europe/Kiev")
-    START_SEMESTER = datetime(2023, 9, 3, tzinfo=TIMEZONE)
+    START_SEMESTER = datetime(2024, 2, 5, tzinfo=TIMEZONE)
+    END_SEMESTER = datetime(2024, 5, 19, tzinfo=TIMEZONE)
 
     @classmethod
     def get_now(cls) -> datetime:
@@ -31,3 +32,7 @@ class DateService:
     @classmethod
     def add_tz_offset(cls, time: datetime) -> datetime:
         return time.replace(tzinfo=pytz.UTC).astimezone(cls.TIMEZONE)
+
+    @classmethod
+    def get_least_of_weeks(cls) -> int:
+        return math.ceil((cls.END_SEMESTER - cls.get_now()).days / 7)

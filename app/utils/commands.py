@@ -14,10 +14,12 @@ async def set_bot_commands(bot: Bot) -> None:
                 BotCommand(command="today", description="Вивести розклад на сьогодні"),
                 BotCommand(command="tomorrow", description="Вивести розклад на завтра"),
                 BotCommand(command="week", description="Вивести розклад на тиждень"),
+                BotCommand(command="next_week", description="Вивести розклад на наступний тиждень"),
                 BotCommand(command="fortnight", description="Вивести на два тижні"),
                 BotCommand(command="now", description="Вивести яка зараз пара"),
                 BotCommand(command="left", description="Вивести скільки залишилось до кінця пари"),
                 BotCommand(command="next", description="Вивести наступну пару"),
+                BotCommand(command="add_info", description="Додати додаткову інформацію на пару"),
                 BotCommand(command="enable", description="Включити/Виключити сповіщення")
             ]
     captain = [
