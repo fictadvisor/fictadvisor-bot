@@ -8,3 +8,4 @@ class DisciplineTypes(str, Enum):
     CONSULTATION = 'CONSULTATION'
     WORKOUT = 'WORKOUT'
     EXAM = 'EXAM'
+    OTHER = 'OTHER'
