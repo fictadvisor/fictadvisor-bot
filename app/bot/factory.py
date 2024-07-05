@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.scene import SceneRegistry
 from aiogram.fsm.storage.memory import SimpleEventIsolation
@@ -45,4 +46,6 @@ def create_dispatcher() -> Dispatcher:
 
 
 def create_bot(token: str) -> Bot:
-    return Bot(token=token, parse_mode=ParseMode.HTML)
+    return Bot(token=token, default=DefaultBotProperties(
+        parse_mode=ParseMode.HTML
+    ))

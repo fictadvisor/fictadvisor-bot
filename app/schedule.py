@@ -49,7 +49,12 @@ class Schedule:
                 if message:
                     for telegram_group in groups_to_send:
                         try:
-                            await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id, disable_web_page_preview=True)
+                            await bot.send_message(
+                                chat_id=telegram_group.telegram_id,
+                                text=message,
+                                message_thread_id=telegram_group.thread_id,
+                                disable_web_page_preview=True
+                            )
                         except DetailedAiogramError as e:
                             logging.error(e)
                         await sleep(0.2)

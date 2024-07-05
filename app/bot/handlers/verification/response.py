@@ -10,8 +10,7 @@ from app.services.types.response import VerifyResponse
 
 
 async def approve_response(callback: CallbackQuery, callback_data: ResponseData) -> None:
-    entities = [el.extract_from(callback.message.text) for el in  # type: ignore[union-attr]
-                filter(lambda x: x.type == "code", callback.message.entities)]  # type: ignore
+    entities = [el.extract_from(callback.message.text) for el in filter(lambda x: x.type == "code", callback.message.entities)]  # type: ignore
 
     async with ResponseAPI() as api:
         await api.verify_response(
@@ -30,8 +29,7 @@ async def approve_response(callback: CallbackQuery, callback_data: ResponseData)
 
 
 async def deny_response(callback: CallbackQuery) -> None:
-    entities = [el.extract_from(callback.message.text) for el in  # type: ignore[union-attr]
-                filter(lambda x: x.type == "code", callback.message.entities)]  # type: ignore
+    entities = [el.extract_from(callback.message.text) for el in filter(lambda x: x.type == "code", callback.message.entities)]  # type: ignore
     message = re.sub(r"^(.*)", f"<b>🔴 Відгук {entities[1]} відхилено.</b>",
                      callback.message.html_text)  # type: ignore[union-attr]
     if 'схвалена' in callback.message.text:  # type: ignore

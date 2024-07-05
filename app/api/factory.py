@@ -51,7 +51,7 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     async def on_startup(*a: Any, **kw: Any) -> None:  # pragma: no cover
         if settings.DEVELOPMENT:
             from ngrok import ngrok
-            port = sys.argv[sys.argv.index("--port") + 1] if "--port" in sys.argv else 8000
+            port = int(sys.argv[sys.argv.index("--port") + 1]) if "--port" in sys.argv else 8000
             ngrok.set_auth_token(settings.NGROK_AUTHTOKEN.get_secret_value() if settings.NGROK_AUTHTOKEN else None)  # type: ignore
             tunnel = await ngrok.connect(port)  # type: ignore[misc]
             public_url = tunnel.url()

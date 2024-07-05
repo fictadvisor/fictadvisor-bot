@@ -20,9 +20,8 @@ def get_users_teachers_keyboard(users_teachers: UsersTeachers) -> InlineKeyboard
 
     for teacher in users_teachers.teachers:
         builder.button(
-            text=f"{teacher.last_name} {teacher.first_name[0]}.{teacher.middle_name[0]}.",
-            callback_data=SelectTeacher(
-                discipline_teacher_id=teacher.discipline_teacher_id)
+            text=f"{teacher.last_name} {teacher.first_name[0]}.{teacher.middle_name[0]}." if teacher.middle_name else f"{teacher.last_name} {teacher.first_name[0]}.",
+            callback_data=SelectTeacher(discipline_teacher_id=teacher.discipline_teacher_id)
         )
     builder.adjust(2, repeat=True)
     return builder.as_markup()
