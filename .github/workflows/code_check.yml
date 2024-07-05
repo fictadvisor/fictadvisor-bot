@@ -25,5 +25,10 @@ jobs:
         run: ruff check app --output-format github
       - name: Add mypy annotator
         uses: pr-annotators/mypy-pr-annotator@v1.0.0
+      - uses: actions/cache@v4
+        name: Define a cache for the mypy
+        with:
+          path: ./.mypy_cache
+          key: mypy-cache
       - name: Run mypy
         run: mypy app
