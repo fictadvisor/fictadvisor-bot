@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl = AnyUrl("http://localhost:8000")
     FRONT_BASE_URL: AnyUrl
-    WEBHOOK_PATH: str
+    WEBHOOK_PATH: str = '/webhook'
 
     API_URL: AnyUrl
     API_ACCESS_TOKEN: SecretStr

@@ -71,6 +71,7 @@ jinja2==3.1.4
     # via fastapi
 magic-filter==1.0.12
     # via aiogram
+mangum==0.17.0
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
@@ -129,6 +130,7 @@ types-pytz==2024.1.0.20240417
 typing-extensions==4.12.2
     # via aiogram
     # via fastapi
+    # via mangum
     # via mypy
     # via pydantic
     # via pydantic-core
