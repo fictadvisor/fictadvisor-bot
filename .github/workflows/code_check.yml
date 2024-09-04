@@ -1,0 +1,34 @@
+name: Code check
+
+on: [push]
+
+jobs:
+  code_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: yezz123/setup-uv@v4
+        with:
+          uv-venv: ".venv"
+      - uses: actions/cache@v4
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('requirements-dev.lock') }}
+      - name: Install the project dependencies
+        run: uv pip install -r requirements-dev.lock
+      - name: Run ruff and mypy
+        run: ruff check app --output-format github
+      - name: Add mypy annotator
+        uses: pr-annotators/mypy-pr-annotator@v1.0.0
+      - uses: actions/cache@v4
+        name: Define a cache for the mypy
+        with:
+          path: ./.mypy_cache
+          key: mypy-cache
+      - name: Run mypy
+        run: mypy app

@@ -1,24 +1,20 @@
-FROM python:3.11-buster as builder
+FROM python:3.12 as build
 
-RUN pip install poetry==1.4.2
+RUN apt-get update && apt-get install -y build-essential curl
+ENV VIRTUAL_ENV=/opt/venv \
+    PATH="/opt/venv/bin:$PATH"
 
-ENV POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_IN_PROJECT=1 \
-    POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR=/tmp/poetry_cache
+ADD https://astral.sh/uv/install.sh /install.sh
+RUN chmod -R 655 /install.sh && /install.sh && rm /install.sh
+COPY ./requirements.lock .
+RUN /root/.cargo/bin/uv venv /opt/venv && \
+    /root/.cargo/bin/uv pip install --no-cache -r requirements.lock
 
-WORKDIR /src
 
-COPY pyproject.toml poetry.lock ./
+FROM python:3.12-slim-bookworm
+COPY --from=build /opt/venv /opt/venv
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-interaction --no-root --only main
-
-FROM python:3.11-slim-buster as runtime
-
-ENV VIRTUAL_ENV=/src/.venv \
-    PATH="/src/.venv/bin:$PATH"
-
-COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+ENV PATH="/opt/venv/bin:$PATH"
 
 COPY app ./app
 

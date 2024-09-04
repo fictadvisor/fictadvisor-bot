@@ -1,0 +1,57 @@
+org: ficeadvisorbot
+app: ficeadvisor
+service: ficeadvisor-bot
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.11
+  stage: ${opt:stage, "dev"}
+  environment:
+    TOKEN: ${param:TOKEN}
+    CHAT_ID: ${param:CHAT_ID}
+    TELEGRAM_SECRET: ${param:TELEGRAM_SECRET}
+    BASE_URL: ${param:BASE_URL}
+    FRONT_BASE_URL: ${param:FRONT_BASE_URL}
+    API_URL: ${param:API_URL}
+    API_ACCESS_TOKEN: ${param:TOKEN}
+
+package:
+  exclude:
+    - Makefile
+    - poetry.lock
+    - README.md
+    - tests/**
+    - docs/**
+    - node_modules/**
+    - .venv/**
+    - .serverless/**
+    - package.json
+    - package-lock.json
+    - .pytest_cache
+    - .hypothesis
+
+custom:
+  pythonRequirements:
+    fileName: requirements.lock
+    dockerizePip: true
+    layer:
+      name: serverless-fastapi-deps
+      description: Dependencies of serverless-fastapi
+      compatibleRuntimes:
+        - python3.11
+
+functions:
+  api:
+    handler: app.main.handler
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: any
+          path: /{proxy+}

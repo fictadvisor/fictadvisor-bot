@@ -9,13 +9,10 @@ from aiogram.exceptions import DetailedAiogramError
 from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED  # type: ignore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
 
-from app.enums.telegram_source import TelegramSource
 from app.messages.events import BROADCAST_EVENTS, STARTING_EVENTS
-from app.services.exceptions.response_exception import ResponseException
 from app.services.group_api import GroupAPI
 from app.services.schedule_api import ScheduleAPI
 from app.services.types.group import GroupWithTelegramGroupsResponse
-from app.services.user_api import UserAPI
 from app.utils.events import group_by_time
 
 
@@ -40,31 +37,27 @@ class Schedule:
         async with ScheduleAPI() as schedule_api:
             groups_to_send = list(filter(lambda x: x.post_info, group.telegram_groups))
             general_events = await schedule_api.get_general_group_events_by_day(group.id)
-            grouped_events = group_by_time(general_events.events)
+            grouped = group_by_time(general_events.events)
 
-            for telegram_group in groups_to_send:
-                try:
-                    if telegram_group.source == TelegramSource.PERSONAL_CHAT:
-                        async with UserAPI() as user_api:
-                            user = await user_api.get_user_by_telegram_id(telegram_group.telegram_id)
-                        grouped = group_by_time((await schedule_api.get_general_group_events_by_day(group.id, user_id=user.id)).events)
-                    else:
-                        grouped = grouped_events
-                    for (start_time, _end_time), events in grouped:
-                        delta = (start_time - now).seconds // 60
-                        message = None
-                        if delta == 0:
-                            message = await STARTING_EVENTS.render_async(events=events)
-                        elif delta == 14:
-                            message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
-                        if message:
-                            try:
-                                await bot.send_message(telegram_group.telegram_id, message, telegram_group.thread_id, disable_web_page_preview=True)
-                            except DetailedAiogramError as e:
-                                logging.error(e)
-                            await sleep(0.2)
-                except ResponseException as e:
-                    logging.error(e)
+            for (start_time, _end_time), events in grouped:
+                delta = (start_time - now).seconds // 60
+                message = None
+                if delta == 0:
+                    message = await STARTING_EVENTS.render_async(events=events)
+                elif delta == 14:
+                    message = await BROADCAST_EVENTS.render_async(delta="15 хвилин", events=events)
+                if message:
+                    for telegram_group in groups_to_send:
+                        try:
+                            await bot.send_message(
+                                chat_id=telegram_group.telegram_id,
+                                text=message,
+                                message_thread_id=telegram_group.thread_id,
+                                disable_web_page_preview=True
+                            )
+                        except DetailedAiogramError as e:
+                            logging.error(e)
+                        await sleep(0.2)
 
     async def schedule(self, bot: Bot) -> None:
         async with GroupAPI() as group_api:
