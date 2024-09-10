@@ -7,11 +7,14 @@ from aiogram.fsm.storage.memory import SimpleEventIsolation
 from app.bot.handlers import router as main_router
 from app.bot.middlewares.throttling import ThrottlingMiddleware
 from app.bot.scenes.poll import PollScene
+from app.schedule import Schedule
 from app.settings import settings
 from app.utils.commands import set_bot_commands
 
 
 async def on_startup(bot: Bot, dispatcher: Dispatcher) -> None:
+    schedule = Schedule(bot)
+    schedule.start()
     if (await bot.get_webhook_info()).url != settings.WEBHOOK_URL:
         await bot.delete_webhook(drop_pending_updates=True)
         await set_bot_commands(bot)
