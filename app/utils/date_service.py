@@ -6,7 +6,7 @@ import pytz
 
 class DateService:
     TIMEZONE = pytz.timezone("Europe/Kiev")
-    START_SEMESTER = datetime(2023, 9, 3, tzinfo=TIMEZONE)
+    START_SEMESTER = datetime(2024, 9, 1, tzinfo=TIMEZONE)
 
     @classmethod
     def get_now(cls) -> datetime:
