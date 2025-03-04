@@ -49,4 +49,8 @@ async def enable(message: Message) -> None:
                     telegram_id=message.chat.id
                 )
             )
-    await message.reply("Сповіщення увімкнено" if telegram_group.post_info else "Сповіщення вимкнено")
+        await message.reply(
+            "Сповіщення увімкнено"
+            if (not telegram_group or telegram_group.post_info)
+            else "Сповіщення вимкнено"
+        )
