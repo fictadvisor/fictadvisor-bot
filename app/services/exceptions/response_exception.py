@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, Self
+from typing import Any, Dict
 
 from pydantic import BaseModel
 from pydantic.dataclasses import dataclass
@@ -23,7 +23,7 @@ class ResponseException(Exception):
         return self.message
 
     @classmethod
-    def from_json(cls, json: Dict[str, Any]) -> Self:
+    def from_json(cls, json: Dict[str, Any]):  # type: ignore
         return cls(
             **ResponseExceptionData
             .model_validate(json)
