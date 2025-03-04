@@ -24,6 +24,10 @@ async def enable(message: Message, user: Student, telegram_groups: TelegramGroup
                     post_info=not telegram_group.post_info
                 )
             )
-            await message.reply("Сповіщення увімкнено" if telegram_group.post_info else "Сповіщення вимкнено")
+            await message.reply(
+                "Сповіщення увімкнено"
+                if (not telegram_group or telegram_group.post_info)
+                else "Сповіщення вимкнено"
+            )
     except ResponseException as e:
         logging.error(e)

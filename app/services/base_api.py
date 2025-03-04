@@ -1,5 +1,5 @@
 from types import TracebackType
-from typing import Dict, Optional, Self, Type
+from typing import Dict, Optional, Type
 
 import aiohttp
 from pydantic import AnyUrl
@@ -27,7 +27,7 @@ class BaseAPI:
     def path(self) -> str:
         return self.base_url.path + self._path
 
-    async def __aenter__(self) -> Self:
+    async def __aenter__(self):  # type: ignore
         return self
 
     async def __aexit__(
