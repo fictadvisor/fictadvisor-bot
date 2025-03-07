@@ -2,10 +2,12 @@ import sys
 from typing import Any
 
 from aiogram import Bot, Dispatcher
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import AnyUrl
 
+from app.api.exception_handler import exception_handler
 from app.api.middlewares.authentication import verify_token
 from app.api.routes.broadcast import broadcast_router
 from app.api.routes.captain import captain_router
@@ -26,6 +28,11 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
             SecretStub: lambda: webhook_secret,
         }
     )
+
+    async def async_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+        return await exception_handler(request, exc, bot)
+
+    app.add_exception_handler(Exception, async_exception_handler)
 
     app.add_middleware(
         CORSMiddleware,
