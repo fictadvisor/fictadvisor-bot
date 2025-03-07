@@ -41,7 +41,7 @@ allow-direct-references = true
 packages = ["src/fictadvisor_bot"]
 
 [tool.ruff]
-select = [
+lint.select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
     "F",  # pyflakes
@@ -49,12 +49,12 @@ select = [
     "C",  # flake8-comprehensions
     "B",  # flake8-bugbear
 ]
-ignore = [
+lint.ignore = [
     "E501",  # line too long, handled by black
     "C901",  # too complex
 ]
 
-[tool.ruff.flake8-bugbear]
+[tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Header"]
 
 [tool.mypy]
