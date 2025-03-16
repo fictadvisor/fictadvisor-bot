@@ -53,7 +53,8 @@ async def exception_handler(request: Request, exc: Exception, bot: Bot) -> JSONR
     )
 
     await bot.send_message(
-        chat_id=settings.CHAT_ID,
+        chat_id=settings.ERRORS_CHAT_ID,
+        message_thread_id=settings.ERRORS_THREAD_ID,
         text=error_text,
         parse_mode="HTML",
         link_preview_options=LinkPreviewOptions(is_disabled=True),

@@ -11,6 +11,8 @@ class Settings(BaseSettings):
 
     TOKEN: SecretStr
     CHAT_ID: int
+    ERRORS_CHAT_ID: int
+    ERRORS_THREAD_ID: Optional[int] = None
     TELEGRAM_SECRET: SecretStr
     BASE_URL: AnyUrl = AnyUrl("http://localhost:8000")
     FRONT_BASE_URL: AnyUrl

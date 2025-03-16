@@ -27,7 +27,8 @@ async def send_message_handler(
 @broadcast_router.post("/error")
 async def send_error_handler(
     message: Message,
-    chat_id: int = Query(default=settings.CHAT_ID, alias="id"),
+    chat_id: int = Query(default=settings.ERRORS_CHAT_ID, alias="id"),
+    thread_id: Optional[int] = Query(default=settings.ERRORS_THREAD_ID, alias="thread"),
     bot: Bot = Depends(BotStub),
 ) -> JSONResponse:
     logging.error(message.text)
@@ -78,6 +79,7 @@ async def send_error_handler(
     error_text = "🚨 <b>Backend Error</b> 🚨\n\n" + error_message + traceback_message
     await bot.send_message(
         chat_id=chat_id,
+        message_thread_id=thread_id,
         text=error_text,
         parse_mode="HTML",
     )
