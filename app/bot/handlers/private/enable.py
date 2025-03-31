@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from aiogram.types import Message
@@ -14,11 +15,18 @@ from app.services.types.teleram_group import (
     UpdateTelegramGroup,
 )
 from app.services.user_api import UserAPI
+from app.utils.telegram import send_answer
 
 
 async def enable(message: Message) -> None:
-    async with UserAPI() as user_api:
-        user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type: ignore[union-attr]
+    try:
+        async with UserAPI() as user_api:
+            user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type: ignore[union-attr]
+    except ResponseException as e:
+        await send_answer(message, "Прив'яжіть телеграм до аккаунта FICE Advisor")
+        logging.error(e)
+        return
+
     async with TelegramGroupAPI() as telegram_group_api:
         try:
             telegram_groups: TelegramGroups = await telegram_group_api.get_telegram_groups(user.group.id)

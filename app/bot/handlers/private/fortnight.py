@@ -1,17 +1,27 @@
+import logging
+
 from aiogram.types import CallbackQuery, Message
 
 from app.bot.keyboards.types.select_week import SelectWeek
 from app.bot.keyboards.week_keyboard import get_week_keyboard
 from app.messages.events import WEEK_EVENT_LIST
+from app.services.exceptions.response_exception import ResponseException
 from app.services.schedule_api import ScheduleAPI
 from app.services.user_api import UserAPI
 from app.utils.date_service import DateService
 from app.utils.events import check_odd
+from app.utils.telegram import send_answer
 
 
 async def fortnight(message: Message) -> None:
-    async with UserAPI() as user_api:
-        user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type: ignore[union-attr]
+    try:
+        async with UserAPI() as user_api:
+            user = await user_api.get_user_by_telegram_id(message.from_user.id)  # type: ignore[union-attr]
+    except ResponseException as e:
+        await send_answer(message, "Прив'яжіть телеграм до аккаунта FICE Advisor")
+        logging.error(e)
+        return
+
     async with ScheduleAPI() as schedule_api:
         general_events = await schedule_api.get_general_group_events_by_fortnight(user.group.id, user_id=user.id)
 
@@ -28,8 +38,14 @@ async def fortnight(message: Message) -> None:
 
 
 async def select_week(callback: CallbackQuery, callback_data: SelectWeek) -> None:
-    async with UserAPI() as user_api:
-        user = await user_api.get_user_by_telegram_id(callback.from_user.id)
+    try:
+        async with UserAPI() as user_api:
+            user = await user_api.get_user_by_telegram_id(callback.from_user.id)
+    except ResponseException as e:
+        await send_answer(callback, "Прив'яжіть телеграм до аккаунта FICE Advisor")
+        logging.error(e)
+        return
+
     async with ScheduleAPI() as schedule_api:
         general_events = await schedule_api.get_general_group_events_by_fortnight(callback_data.group_id, user_id=user.id)
     week = callback_data.week
