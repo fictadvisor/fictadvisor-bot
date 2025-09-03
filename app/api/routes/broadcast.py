@@ -1,4 +1,5 @@
 import logging
+from html import escape
 from typing import Optional
 
 from aiogram import Bot
@@ -33,7 +34,8 @@ async def send_error_handler(
 ) -> JSONResponse:
     logging.error(message.text)
 
-    text_splitted = message.text.split("\n")
+    escaped_text = escape(message.text)
+    text_splitted = escaped_text.split("\n")
 
     error_messages: list[str] = []
     traceback: list[str] = []
