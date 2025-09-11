@@ -5,10 +5,16 @@ from aiogram.types import LinkPreviewOptions
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
+from app.services.exceptions.response_exception import ResponseException
 from app.settings import settings
 
 
 async def exception_handler(request: Request, exc: Exception, bot: Bot) -> JSONResponse:
+    exc_str = str(exc)
+
+    if exc_str.startswith("Telegram server says") or isinstance(exc, ResponseException):
+        return JSONResponse(status_code=200, content={})
+
     tb = traceback.extract_tb(exc.__traceback__)
     filtered_tb = [line for line in tb if "app" in line.filename]
     filtered_tb_list = traceback.format_list(filtered_tb)
@@ -45,7 +51,7 @@ async def exception_handler(request: Request, exc: Exception, bot: Bot) -> JSONR
 
     error_text = (
         "🚨 <b>Bot Error</b> 🚨\n\n<code>"
-        + str(exc)
+        + exc_str
         + "</code>\n\n<pre>Traceback:\n"
         + "".join(formatted_tb)
         + "</pre>\n"
