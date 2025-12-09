@@ -23,6 +23,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/amd64, linux/arm64
           tags: fictadvisor/fictadvisor-bot:${{ github.ref_name }}
           cache-from: type=gha,scope=${{ github.ref_name }}-image
           cache-to: type=gha,mode=max,scope=${{ github.ref_name }}-image
